@@ -33,9 +33,9 @@ export default function Footer() {
               <Image
                 src="/aquador.webp"
                 alt="Aquad'or"
-                width={200}
-                height={80}
-                className="h-16 w-auto object-contain"
+                width={400}
+                height={120}
+                className="h-20 sm:h-24 md:h-28 lg:h-32 w-auto object-contain"
               />
             </Link>
             <p className="text-gray-500 text-xs leading-relaxed max-w-[200px]">
