@@ -26,37 +26,26 @@ const features = [
 export default function CTASection() {
   return (
     <section className="relative section-lg overflow-hidden">
-      {/* Dark base */}
-      <div className="absolute inset-0 bg-[#080808]" />
-
-      {/* Gold radial ambience */}
+      {/* Background image — black & gold perfume on dark textile */}
       <div
-        className="absolute inset-0 opacity-[0.07]"
+        className="absolute inset-0 bg-cover bg-center"
         style={{
-          background: 'radial-gradient(ellipse at center, #D4AF37 0%, transparent 60%)',
+          backgroundImage: `url('https://images.unsplash.com/photo-1611146264101-358a3b387eee?w=1920&q=80')`,
+          filter: 'brightness(0.35) saturate(0.8)',
         }}
       />
 
-      {/* Subtle top/bottom edge lines */}
+      {/* Dark vignette overlay */}
+      <div
+        className="absolute inset-0"
+        style={{
+          background: 'radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,0.7) 100%)',
+        }}
+      />
+
+      {/* Gold accent lines */}
       <div className="absolute top-0 left-[10%] right-[10%] h-px bg-gradient-to-r from-transparent via-gold/20 to-transparent" />
       <div className="absolute bottom-0 left-[10%] right-[10%] h-px bg-gradient-to-r from-transparent via-gold/20 to-transparent" />
-
-      {/* Logo — large, centered, elegant */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <motion.img
-          src="/aquador.webp"
-          alt=""
-          aria-hidden="true"
-          className="w-[320px] md:w-[450px] lg:w-[550px] h-auto opacity-[0.15]"
-          style={{
-            filter: 'drop-shadow(0 0 80px rgba(212, 175, 55, 0.2)) brightness(1.3)',
-          }}
-          initial={{ opacity: 0, scale: 0.95 }}
-          whileInView={{ opacity: 0.15, scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1.2, ease: 'easeOut' }}
-        />
-      </div>
 
       {/* Content */}
       <div className="relative z-10 container-wide">
