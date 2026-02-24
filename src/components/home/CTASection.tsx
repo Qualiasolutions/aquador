@@ -26,15 +26,15 @@ const features = [
 export default function CTASection() {
   return (
     <section className="relative section-lg overflow-hidden">
-      {/* Background logo */}
+      {/* Background */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black via-dark-light to-black" />
       <div
-        className="absolute inset-0 bg-no-repeat bg-center opacity-[0.07]"
+        className="absolute inset-0 bg-no-repeat bg-center opacity-[0.08]"
         style={{
           backgroundImage: `url('/aquador.webp')`,
           backgroundSize: '500px auto',
         }}
       />
-      <div className="absolute inset-0 bg-gradient-to-b from-black via-dark-light/95 to-black" />
 
       {/* Content */}
       <div className="relative z-10 container-wide">
