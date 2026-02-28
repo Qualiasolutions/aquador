@@ -19,7 +19,9 @@ export async function GET(
     return NextResponse.json({ error: 'Post not found' }, { status: 404 });
   }
 
-  return NextResponse.json(data);
+  const response = NextResponse.json(data);
+  response.headers.set('Cache-Control', 'public, s-maxage=600, stale-while-revalidate=86400');
+  return response;
 }
 
 export async function PUT(

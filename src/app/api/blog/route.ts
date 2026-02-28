@@ -55,12 +55,16 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 
-  return NextResponse.json({
+  const response = NextResponse.json({
     posts: data,
     total: count,
     page,
     totalPages: Math.ceil((count || 0) / limit),
   });
+  if (statusFilter !== 'all') {
+    response.headers.set('Cache-Control', 'public, s-maxage=600, stale-while-revalidate=86400');
+  }
+  return response;
 }
 
 export async function POST(request: NextRequest) {
