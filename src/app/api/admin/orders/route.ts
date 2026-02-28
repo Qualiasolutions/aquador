@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import * as Sentry from '@sentry/nextjs';
+import { createClient } from '@/lib/supabase/server';
 import { createAdminClient } from '@/lib/supabase/admin';
 
 interface ManualOrderItem {
@@ -29,6 +30,33 @@ interface ManualOrderBody {
 
 export async function POST(request: NextRequest) {
   try {
+    // Verify user is authenticated
+    const authSupabase = await createClient();
+    const { data: { user } } = await authSupabase.auth.getUser();
+
+    if (!user) {
+      return NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 401 }
+      );
+    }
+
+    // Verify user is an admin
+    const { data: adminUser } = await authSupabase
+      .from('admin_users')
+      .select('id')
+      .eq('id', user.id)
+      .single();
+
+    if (!adminUser) {
+      return NextResponse.json(
+        { error: 'Forbidden' },
+        { status: 403 }
+      );
+    }
+
+    Sentry.setUser({ id: user.id, email: user.email });
+
     const body: ManualOrderBody = await request.json();
 
     if (!body.customerEmail || !body.total || body.total <= 0) {
