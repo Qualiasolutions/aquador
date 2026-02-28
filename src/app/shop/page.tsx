@@ -3,8 +3,7 @@ import { Suspense } from 'react';
 import { getAllProducts, categories } from '@/lib/supabase/product-service';
 import ShopContent from './ShopContent';
 
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+export const revalidate = 1800;
 
 export const metadata: Metadata = {
   title: "Shop Luxury Perfumes | Aquad'or Cyprus Collection",

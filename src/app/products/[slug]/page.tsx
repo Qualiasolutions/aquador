@@ -8,8 +8,7 @@ import AddToCartButton from '@/components/products/AddToCartButton';
 import RelatedProducts from '@/components/products/RelatedProducts';
 import ProductGallery from '@/components/products/ProductGallery';
 
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+export const revalidate = 3600;
 
 interface ProductPageProps {
   params: Promise<{ slug: string }>;
