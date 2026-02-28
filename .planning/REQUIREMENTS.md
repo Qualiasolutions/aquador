@@ -1,182 +1,181 @@
-# Requirements: Aquadour Full-Stack Audit & Production Readiness
+# Requirements: Critical Security Vulnerabilities Milestone
 
-## Overview
-Systematic audit of Aquadour luxury perfume ecommerce platform to ensure production readiness across frontend, backend, admin panel, checkout flow, and deployment infrastructure.
+**Milestone**: Critical Security Vulnerabilities
+**Approach**: Aggressive, comprehensive security overhaul
+**Timeline**: Immediate priority - security vulnerabilities are production-blocking
 
-## Phase 1: Project Discovery
-**Objective**: Map complete technical architecture and establish baseline
+---
 
-### Requirements
-- [ ] **R1.1** - Document complete tech stack from package.json and project files
-- [ ] **R1.2** - Map all source code structure and key files (frontend, backend, database)
-- [ ] **R1.3** - Document Supabase database schema and table relationships
-- [ ] **R1.4** - Identify and catalog all environment variables and configurations
-- [ ] **R1.5** - Create comprehensive project map summarizing architecture
+## Functional Requirements
 
-### Acceptance Criteria
-- Tech stack documented with versions and purposes
-- Complete file structure mapped (excluding node_modules, .git, .next)
-- Database schema documented including relationships and constraints
-- All environment variables identified with purposes
-- Project map created as reference for subsequent phases
+### 1. Admin API Route Security (CRITICAL)
+**Requirement**: All admin API routes must enforce proper authentication and authorization
 
-## Phase 2: Frontend Review
-**Objective**: Ensure all pages render correctly and navigation works seamlessly
+**Acceptance Criteria**:
+- [ ] `/api/admin/orders` route has direct auth check (not relying on middleware)
+- [ ] Auth check verifies user exists in `admin_users` table
+- [ ] Route returns 401 for unauthenticated requests, 403 for non-admin users
+- [ ] Test coverage for auth bypass scenarios
+- [ ] No admin API routes are accessible without proper authentication
 
-### Requirements
-- [ ] **R2.1** - Verify all application routes load without errors
-- [ ] **R2.2** - Validate dynamic routes ([id], [slug], [category]) resolve correctly
-- [ ] **R2.3** - Confirm all products appear on appropriate storefront pages
-- [ ] **R2.4** - Verify all categories display in navigation with correct links
-- [ ] **R2.5** - Test responsive design across mobile, tablet, and desktop breakpoints
-- [ ] **R2.6** - Validate loading states and error handling in UI components
-- [ ] **R2.7** - Verify accessibility basics (alt text, form labels, keyboard navigation)
+**Files Affected**:
+- `src/app/api/admin/orders/route.ts` (primary fix)
+- Any other `/api/admin/*` routes discovered
 
-### Acceptance Criteria
-- No console errors or hydration mismatches on any page
-- All products from database/static files display on storefront
-- All categories linked correctly with accurate product counts
-- Empty states handled appropriately (categories with zero products)
-- Responsive design works across all device sizes
-- Basic accessibility requirements met
+### 2. Row Level Security Verification (CRITICAL)
+**Requirement**: All database tables must have proper RLS policies configured and verified
 
-## Phase 3: Checkout Flow Verification
-**Objective**: End-to-end verification of cart functionality and payment processing
+**Acceptance Criteria**:
+- [ ] RLS status confirmed for ALL tables: `products`, `orders`, `customers`, `admin_users`, `blog_posts`, `gift_set_inventory`
+- [ ] Missing RLS policies created and applied
+- [ ] RLS policies tested to prevent unauthorized data access
+- [ ] Database schema exported to version control for audit trail
+- [ ] Documentation of all RLS policies created
 
-### Requirements
-- [ ] **R3.1** - Verify cart add/update/remove operations work correctly
-- [ ] **R3.2** - Test cart persistence across page navigation and browser sessions
-- [ ] **R3.3** - Validate price calculations (subtotals, totals, currency formatting)
-- [ ] **R3.4** - Test complete checkout process from cart to confirmation
-- [ ] **R3.5** - Verify Stripe payment integration and webhook handling
-- [ ] **R3.6** - Test custom perfume builder checkout flow separately
-- [ ] **R3.7** - Validate form validation and error handling in checkout
+**Implementation**:
+- Export current schema from Supabase
+- Identify tables missing RLS
+- Create appropriate policies for each table
+- Test policies with different user roles
 
-### Acceptance Criteria
-- Cart operations (add/update/remove) work reliably
-- Cart persists using localStorage across sessions
-- Price calculations accurate including EUR formatting
-- Checkout process completes successfully with test payments
-- Order records created in database after successful checkout
-- Payment webhooks handle success/failure scenarios correctly
-- Custom perfume checkout works with correct pricing (€29.99/€199.00)
+### 3. Bundle Optimization (HIGH)
+**Requirement**: Remove 9,067-line static products catalog that duplicates Supabase data
 
-## Phase 4: Admin Panel Audit
-**Objective**: Comprehensive verification of admin functionality and real-time updates
+**Acceptance Criteria**:
+- [ ] `src/lib/products.ts` file completely removed
+- [ ] All imports of static product data migrated to `src/lib/supabase/product-service.ts`
+- [ ] AI assistant catalog data updated to use Supabase queries
+- [ ] Build bundle size reduced by 200-400KB
+- [ ] All existing functionality preserved (no breaking changes)
+- [ ] Performance maintained or improved with database queries
 
-### Requirements
-- [ ] **R4.1** - Re-enable and test admin authentication system
-- [ ] **R4.2** - Verify admin dashboard displays accurate metrics and data
-- [ ] **R4.3** - Implement and test real-time dashboard updates
-- [ ] **R4.4** - Test complete order management (view, update status, details)
-- [ ] **R4.5** - Verify product CRUD operations (create, read, update, delete)
-- [ ] **R4.6** - Test category management functionality
-- [ ] **R4.7** - Verify blog post management in admin panel
-- [ ] **R4.8** - Test customer management and order history views
+**Migration Scope**:
+- Product listing pages
+- Search functionality
+- AI assistant product recommendations
+- Related products logic
+- Category filtering
 
-### Acceptance Criteria
-- Admin authentication works with Supabase user system
-- Dashboard shows real-time metrics (orders, revenue, customers, products)
-- Real-time updates when new orders placed or statuses changed
-- Order management allows full CRUD operations on order data
-- Product management reflects changes immediately on storefront
-- Category management handles products in deleted categories gracefully
-- Blog management works with SEO fields and featured posts
-- Customer data accurate and matches order records
+### 4. Comprehensive Input Validation (MEDIUM)
+**Requirement**: All API routes must validate input with Zod schemas
 
-## Phase 5: Backend & API Audit
-**Objective**: Ensure API security, validation, and error handling across all endpoints
+**Acceptance Criteria**:
+- [ ] Zod schemas created for ALL API routes accepting user input
+- [ ] Input validation covers: type checking, required fields, format validation, business rules
+- [ ] Proper error responses with field-specific validation messages
+- [ ] No API route accepts unvalidated user input
 
-### Requirements
-- [ ] **R5.1** - Audit all API routes for security and validation
-- [ ] **R5.2** - Verify database integrity and data consistency
-- [ ] **R5.3** - Test authentication and authorization systems
-- [ ] **R5.4** - Validate error handling and appropriate status codes
-- [ ] **R5.5** - Verify rate limiting functionality across endpoints
-- [ ] **R5.6** - Test Stripe webhook endpoint security and validation
-- [ ] **R5.7** - Ensure no exposed API keys or secrets in codebase
+**Routes to validate**:
+- `/api/checkout` (cart items, customer data)
+- `/api/create-perfume/payment` (perfume composition, pricing)
+- `/api/ai-assistant` (chat messages, context)
+- `/api/admin/orders` (order data)
+- `/api/blog` POST/PUT (blog content, metadata)
+- `/api/heartbeat` (visitor tracking data)
 
-### Acceptance Criteria
-- All API endpoints return appropriate data and status codes
-- Input validation works with Zod schemas where implemented
-- Authentication protects sensitive routes (admin, payment)
-- Rate limiting active on identified endpoints (contact, checkout, AI)
-- Database contains no orphaned records or data inconsistencies
-- Error responses user-friendly without exposing stack traces
-- Webhook signature validation working for Stripe endpoints
+### 5. Production Logging Cleanup (LOW)
+**Requirement**: Replace console.log statements with structured logging
 
-## Phase 6: Production Readiness
-**Objective**: Ensure application ready for production deployment
+**Acceptance Criteria**:
+- [ ] All 10 console.log statements replaced with Sentry logging
+- [ ] Structured logging with appropriate log levels (info, warn, error)
+- [ ] No sensitive data (PII, payment info) in logs
+- [ ] Development vs production logging configuration
 
-### Requirements
-- [ ] **R6.1** - Verify production build completes without errors
-- [ ] **R6.2** - Validate all TypeScript types and linting passes
-- [ ] **R6.3** - Test performance optimization (images, caching, bundle size)
-- [ ] **R6.4** - Verify SEO optimization (meta tags, structured data, sitemap)
-- [ ] **R6.5** - Validate environment variable configuration for production
-- [ ] **R6.6** - Test database migration and seed data processes
-- [ ] **R6.7** - Verify security headers and CSP configuration
+---
 
-### Acceptance Criteria
-- `npm run build` completes with zero errors and warnings
-- All linting and type checking passes clean
-- Images optimized with Next.js Image component
-- All pages have proper SEO meta tags and structured data
-- Production environment variables documented and ready
-- Database ready for production deployment
-- Security headers configured in next.config.mjs
+## Technical Requirements
 
-## Phase 7: Deploy Checklist Generation
-**Objective**: Create comprehensive production deployment guide
+### Performance
+- Build bundle size reduced by minimum 200KB
+- Database query performance maintained or improved
+- No regression in page load times
+- ISR caching still functional after product data migration
 
-### Requirements
-- [ ] **R7.1** - Generate complete pre-deployment checklist
-- [ ] **R7.2** - Document data verification requirements
-- [ ] **R7.3** - Create feature verification checklist
-- [ ] **R7.4** - Outline post-deployment verification steps
-- [ ] **R7.5** - Document monitoring and maintenance requirements
+### Security
+- Zero unprotected admin endpoints
+- All tables have appropriate RLS policies
+- Input validation prevents malformed data crashes
+- No hardcoded secrets or sensitive data in logs
 
-### Acceptance Criteria
-- DEPLOY-CHECKLIST.md saved to project root
-- Checklist covers all critical deployment steps
-- Data verification section ensures database integrity
-- Feature verification covers end-to-end user flows
-- Post-deployment steps include monitoring setup
-- All checklist items actionable and verifiable
+### Reliability
+- All existing functionality preserved
+- Comprehensive test coverage for security fixes
+- Rollback plan for each major change
+- Atomic commits for easy reversion if needed
 
-## Success Metrics
+### Maintainability
+- Database schema in version control
+- Clear documentation of security policies
+- Consistent input validation patterns across API routes
+- Proper error handling and logging
 
-### Technical Quality
-- **Build Success**: Production build completes with 0 errors, 0 warnings
-- **Test Coverage**: All critical paths covered by E2E tests
-- **Performance**: Core Web Vitals within acceptable ranges
-- **Security**: No exposed secrets, proper authentication, rate limiting active
+---
 
-### Business Functionality
-- **Product Display**: 100% of products visible on appropriate pages
-- **Checkout Success**: End-to-end checkout flow works reliably
-- **Admin Functionality**: Complete CRUD operations on all entities
-- **Data Integrity**: No orphaned records, consistent data across systems
+## Non-Functional Requirements
 
-### Production Readiness
-- **Deployment Ready**: All environment variables configured
-- **Monitoring Active**: Error tracking and analytics functional
-- **Documentation Complete**: Deploy checklist and maintenance guides ready
-- **Security Validated**: Authentication, authorization, and data protection verified
+### Risk Management
+- **Approach**: Aggressive but safe - rapid security fixes with thorough testing
+- **Testing**: Each fix must be tested before moving to next issue
+- **Rollback**: Each commit must be atomic and revertible
+- **Verification**: Manual security testing after each fix
 
-## Quality Gates
+### Quality Gates
+- [ ] `npx tsc --noEmit` passes after each change
+- [ ] `npm run build` succeeds after each change
+- [ ] All existing E2E tests still pass
+- [ ] Security testing confirms vulnerabilities are fixed
+- [ ] No new vulnerabilities introduced
 
-Each phase must pass verification before proceeding:
-1. **Discovery**: Project map approved and architecture understood
-2. **Frontend**: All pages render without errors, responsive across devices
-3. **Checkout**: End-to-end payment flow verified with test transactions
-4. **Admin**: Full CRUD operations working with real-time updates
-5. **Backend**: API security validated, data integrity confirmed
-6. **Production**: Build successful, environment ready, performance optimized
-7. **Deploy**: Comprehensive checklist generated and validated
+### Documentation Requirements
+- Update CLAUDE.md if API contracts change
+- Document all RLS policies created
+- Update .env.example if new environment variables needed
+- Security fix changelog for audit trail
 
-## Risk Mitigation
-- **Data Preservation**: No destructive operations on existing records
-- **Incremental Changes**: Atomic commits with rollback capability
-- **Test Environment**: All testing in development/staging environments
-- **Backup Strategy**: Database backups before structural changes
+---
+
+## Success Criteria
+
+### Primary (Must Have)
+1. **Admin API security verified** - No unauthorized access possible
+2. **RLS policies confirmed** - All data protected at database level
+3. **Bundle optimized** - Static product catalog removed, performance improved
+4. **Input validation complete** - All API routes have Zod schemas
+
+### Secondary (Should Have)
+5. **Logging cleaned up** - Production-ready structured logging
+6. **Schema documented** - Database structure in version control
+7. **Test coverage** - Security fixes have comprehensive tests
+
+### Verification Gate
+- Manual security testing confirms all vulnerabilities are resolved
+- Audit tool re-run shows improved security grade (B → A+)
+- Bundle analysis confirms size reduction
+- All functionality verified working after migration
+
+---
+
+## Constraints & Assumptions
+
+### Constraints
+- **No breaking changes** to existing user-facing functionality
+- **Preserve all data** - no deletion of products, orders, or records
+- **Maintain performance** - database migration must not slow down the site
+- **Test mode payments** - keep Stripe in test mode during development
+
+### Assumptions
+- Supabase database has sufficient performance for product queries
+- Current static product data matches Supabase product data
+- Admin authentication middleware works correctly for other routes
+- RLS can be safely enabled without breaking existing functionality
+
+### Dependencies
+- Access to Supabase project admin dashboard
+- Ability to modify database schema and RLS policies
+- Test environment to verify security fixes
+- Sentry configuration for structured logging
+
+---
+
+**Requirements Approved**: Ready for roadmap creation and phase planning
