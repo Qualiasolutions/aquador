@@ -1,6 +1,13 @@
 import { createClient } from '@supabase/supabase-js';
 import { NextResponse } from 'next/server';
 import { timingSafeEqual } from 'crypto';
+import { z } from 'zod';
+
+const SetupSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(8),
+  setupKey: z.string().min(1),
+});
 
 function getSupabaseAdmin() {
   if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
@@ -32,7 +39,12 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Setup already completed' }, { status: 403 });
   }
 
-  const { email, password, setupKey } = await request.json();
+  const body = await request.json();
+  const parsed = SetupSchema.safeParse(body);
+  if (!parsed.success) {
+    return NextResponse.json({ error: parsed.error.flatten().fieldErrors }, { status: 400 });
+  }
+  const { email, password, setupKey } = parsed.data;
 
   if (!validateSetupKey(setupKey)) {
     return NextResponse.json({ error: 'Invalid setup key' }, { status: 401 });
@@ -91,18 +103,15 @@ export async function PUT(request: Request) {
     return NextResponse.json({ error: 'Setup already completed' }, { status: 403 });
   }
 
-  const { email, password, setupKey } = await request.json();
+  const body = await request.json();
+  const parsed = SetupSchema.safeParse(body);
+  if (!parsed.success) {
+    return NextResponse.json({ error: parsed.error.flatten().fieldErrors }, { status: 400 });
+  }
+  const { email, password, setupKey } = parsed.data;
 
   if (!validateSetupKey(setupKey)) {
     return NextResponse.json({ error: 'Invalid setup key' }, { status: 401 });
-  }
-
-  if (!email || !password) {
-    return NextResponse.json({ error: 'Email and password are required' }, { status: 400 });
-  }
-
-  if (password.length < 8) {
-    return NextResponse.json({ error: 'Password must be at least 8 characters' }, { status: 400 });
   }
 
   const supabaseAdmin = getSupabaseAdmin();
