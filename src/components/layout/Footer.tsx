@@ -138,7 +138,7 @@ export default function Footer() {
             © {new Date().getFullYear()} Aquad&apos;or Cyprus
           </p>
           <p className="text-gray-600 text-[10px] tracking-wide">
-            by{' '}
+            Developed & designed by{' '}
             <a
               href="https://qualiasolutions.net"
               target="_blank"
