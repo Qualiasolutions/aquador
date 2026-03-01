@@ -5,6 +5,7 @@ import { generateSlug, estimateReadTime } from '@/lib/blog-types';
 import type { BlogPost, BlogCategory } from '@/lib/blog-types';
 import { Save, Eye, Loader2 } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface BlogEditorProps {
   post?: BlogPost;
@@ -229,8 +230,7 @@ export default function BlogEditor({ post, onSave, saving }: BlogEditorProps) {
             />
             {coverImage && (
               <div className="relative aspect-video rounded-lg overflow-hidden bg-gray-800">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={coverImage} alt="Cover" className="w-full h-full object-cover" />
+                <Image src={coverImage} alt="Cover" fill className="object-cover" unoptimized />
               </div>
             )}
           </div>
