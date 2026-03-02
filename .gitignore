@@ -27,6 +27,10 @@ yarn-error.log*
 
 # local env files
 .env*.local
+.env.stripe
+.env.vercel
+.env.working
+.stripe_key
 
 # vercel
 .vercel
@@ -35,5 +39,5 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-.vercel
-.env*.local
+# Sentry Config File
+.env.sentry-build-plugin

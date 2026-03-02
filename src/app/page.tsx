@@ -35,7 +35,7 @@ const CTASection = dynamic(() => import('@/components/home/CTASection'), {
   ssr: true,
 });
 
-export const revalidate = 0;
+export const revalidate = 600;
 
 export default async function Home() {
   const featuredProductsData = await getFeaturedProducts(6);

@@ -3,8 +3,7 @@ import Link from 'next/link';
 import { getProductsByCategory } from '@/lib/supabase/product-service';
 import LattafaContent from './LattafaContent';
 
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+export const revalidate = 1800;
 
 export const metadata: Metadata = {
   title: "Lattafa Originals Perfumes",

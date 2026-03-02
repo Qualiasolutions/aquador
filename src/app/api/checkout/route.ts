@@ -2,13 +2,27 @@ import { NextRequest, NextResponse } from 'next/server';
 import type Stripe from 'stripe';
 import * as Sentry from '@sentry/nextjs';
 import { z } from 'zod';
-import type { CartItem } from '@/types/cart';
 import { CURRENCY_CODE, toCents } from '@/lib/currency';
 import { formatApiError } from '@/lib/api-utils';
 import { checkRateLimit } from '@/lib/rate-limit';
 import { getProductTypeLabel, SHIPPING_COUNTRIES } from '@/lib/constants';
 import { getStripe } from '@/lib/stripe';
 import { cartItemSchema, validateCartPrices } from '@/lib/validation/cart';
+
+const cartItemSchema = z.object({
+  productId: z.string(),
+  variantId: z.string().optional(),
+  name: z.string().min(1),
+  price: z.number().positive(),
+  quantity: z.number().int().positive(),
+  image: z.string().optional(),
+  size: z.string().optional(),
+  productType: z.string().optional(),
+});
+
+const checkoutSchema = z.object({
+  items: z.array(cartItemSchema).min(1, 'Cart is empty'),
+});
 
 const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
 
@@ -20,14 +34,14 @@ export async function POST(request: NextRequest) {
   try {
     const stripe = getStripe();
     const body = await request.json();
-    const { items } = body as { items: CartItem[] };
-
-    if (!items || !Array.isArray(items) || items.length === 0) {
+    const result = checkoutSchema.safeParse(body);
+    if (!result.success) {
       return NextResponse.json(
-        { error: 'Cart is empty' },
+        { error: result.error.issues[0]?.message || 'Invalid cart data' },
         { status: 400 }
       );
     }
+    const { items } = result.data;
 
     // SECURITY: Validate cart items and verify prices against server-side catalog
     // to prevent client-side price manipulation (SEC-01, SEC-02)
@@ -52,7 +66,7 @@ export async function POST(request: NextRequest) {
 
     // Create line items for Stripe
     const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = items.map((item) => {
-      const description = `${getProductTypeLabel(item.productType)} - ${item.size}`;
+      const description = `${getProductTypeLabel(item.productType || 'perfume')} - ${item.size || ''}`;
 
       return {
         price_data: {
@@ -118,7 +132,6 @@ export async function POST(request: NextRequest) {
     });
   } catch (error) {
     Sentry.captureException(error);
-    console.error('Checkout error:', error);
 
     const errorResponse = formatApiError(error, 'Failed to create checkout session');
 

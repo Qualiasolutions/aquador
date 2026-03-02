@@ -17,8 +17,8 @@ const footerLinks = {
     { label: 'Blog', href: '/blog' },
     { label: 'Contact', href: '/contact' },
     { label: 'Shipping', href: '/shipping' },
-    { label: 'Terms', href: '/terms' },
-    { label: 'Privacy', href: '/privacy' },
+    { label: 'Terms and Conditions', href: '/terms' },
+    { label: 'Privacy Policy', href: '/privacy' },
   ],
 };
 
@@ -138,7 +138,7 @@ export default function Footer() {
             © {new Date().getFullYear()} Aquad&apos;or Cyprus
           </p>
           <p className="text-gray-600 text-[10px] tracking-wide">
-            by{' '}
+            Developed & designed by{' '}
             <a
               href="https://qualiasolutions.net"
               target="_blank"

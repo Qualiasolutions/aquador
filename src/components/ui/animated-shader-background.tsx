@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef } from 'react';
-import * as THREE from 'three';
+import { Scene, OrthographicCamera, WebGLRenderer, ShaderMaterial, Vector2, PlaneGeometry, Mesh } from 'three';
 
 interface AnimatedShaderBackgroundProps {
   className?: string;
@@ -14,17 +14,17 @@ const AnimatedShaderBackground: React.FC<AnimatedShaderBackgroundProps> = ({ cla
     const container = containerRef.current;
     if (!container) return;
 
-    const scene = new THREE.Scene();
-    const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    const scene = new Scene();
+    const camera = new OrthographicCamera(-1, 1, 1, -1, 0, 1);
+    const renderer = new WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(container.clientWidth, container.clientHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     container.appendChild(renderer.domElement);
 
-    const material = new THREE.ShaderMaterial({
+    const material = new ShaderMaterial({
       uniforms: {
         iTime: { value: 0 },
-        iResolution: { value: new THREE.Vector2(container.clientWidth, container.clientHeight) }
+        iResolution: { value: new Vector2(container.clientWidth, container.clientHeight) }
       },
       vertexShader: `
         void main() {
@@ -101,8 +101,8 @@ const AnimatedShaderBackground: React.FC<AnimatedShaderBackgroundProps> = ({ cla
       `
     });
 
-    const geometry = new THREE.PlaneGeometry(2, 2);
-    const mesh = new THREE.Mesh(geometry, material);
+    const geometry = new PlaneGeometry(2, 2);
+    const mesh = new Mesh(geometry, material);
     scene.add(mesh);
 
     let frameId: number;

@@ -1,22 +1,19 @@
+// This file configures the initialization of Sentry on the server.
+// The config you add here will be used whenever the server handles a request.
+// https://docs.sentry.io/platforms/javascript/guides/nextjs/
+
 import * as Sentry from "@sentry/nextjs";
 
 Sentry.init({
-  dsn: process.env.SENTRY_DSN,
+  dsn: "https://e0374a8fc276105db08c2d4bf2c35796@o4510184257814528.ingest.de.sentry.io/4510965152743504",
 
-  // Performance Monitoring
-  tracesSampleRate: 1.0,
+  // Define how likely traces are sampled. Adjust this value in production, or use tracesSampler for greater control.
+  tracesSampleRate: 1,
 
-  // Only send errors in production
-  enabled: process.env.NODE_ENV === "production",
+  // Enable logs to be sent to Sentry
+  enableLogs: true,
 
-  // Set environment
-  environment: process.env.NODE_ENV,
-
-  // Filter out expected errors
-  ignoreErrors: [
-    // Stripe webhook signature failures (handled gracefully)
-    "Invalid signature",
-    // Rate limit responses (not actual errors)
-    "Rate limit exceeded",
-  ],
+  // Enable sending user PII (Personally Identifiable Information)
+  // https://docs.sentry.io/platforms/javascript/guides/nextjs/configuration/options/#sendDefaultPii
+  sendDefaultPii: true,
 });

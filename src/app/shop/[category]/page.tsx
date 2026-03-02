@@ -4,8 +4,7 @@ import Link from 'next/link';
 import { getProductsByCategory, categories, getCategoryBySlug } from '@/lib/supabase/product-service';
 import CategoryContent from './CategoryContent';
 
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+export const revalidate = 1800;
 
 interface CategoryPageProps {
   params: Promise<{ category: string }>;
