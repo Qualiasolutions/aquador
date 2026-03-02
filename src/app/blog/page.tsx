@@ -2,6 +2,8 @@ import { Metadata } from 'next';
 import { getBlogPosts, getBlogCategories, getFeaturedPost } from '@/lib/blog';
 import BlogListContent from './BlogListContent';
 
+export const revalidate = 60; // Revalidate every 60 seconds (ISR)
+
 export const metadata: Metadata = {
   title: 'Blog | The Art of Scent',
   description: 'Stories, guides, and inspiration from the world of luxury fragrance. Expert tips on perfumes, reviews, and scent stories from Aquad\'or Cyprus.',

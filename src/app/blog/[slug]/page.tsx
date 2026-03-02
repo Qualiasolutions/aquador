@@ -3,6 +3,8 @@ import { notFound } from 'next/navigation';
 import { getBlogPostBySlug, getRelatedPosts } from '@/lib/blog';
 import BlogPostContent from './BlogPostContent';
 
+export const revalidate = 60; // Revalidate every 60 seconds (ISR)
+
 interface BlogPostPageProps {
   params: Promise<{ slug: string }>;
 }
