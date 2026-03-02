@@ -39,16 +39,16 @@ async function persistOrder(
   items: OrderItem[],
   shippingAddress: ShippingAddress | null,
   orderTags: Record<string, string>
-) {
+): Promise<{ isNewOrder: boolean }> {
   try {
     const supabase = createAdminClient();
     const customerEmail = session.customer_details?.email;
     const customerName = session.customer_details?.name;
 
-    if (!customerEmail) return;
+    if (!customerEmail) return { isNewOrder: false };
 
     // Insert order (idempotent via unique stripe_session_id)
-    const { error: orderError } = await supabase.from('orders').upsert(
+    const { data: orderData, error: orderError } = await supabase.from('orders').upsert(
       {
         stripe_session_id: session.id,
         customer_email: customerEmail,
@@ -61,7 +61,7 @@ async function persistOrder(
         tags: Object.keys(orderTags).length > 0 ? orderTags : {},
       },
       { onConflict: 'stripe_session_id', ignoreDuplicates: true }
-    );
+    ).select();
 
     if (orderError) {
       console.error('Failed to persist order:', orderError);
@@ -69,7 +69,13 @@ async function persistOrder(
         level: 'error',
         extra: { orderError, sessionId: session.id },
       });
-      return;
+      return { isNewOrder: false };
+    }
+
+    // If orderData is null or empty, the order was a duplicate (ignoreDuplicates blocked insert)
+    if (!orderData || orderData.length === 0) {
+      console.log('Duplicate order detected (ignoreDuplicates):', session.id);
+      return { isNewOrder: false };
     }
 
     // Upsert customer
@@ -113,12 +119,14 @@ async function persistOrder(
     }
 
     console.log('Order persisted for:', customerEmail);
+    return { isNewOrder: true };
   } catch (error) {
     Sentry.captureException(error, {
       tags: { action: 'persist_order' },
       extra: { sessionId: session.id },
     });
     console.error('Error persisting order:', error);
+    return { isNewOrder: false };
   }
 }
 
