@@ -87,36 +87,31 @@ const CartContext = createContext<CartContextType | null>(null);
 const PERSIST_DEBOUNCE_MS = 500;
 
 export function CartProvider({ children }: { children: ReactNode }) {
-  const [cart, dispatch] = useReducer(cartReducer, initialCart);
-  const [isCartOpen, setIsCartOpen] = useState(false);
-  const [isHydrated, setIsHydrated] = useState(false);
-  const persistTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const [cart, dispatch] = useReducer(cartReducer, initialCart, (init) => {
+    // Only hydrate from localStorage on client side during initialization
+    if (typeof window === 'undefined') return init;
 
-  // Hydrate cart from localStorage on mount
-  useEffect(() => {
     try {
       const stored = localStorage.getItem(CART_STORAGE_KEY);
-      if (stored) {
-        const parsed = JSON.parse(stored);
+      if (!stored) return init;
 
-        // Validate cart data with Zod schema
-        const validation = CartSchema.safeParse(parsed);
+      const parsed = JSON.parse(stored);
+      const validation = CartSchema.safeParse(parsed);
 
-        if (validation.success) {
-          // Valid cart data - hydrate
-          dispatch({ type: 'HYDRATE', payload: validation.data });
-        } else {
-          // Invalid cart data - log to Sentry and clear localStorage
-          Sentry.captureException(new Error('Invalid cart data in localStorage'), {
-            contexts: {
-              cart: {
-                validationErrors: validation.error.issues,
-                rawData: parsed,
-              },
+      if (validation.success) {
+        return validation.data;
+      } else {
+        // Invalid cart data - log to Sentry and clear localStorage
+        Sentry.captureException(new Error('Invalid cart data in localStorage'), {
+          contexts: {
+            cart: {
+              validationErrors: validation.error.issues,
+              rawData: parsed,
             },
-          });
-          localStorage.removeItem(CART_STORAGE_KEY);
-        }
+          },
+        });
+        localStorage.removeItem(CART_STORAGE_KEY);
+        return init;
       }
     } catch (error) {
       // JSON parse error - log to Sentry and clear localStorage
@@ -128,7 +123,15 @@ export function CartProvider({ children }: { children: ReactNode }) {
         },
       });
       localStorage.removeItem(CART_STORAGE_KEY);
+      return init;
     }
+  });
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isHydrated, setIsHydrated] = useState(false);
+  const persistTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Mark as hydrated after first render
+  useEffect(() => {
     setIsHydrated(true);
   }, []);
 
