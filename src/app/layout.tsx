@@ -8,7 +8,7 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { CartProvider, CartDrawer } from "@/components/cart";
 import CookieConsent from "@/components/ui/CookieConsent";
-import { AbortErrorSuppressor } from "@/components/providers/ErrorBoundary";
+import { ErrorBoundary, AbortErrorSuppressor } from "@/components/providers/ErrorBoundary";
 import VisitorTracker from "@/components/VisitorTracker";
 
 const ChatWidget = dynamic(() => import("@/components/ai/ChatWidget"), {
@@ -106,16 +106,18 @@ export default function RootLayout({
       </head>
       <body className={`${poppins.variable} ${playfair.variable} antialiased`}>
         <AbortErrorSuppressor />
-        <CartProvider>
-          <Navbar />
-          <main className="min-h-screen">
-            {children}
-          </main>
-          <Footer />
-          <CartDrawer />
-          <CookieConsent />
-          <ChatWidget />
-        </CartProvider>
+        <ErrorBoundary>
+          <CartProvider>
+            <Navbar />
+            <main className="min-h-screen">
+              {children}
+            </main>
+            <Footer />
+            <CartDrawer />
+            <CookieConsent />
+            <ChatWidget />
+          </CartProvider>
+        </ErrorBoundary>
         <VisitorTracker />
         <Analytics />
         <SpeedInsights />
