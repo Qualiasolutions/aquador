@@ -13,11 +13,6 @@ jest.mock('framer-motion', () => ({
   },
 }));
 
-// Mock lucide-react
-jest.mock('lucide-react', () => ({
-  ShoppingBag: () => <svg data-testid="shopping-bag-icon" />,
-}));
-
 // Mock useCart hook
 const mockOpenCart = jest.fn();
 jest.mock('../CartProvider', () => ({
@@ -36,9 +31,11 @@ describe('CartIcon Component', () => {
   });
 
   describe('rendering', () => {
-    it('should render shopping bag icon', () => {
+    it('should render perfume icon as svg', () => {
       render(<CartIcon />);
-      expect(screen.getByTestId('shopping-bag-icon')).toBeInTheDocument();
+      const button = screen.getByRole('button');
+      const svg = button.querySelector('svg');
+      expect(svg).toBeInTheDocument();
     });
 
     it('should render as a button', () => {
@@ -48,10 +45,12 @@ describe('CartIcon Component', () => {
   });
 
   describe('item count display', () => {
-    it('should display 0 when cart is empty', () => {
+    it('should not display badge when cart is empty', () => {
       mockItemCount = 0;
       render(<CartIcon />);
-      expect(screen.getByText('0')).toBeInTheDocument();
+      const button = screen.getByRole('button');
+      const badge = button.querySelector('span');
+      expect(badge).not.toBeInTheDocument();
     });
 
     it('should display correct count for single item', () => {
