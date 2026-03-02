@@ -136,9 +136,10 @@ export default function ContactPage() {
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
-                        <label className="label-micro mb-2 block">Name *</label>
+                        <label htmlFor="contact-name" className="label-micro mb-2 block">Name *</label>
                         <input
                           {...register('name')}
+                          id="contact-name"
                           type="text"
                           autoComplete="name"
                           className={`input-base ${errors.name ? 'border-red-500' : ''}`}
@@ -149,9 +150,10 @@ export default function ContactPage() {
                         )}
                       </div>
                       <div>
-                        <label className="label-micro mb-2 block">Email *</label>
+                        <label htmlFor="contact-email" className="label-micro mb-2 block">Email *</label>
                         <input
                           {...register('email')}
+                          id="contact-email"
                           type="email"
                           autoComplete="email"
                           inputMode="email"
@@ -165,9 +167,10 @@ export default function ContactPage() {
                     </div>
 
                     <div>
-                      <label className="label-micro mb-2 block">Phone (Optional)</label>
+                      <label htmlFor="contact-phone" className="label-micro mb-2 block">Phone (Optional)</label>
                       <input
                         {...register('phone')}
+                        id="contact-phone"
                         type="tel"
                         autoComplete="tel"
                         inputMode="tel"
@@ -177,9 +180,10 @@ export default function ContactPage() {
                     </div>
 
                     <div>
-                      <label className="label-micro mb-2 block">Subject *</label>
+                      <label htmlFor="contact-subject" className="label-micro mb-2 block">Subject *</label>
                       <input
                         {...register('subject')}
+                        id="contact-subject"
                         type="text"
                         className={`input-base ${errors.subject ? 'border-red-500' : ''}`}
                         placeholder="How can we help?"
@@ -190,9 +194,10 @@ export default function ContactPage() {
                     </div>
 
                     <div>
-                      <label className="label-micro mb-2 block">Message *</label>
+                      <label htmlFor="contact-message" className="label-micro mb-2 block">Message *</label>
                       <textarea
                         {...register('message')}
+                        id="contact-message"
                         rows={5}
                         className={`input-base resize-none ${errors.message ? 'border-red-500' : ''}`}
                         placeholder="Tell us more..."

@@ -213,6 +213,7 @@ export default function CreatePerfumePage() {
                       <button
                         key={layer}
                         onClick={() => setActiveLayer(layer)}
+                        aria-label={`Select ${layer} notes layer`}
                         className={`w-full flex items-center gap-3 p-3 rounded-xl text-left transition-all ${
                           isActive ? 'bg-gold/15 border border-gold/30' : isDone ? 'bg-emerald-500/10 border border-emerald-500/20' : 'bg-white/[0.02] border border-white/5 hover:bg-white/[0.04]'
                         }`}
@@ -237,6 +238,8 @@ export default function CreatePerfumePage() {
                       <button
                         key={cat.key}
                         onClick={() => setActiveCategory(cat.key)}
+                        aria-pressed={activeCategory === cat.key}
+                        aria-label={`Select ${cat.label} fragrance category`}
                         className={`px-3 py-1.5 text-xs rounded-full transition-all ${
                           activeCategory === cat.key
                             ? 'bg-gold/20 text-gold border border-gold/30'
@@ -279,6 +282,8 @@ export default function CreatePerfumePage() {
                         key={note.name}
                         onClick={() => !isUsed && handleSelectNote(note)}
                         disabled={isUsed}
+                        aria-label={`Select ${note.name} note for ${activeLayer} layer`}
+                        aria-pressed={isSelected}
                         whileHover={!reducedMotion && !isUsed ? { scale: 1.03 } : undefined}
                         whileTap={!reducedMotion && !isUsed ? { scale: 0.97 } : undefined}
                         className={`relative flex flex-col items-center gap-2 p-4 rounded-xl transition-all ${
@@ -308,7 +313,7 @@ export default function CreatePerfumePage() {
         ) : (
           /* Checkout Form */
           <motion.div key="checkout" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-xl mx-auto px-4">
-            <button onClick={() => setShowForm(false)} className="mb-8 flex items-center gap-2 text-gray-400 hover:text-white transition-colors">
+            <button onClick={() => setShowForm(false)} aria-label="Go back to perfume composer" className="mb-8 flex items-center gap-2 text-gray-400 hover:text-white transition-colors">
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
               <span className="text-sm">Back</span>
             </button>
@@ -325,8 +330,9 @@ export default function CreatePerfumePage() {
 
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
-                  <label className="block text-xs text-gold/60 uppercase tracking-wider mb-2">Name Your Creation *</label>
+                  <label htmlFor="perfume-name" className="block text-xs text-gold/60 uppercase tracking-wider mb-2">Name Your Creation *</label>
                   <input
+                    id="perfume-name"
                     type="text"
                     value={perfumeName}
                     onChange={(e) => setPerfumeName(e.target.value)}
@@ -337,27 +343,31 @@ export default function CreatePerfumePage() {
                 </div>
 
                 <div>
-                  <label className="block text-xs text-gold/60 uppercase tracking-wider mb-2">Select Volume *</label>
-                  <div className="grid grid-cols-2 gap-3">
-                    {(['50ml', '100ml'] as PerfumeVolume[]).map((vol) => (
-                      <button
-                        key={vol}
-                        type="button"
-                        onClick={() => setSelectedVolume(vol)}
-                        className={`p-4 rounded-xl border text-center transition-all ${
-                          selectedVolume === vol ? 'border-gold/50 bg-gold/10 text-gold' : 'border-white/10 bg-white/[0.02] text-gray-400 hover:border-white/20'
-                        }`}
-                      >
-                        <div className="text-2xl font-light">{vol}</div>
-                        <div className="text-sm mt-1">€{calculatePrice(vol).toFixed(2)}</div>
-                      </button>
-                    ))}
-                  </div>
+                  <fieldset>
+                    <legend className="block text-xs text-gold/60 uppercase tracking-wider mb-2">Select Volume *</legend>
+                    <div className="grid grid-cols-2 gap-3">
+                      {(['50ml', '100ml'] as PerfumeVolume[]).map((vol) => (
+                        <button
+                          key={vol}
+                          type="button"
+                          onClick={() => setSelectedVolume(vol)}
+                          aria-pressed={selectedVolume === vol}
+                          className={`p-4 rounded-xl border text-center transition-all ${
+                            selectedVolume === vol ? 'border-gold/50 bg-gold/10 text-gold' : 'border-white/10 bg-white/[0.02] text-gray-400 hover:border-white/20'
+                          }`}
+                        >
+                          <div className="text-2xl font-light">{vol}</div>
+                          <div className="text-sm mt-1">€{calculatePrice(vol).toFixed(2)}</div>
+                        </button>
+                      ))}
+                    </div>
+                  </fieldset>
                 </div>
 
                 <div>
-                  <label className="block text-xs text-gold/60 uppercase tracking-wider mb-2">Special Requests (Optional)</label>
+                  <label htmlFor="special-requests" className="block text-xs text-gold/60 uppercase tracking-wider mb-2">Special Requests (Optional)</label>
                   <textarea
+                    id="special-requests"
                     value={specialRequests}
                     onChange={(e) => setSpecialRequests(e.target.value)}
                     placeholder="Any preferences..."
