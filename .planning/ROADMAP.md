@@ -95,11 +95,18 @@ Plans:
   4. Admin dashboard is responsive — consolidated queries reduce parallel requests from 10 to <5
   5. Bundle is leaner — Three.js removed saves ~600KB, dead code eliminated
 
-**Plans**: TBD
+**Plans**: 6 plans in 1 wave (all parallel)
+
+**Wave Structure:**
+- Wave 1 (parallel): All plans — Database indexes, blog ISR, cart hydration, query optimization, cleanup, accessibility
 
 Plans:
-- [ ] 09-01: TBD
-- [ ] 09-02: TBD
+- [ ] 09-01-PLAN.md — Add database indexes for <200ms query performance
+- [ ] 09-02-PLAN.md — Blog ISR optimization + admin query consolidation
+- [ ] 09-03-PLAN.md — Fix cart hydration race + CartIcon test
+- [ ] 09-04-PLAN.md — Optimize product queries (N+1 + column selection)
+- [ ] 09-05-PLAN.md — Remove Three.js + dead code + category consolidation
+- [ ] 09-06-PLAN.md — Accessibility improvements + magic number extraction
 
 ## Progress
 
@@ -113,7 +120,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 8 → 9
 | 3. Order Confirmation | v1.0 | 2/2 | Complete | 2026-03-01 |
 | 4. Security Hardening | v1.0 | 1/1 | Complete | 2026-03-01 |
 | 8. Security & Data Integrity | v1.1 | 9/9 | Complete | 2026-03-03 |
-| 9. Performance & Polish | v1.1 | 0/TBD | Not started | - |
+| 9. Performance & Polish | v1.1 | 0/6 | Not started | - |
 
 ---
-*Last updated: 2026-03-03 — Phase 8 complete (9/9 plans, 25 commits)*
+*Last updated: 2026-03-03 — Phase 9 planned (6 plans, 1 wave, all parallel)*
