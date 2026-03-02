@@ -2,20 +2,58 @@
 
 import { useEffect, useState } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
+import { formatPrice } from '@/lib/utils'
+
+interface OrderData {
+  orderNumber: string;
+  perfumeName: string;
+  composition: { top: string; heart: string; base: string };
+  volume: string;
+  total: number;
+}
 
 export function SuccessContent() {
   const searchParams = useSearchParams()
   const router = useRouter()
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading')
+  const [orderData, setOrderData] = useState<OrderData | null>(null)
 
   useEffect(() => {
-    const redirectStatus = searchParams.get('redirect_status')
+    const sessionId = searchParams.get('session_id')
 
-    if (redirectStatus === 'succeeded') {
-      setStatus('success')
-    } else {
+    if (!sessionId) {
       setStatus('error')
+      return
     }
+
+    // Fetch session details from API
+    fetch(`/api/checkout/session-details?session_id=${sessionId}`)
+      .then(async (response) => {
+        if (!response.ok) {
+          throw new Error('Failed to fetch session details')
+        }
+        return response.json()
+      })
+      .then((data) => {
+        // Extract custom perfume data from response
+        const item = data.items?.[0]
+        if (item?.composition) {
+          setOrderData({
+            orderNumber: data.orderNumber,
+            perfumeName: item.name.replace('Custom Perfume: ', ''),
+            composition: item.composition,
+            volume: item.size || '50ml',
+            total: data.total / 100, // Convert cents to euros
+          })
+          setStatus('success')
+        } else {
+          setStatus('error')
+        }
+      })
+      .catch((error) => {
+        console.error('Error fetching session details:', error)
+        setStatus('error')
+      })
   }, [searchParams])
 
   return (
@@ -28,17 +66,32 @@ export function SuccessContent() {
           </div>
         )}
 
-        {status === 'success' && (
+        {status === 'success' && orderData && (
           <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-1000">
             <div className="text-6xl">👑</div>
             <div>
               <h1 className="text-3xl text-amber-400 tracking-wider mb-4">MAGNIFICENT</h1>
               <p className="text-gray-400">Your Bespoke Fragrance Is Ready</p>
             </div>
-            <div className="rounded-xl border border-amber-900/30 bg-black/50 p-6">
-              <p className="text-sm text-gray-400 mb-2">ORDER CONFIRMED</p>
-              <p className="text-lg">Thank you for creating with Aquad&apos;or Atelier</p>
-              <p className="mt-4 text-sm text-gray-500">
+            <div className="rounded-xl border border-amber-900/30 bg-black/50 p-6 space-y-4">
+              <div>
+                <p className="text-sm text-gray-400 mb-1">ORDER CONFIRMED</p>
+                <p className="text-2xl text-amber-400 font-semibold">{orderData.orderNumber}</p>
+              </div>
+              <div className="border-t border-amber-900/20 pt-4">
+                <p className="text-xs text-gray-500 uppercase tracking-wider mb-2">Your Creation</p>
+                <p className="text-lg text-white font-medium mb-3">{orderData.perfumeName}</p>
+                <div className="text-sm text-gray-300 space-y-1">
+                  <p><span className="text-amber-400">Top:</span> {orderData.composition.top}</p>
+                  <p><span className="text-amber-400">Heart:</span> {orderData.composition.heart}</p>
+                  <p><span className="text-amber-400">Base:</span> {orderData.composition.base}</p>
+                </div>
+              </div>
+              <div className="border-t border-amber-900/20 pt-4 flex justify-between items-center">
+                <span className="text-sm text-gray-400">Volume: {orderData.volume}</span>
+                <span className="text-xl text-amber-400 font-semibold">{formatPrice(orderData.total)}</span>
+              </div>
+              <p className="text-sm text-gray-500 border-t border-amber-900/20 pt-4">
                 You will receive an email confirmation with your order details shortly.
               </p>
             </div>
