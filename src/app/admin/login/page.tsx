@@ -5,6 +5,11 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import Image from 'next/image';
 
+/** Validate redirect URL to prevent open redirects */
+function isValidRedirect(url: string): boolean {
+  return url.startsWith('/') && !url.startsWith('//');
+}
+
 function LoginForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -12,7 +17,8 @@ function LoginForm() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
-  const redirect = searchParams.get('redirect') || '/admin';
+  const redirectParam = searchParams.get('redirect') || '/admin';
+  const redirect = isValidRedirect(redirectParam) ? redirectParam : '/admin';
   const errorParam = searchParams.get('error');
 
   const handleLogin = async (e: React.FormEvent) => {
