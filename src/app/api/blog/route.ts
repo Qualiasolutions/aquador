@@ -20,15 +20,16 @@ const blogPostSchema = z.object({
 });
 
 export async function GET(request: NextRequest) {
-  const { searchParams } = new URL(request.url);
-  const page = parseInt(searchParams.get('page') || '1');
-  const limit = parseInt(searchParams.get('limit') || '9');
-  const category = searchParams.get('category');
-  const featured = searchParams.get('featured');
-  const statusFilter = searchParams.get('status');
-  const offset = (page - 1) * limit;
+  try {
+    const { searchParams } = new URL(request.url);
+    const page = parseInt(searchParams.get('page') || '1');
+    const limit = parseInt(searchParams.get('limit') || '9');
+    const category = searchParams.get('category');
+    const featured = searchParams.get('featured');
+    const statusFilter = searchParams.get('status');
+    const offset = (page - 1) * limit;
 
-  const supabase = await createClient();
+    const supabase = await createClient();
 
   let query = supabase
     .from('blog_posts')
@@ -72,22 +73,30 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 
-  const response = NextResponse.json({
-    posts: data,
-    total: count,
-    page,
-    totalPages: Math.ceil((count || 0) / limit),
-  });
-  if (statusFilter !== 'all') {
-    response.headers.set('Cache-Control', 'public, s-maxage=600, stale-while-revalidate=86400');
+    const response = NextResponse.json({
+      posts: data,
+      total: count,
+      page,
+      totalPages: Math.ceil((count || 0) / limit),
+    });
+    if (statusFilter !== 'all') {
+      response.headers.set('Cache-Control', 'public, s-maxage=600, stale-while-revalidate=86400');
+    }
+    return response;
+  } catch (error) {
+    console.error('Blog GET error:', error);
+    return NextResponse.json(
+      { error: error instanceof Error ? error.message : 'Internal server error' },
+      { status: 500 }
+    );
   }
-  return response;
 }
 
 export async function POST(request: NextRequest) {
-  const supabase = await createClient();
+  try {
+    const supabase = await createClient();
 
-  const { data: { user } } = await supabase.auth.getUser();
+    const { data: { user } } = await supabase.auth.getUser();
   if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
@@ -125,9 +134,16 @@ export async function POST(request: NextRequest) {
     .select()
     .single();
 
-  if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
-  }
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
 
-  return NextResponse.json(data, { status: 201 });
+    return NextResponse.json(data, { status: 201 });
+  } catch (error) {
+    console.error('Blog POST error:', error);
+    return NextResponse.json(
+      { error: error instanceof Error ? error.message : 'Internal server error' },
+      { status: 500 }
+    );
+  }
 }

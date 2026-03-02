@@ -35,11 +35,12 @@ function validateSetupKey(providedKey: string): boolean {
 
 // POST: Create initial admin user
 export async function POST(request: Request) {
-  if (process.env.ADMIN_SETUP_COMPLETE === 'true') {
-    return NextResponse.json({ error: 'Setup already completed' }, { status: 403 });
-  }
+  try {
+    if (process.env.ADMIN_SETUP_COMPLETE === 'true') {
+      return NextResponse.json({ error: 'Setup already completed' }, { status: 403 });
+    }
 
-  const body = await request.json();
+    const body = await request.json();
   const parsed = SetupSchema.safeParse(body);
   if (!parsed.success) {
     return NextResponse.json({ error: parsed.error.flatten().fieldErrors }, { status: 400 });
@@ -90,20 +91,28 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Failed to add admin role: ' + insertError.message }, { status: 500 });
   }
 
-  return NextResponse.json({
-    success: true,
-    message: 'Admin user created successfully',
-    email
-  });
+    return NextResponse.json({
+      success: true,
+      message: 'Admin user created successfully',
+      email
+    });
+  } catch (error) {
+    console.error('Admin setup error:', error);
+    return NextResponse.json(
+      { error: error instanceof Error ? error.message : 'Internal server error' },
+      { status: 500 }
+    );
+  }
 }
 
 // PUT: Update existing admin password
 export async function PUT(request: Request) {
-  if (process.env.ADMIN_SETUP_COMPLETE === 'true') {
-    return NextResponse.json({ error: 'Setup already completed' }, { status: 403 });
-  }
+  try {
+    if (process.env.ADMIN_SETUP_COMPLETE === 'true') {
+      return NextResponse.json({ error: 'Setup already completed' }, { status: 403 });
+    }
 
-  const body = await request.json();
+    const body = await request.json();
   const parsed = SetupSchema.safeParse(body);
   if (!parsed.success) {
     return NextResponse.json({ error: parsed.error.flatten().fieldErrors }, { status: 400 });
@@ -137,9 +146,16 @@ export async function PUT(request: Request) {
     return NextResponse.json({ error: 'Failed to update password: ' + updateError.message }, { status: 500 });
   }
 
-  return NextResponse.json({
-    success: true,
-    message: 'Password updated successfully',
-    email
-  });
+    return NextResponse.json({
+      success: true,
+      message: 'Password updated successfully',
+      email
+    });
+  } catch (error) {
+    console.error('Admin password update error:', error);
+    return NextResponse.json(
+      { error: error instanceof Error ? error.message : 'Internal server error' },
+      { status: 500 }
+    );
+  }
 }

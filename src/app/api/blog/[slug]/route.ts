@@ -24,32 +24,41 @@ export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ slug: string }> }
 ) {
-  const { slug } = await params;
-  const supabase = await createClient();
+  try {
+    const { slug } = await params;
+    const supabase = await createClient();
 
-  const { data, error } = await supabase
-    .from('blog_posts')
-    .select('*')
-    .eq('slug', slug)
-    .single();
+    const { data, error } = await supabase
+      .from('blog_posts')
+      .select('*')
+      .eq('slug', slug)
+      .single();
 
-  if (error || !data) {
-    return NextResponse.json({ error: 'Post not found' }, { status: 404 });
+    if (error || !data) {
+      return NextResponse.json({ error: 'Post not found' }, { status: 404 });
+    }
+
+    const response = NextResponse.json(data);
+    response.headers.set('Cache-Control', 'public, s-maxage=600, stale-while-revalidate=86400');
+    return response;
+  } catch (error) {
+    console.error('Blog slug GET error:', error);
+    return NextResponse.json(
+      { error: error instanceof Error ? error.message : 'Internal server error' },
+      { status: 500 }
+    );
   }
-
-  const response = NextResponse.json(data);
-  response.headers.set('Cache-Control', 'public, s-maxage=600, stale-while-revalidate=86400');
-  return response;
 }
 
 export async function PUT(
   request: NextRequest,
   { params }: { params: Promise<{ slug: string }> }
 ) {
-  const { slug } = await params;
-  const supabase = await createClient();
+  try {
+    const { slug } = await params;
+    const supabase = await createClient();
 
-  const { data: { user } } = await supabase.auth.getUser();
+    const { data: { user } } = await supabase.auth.getUser();
   if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
@@ -87,21 +96,29 @@ export async function PUT(
     .select()
     .single();
 
-  if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
-  }
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
 
-  return NextResponse.json(data);
+    return NextResponse.json(data);
+  } catch (error) {
+    console.error('Blog slug PUT error:', error);
+    return NextResponse.json(
+      { error: error instanceof Error ? error.message : 'Internal server error' },
+      { status: 500 }
+    );
+  }
 }
 
 export async function DELETE(
   request: NextRequest,
   { params }: { params: Promise<{ slug: string }> }
 ) {
-  const { slug } = await params;
-  const supabase = await createClient();
+  try {
+    const { slug } = await params;
+    const supabase = await createClient();
 
-  const { data: { user } } = await supabase.auth.getUser();
+    const { data: { user } } = await supabase.auth.getUser();
   if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
@@ -121,9 +138,16 @@ export async function DELETE(
     .delete()
     .eq('slug', slug);
 
-  if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
-  }
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
 
-  return NextResponse.json({ success: true });
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error('Blog slug DELETE error:', error);
+    return NextResponse.json(
+      { error: error instanceof Error ? error.message : 'Internal server error' },
+      { status: 500 }
+    );
+  }
 }

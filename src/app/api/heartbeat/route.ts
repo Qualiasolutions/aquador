@@ -55,7 +55,11 @@ export async function POST(request: NextRequest) {
     await supabase.from('site_visitors').delete().lt('last_seen', cutoff);
 
     return NextResponse.json({ ok: true });
-  } catch {
-    return NextResponse.json({ error: 'Server error' }, { status: 500 });
+  } catch (error) {
+    console.error('Heartbeat error:', error);
+    return NextResponse.json(
+      { error: error instanceof Error ? error.message : 'Internal server error' },
+      { status: 500 }
+    );
   }
 }
