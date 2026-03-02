@@ -5,6 +5,7 @@ import { fetchWithTimeout } from '@/lib/api-utils';
 import { formatPrice, escapeHtml } from '@/lib/utils';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { getStripe } from '@/lib/stripe';
+import { getProductById } from '@/lib/product-service';
 
 interface OrderItem {
   name: string;
@@ -401,15 +402,32 @@ export async function POST(request: NextRequest) {
       const metadata = session.metadata || {};
 
       if (metadata.items) {
-        // Standard cart checkout — items stored as JSON array
+        // Standard cart checkout — parse shortened metadata (pid, vid, qty)
+        // Reconstruct full item details from product catalog
         try {
-          items = JSON.parse(metadata.items);
+          const shortItems = JSON.parse(metadata.items) as Array<{
+            pid: string;
+            vid: string;
+            qty: number;
+          }>;
+
+          for (const shortItem of shortItems) {
+            const product = getProductById(shortItem.pid);
+            if (product) {
+              items.push({
+                name: product.name,
+                quantity: shortItem.qty,
+                price: product.salePrice || product.price,
+                productType: product.type,
+              });
+            }
+          }
         } catch (parseError) {
           Sentry.captureException(parseError, {
-            tags: { action: 'parse_order_items' },
+            tags: { action: 'parse_cart_items' },
             extra: { sessionId: session.id },
           });
-          console.error('Failed to parse order items:', parseError);
+          console.error('Failed to parse cart items metadata:', parseError);
         }
       } else if (metadata.productType === 'custom-perfume') {
         // Custom perfume checkout — reconstruct item from individual metadata fields
