@@ -1,0 +1,173 @@
+import { NextRequest, NextResponse } from 'next/server';
+import * as Sentry from '@sentry/nextjs';
+import { formatApiError } from '@/lib/api-utils';
+import { checkRateLimit } from '@/lib/rate-limit';
+import { getStripe } from '@/lib/stripe';
+import { getProductById } from '@/lib/product-service';
+
+interface OrderItem {
+  name: string;
+  quantity: number;
+  price: number;
+  size?: string;
+  composition?: {
+    top: string;
+    heart: string;
+    base: string;
+  };
+}
+
+interface SessionDetailsResponse {
+  sessionId: string;
+  orderNumber: string;
+  items: OrderItem[];
+  total: number;
+  currency: string;
+  shippingAddress?: {
+    name?: string;
+    address?: {
+      line1?: string;
+      line2?: string;
+      city?: string;
+      postal_code?: string;
+      country?: string;
+    };
+  } | null;
+  createdAt: number;
+}
+
+export async function GET(request: NextRequest) {
+  // Check rate limit
+  const rateLimitResponse = await checkRateLimit(request, 'session-details');
+  if (rateLimitResponse) return rateLimitResponse;
+
+  try {
+    const searchParams = request.nextUrl.searchParams;
+    const sessionId = searchParams.get('session_id');
+
+    if (!sessionId) {
+      return NextResponse.json(
+        { error: 'Missing session_id parameter' },
+        { status: 400 }
+      );
+    }
+
+    const stripe = getStripe();
+
+    // Retrieve session with expanded line_items
+    let session;
+    try {
+      session = await stripe.checkout.sessions.retrieve(sessionId, {
+        expand: ['line_items'],
+      });
+    } catch (error) {
+      // Session not found or invalid
+      Sentry.captureException(error, {
+        tags: { action: 'retrieve_session' },
+        extra: { sessionId },
+      });
+      return NextResponse.json(
+        { error: 'Session not found' },
+        { status: 404 }
+      );
+    }
+
+    // SECURITY: Only return data for completed sessions
+    if (session.payment_status !== 'paid') {
+      return NextResponse.json(
+        { error: 'Session payment not completed' },
+        { status: 403 }
+      );
+    }
+
+    // Parse items from metadata
+    const metadata = session.metadata || {};
+    const items: OrderItem[] = [];
+
+    if (metadata.items) {
+      // Standard cart checkout — parse shortened metadata (pid, vid, qty)
+      // Reconstruct full item details from product catalog
+      try {
+        const shortItems = JSON.parse(metadata.items) as Array<{
+          pid: string;
+          vid: string;
+          qty: number;
+        }>;
+
+        for (const shortItem of shortItems) {
+          const product = getProductById(shortItem.pid);
+          if (product) {
+            items.push({
+              name: product.name,
+              quantity: shortItem.qty,
+              price: product.salePrice || product.price,
+              size: product.size,
+            });
+          }
+        }
+      } catch (parseError) {
+        Sentry.captureException(parseError, {
+          tags: { action: 'parse_cart_items' },
+          extra: { sessionId },
+        });
+        console.error('Failed to parse cart items metadata:', parseError);
+      }
+    } else if (metadata.productType === 'custom-perfume') {
+      // Custom perfume checkout — build item from metadata fields
+      const volume = metadata.volume || '50ml';
+      const price = volume === '100ml' ? 199.00 : 29.99;
+
+      items.push({
+        name: `Custom Perfume: ${metadata.perfumeName || 'Unnamed'}`,
+        quantity: 1,
+        price,
+        size: volume,
+        composition: {
+          top: metadata.topNote || 'Unknown',
+          heart: metadata.heartNote || 'Unknown',
+          base: metadata.baseNote || 'Unknown',
+        },
+      });
+    }
+
+    // Extract shipping address
+    const shippingDetails = session.collected_information?.shipping_details;
+    const shippingAddress = shippingDetails
+      ? {
+          name: shippingDetails.name ?? undefined,
+          address: shippingDetails.address
+            ? {
+                line1: shippingDetails.address.line1 ?? undefined,
+                line2: shippingDetails.address.line2 ?? undefined,
+                city: shippingDetails.address.city ?? undefined,
+                postal_code: shippingDetails.address.postal_code ?? undefined,
+                country: shippingDetails.address.country ?? undefined,
+              }
+            : undefined,
+        }
+      : null;
+
+    // Generate order number from session ID (last 8 chars uppercase)
+    const orderNumber = session.id.slice(-8).toUpperCase();
+
+    const response: SessionDetailsResponse = {
+      sessionId: session.id,
+      orderNumber: `#${orderNumber}`,
+      items,
+      total: session.amount_total || 0,
+      currency: session.currency || 'eur',
+      shippingAddress,
+      createdAt: session.created,
+    };
+
+    return NextResponse.json(response);
+  } catch (error) {
+    Sentry.captureException(error, {
+      tags: { route: 'session-details' },
+    });
+    console.error('Session details error:', error);
+
+    const errorResponse = formatApiError(error, 'Failed to retrieve session details');
+    return NextResponse.json(errorResponse, { status: 500 });
+  }
+}
