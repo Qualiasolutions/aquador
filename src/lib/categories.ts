@@ -1,15 +1,37 @@
 /**
- * Static category definitions for homepage display.
+ * ========================================================================
+ * SINGLE SOURCE OF TRUTH: Category Definitions for Homepage Display
+ * ========================================================================
  *
- * NOTE: This is intentionally separate from the `product_categories` DB table
- * (managed via admin panel) and the `product_category` DB enum (used by products).
+ * This file defines the canonical list of product categories displayed on
+ * the homepage. These categories are intentionally hardcoded for performance
+ * and design consistency.
  *
- * - This file: Homepage category cards with curated images
- * - DB table `product_categories`: Admin-managed category metadata
- * - DB enum `product_category`: Allowed values for products.category column
+ * CATEGORY SYSTEM ARCHITECTURE:
  *
- * To add a new category to the homepage, add it here AND ensure it exists
- * as a DB enum value and in the product_categories table.
+ * 1. **This file (categories.ts)**: Homepage category cards
+ *    - Purpose: Static category list with curated images and descriptions
+ *    - Used by: Homepage, shop navigation
+ *    - Source of truth for: UI presentation
+ *
+ * 2. **DB table `product_categories`**: Admin-managed category metadata
+ *    - Purpose: Admin panel category management (CRUD operations)
+ *    - Used by: /admin/categories page, ProductForm dropdown
+ *    - NOT used by: Product categorization (products don't reference this table)
+ *    - Status: Active but functionally redundant with enum
+ *
+ * 3. **DB enum `product_category`**: Actual product categorization
+ *    - Purpose: Enforces allowed values for products.category column
+ *    - Used by: products table, product queries, filtering
+ *    - Source of truth for: Product categorization in database
+ *
+ * ADDING NEW CATEGORIES:
+ * 1. Add to this file for homepage display
+ * 2. Update `product_category` enum in database migration
+ * 3. Optionally add to `product_categories` table if using admin panel
+ *
+ * NOTE: The product_categories table is NOT required for products to work.
+ * Products reference the enum directly. The table exists solely for admin UI.
  */
 import type { Category } from '@/types';
 
