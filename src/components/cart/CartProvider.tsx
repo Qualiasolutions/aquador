@@ -1,6 +1,7 @@
 'use client';
 
 import { createContext, useContext, useReducer, useEffect, useState, useCallback, useRef, type ReactNode } from 'react';
+import { z } from 'zod';
 import * as Sentry from '@sentry/nextjs';
 import type { Cart, CartItem, CartAction, CartContextType } from '@/types/cart';
 import { calculateSubtotal } from '@/lib/currency';
@@ -10,6 +11,22 @@ const CART_STORAGE_KEY = 'aquador_cart';
 const initialCart: Cart = {
   items: [],
 };
+
+// Zod schema for cart validation
+const CartItemSchema = z.object({
+  productId: z.string(),
+  variantId: z.string(),
+  quantity: z.number().int().positive(),
+  name: z.string(),
+  image: z.string(),
+  price: z.number().nonnegative(),
+  size: z.enum(['10ml', '50ml', '100ml', '150ml']),
+  productType: z.enum(['perfume', 'essence-oil', 'body-lotion']),
+});
+
+const CartSchema = z.object({
+  items: z.array(CartItemSchema),
+});
 
 function cartReducer(state: Cart, action: CartAction): Cart {
   switch (action.type) {
@@ -80,18 +97,37 @@ export function CartProvider({ children }: { children: ReactNode }) {
     try {
       const stored = localStorage.getItem(CART_STORAGE_KEY);
       if (stored) {
-        const parsed = JSON.parse(stored) as Cart;
-        if (parsed.items && Array.isArray(parsed.items)) {
-          dispatch({ type: 'HYDRATE', payload: parsed });
+        const parsed = JSON.parse(stored);
+
+        // Validate cart data with Zod schema
+        const validation = CartSchema.safeParse(parsed);
+
+        if (validation.success) {
+          // Valid cart data - hydrate
+          dispatch({ type: 'HYDRATE', payload: validation.data });
+        } else {
+          // Invalid cart data - log to Sentry and clear localStorage
+          Sentry.captureException(new Error('Invalid cart data in localStorage'), {
+            contexts: {
+              cart: {
+                validationErrors: validation.error.issues,
+                rawData: parsed,
+              },
+            },
+          });
+          localStorage.removeItem(CART_STORAGE_KEY);
         }
       }
     } catch (error) {
-      Sentry.addBreadcrumb({
-        category: 'cart-provider',
-        message: 'Failed to hydrate cart',
-        level: 'error',
-        data: { error }
+      // JSON parse error - log to Sentry and clear localStorage
+      Sentry.captureException(error, {
+        contexts: {
+          cart: {
+            message: 'Failed to parse cart from localStorage',
+          },
+        },
       });
+      localStorage.removeItem(CART_STORAGE_KEY);
     }
     setIsHydrated(true);
   }, []);
