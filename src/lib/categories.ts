@@ -1,3 +1,16 @@
+/**
+ * Static category definitions for homepage display.
+ *
+ * NOTE: This is intentionally separate from the `product_categories` DB table
+ * (managed via admin panel) and the `product_category` DB enum (used by products).
+ *
+ * - This file: Homepage category cards with curated images
+ * - DB table `product_categories`: Admin-managed category metadata
+ * - DB enum `product_category`: Allowed values for products.category column
+ *
+ * To add a new category to the homepage, add it here AND ensure it exists
+ * as a DB enum value and in the product_categories table.
+ */
 import type { Category } from '@/types';
 
 export const categories: Category[] = [
