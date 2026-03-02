@@ -1,200 +1,107 @@
-# Roadmap: Critical Security Vulnerabilities Milestone
+# Roadmap: Aquad'or Security Audit Remediation
 
-## Project Timeline: 4 Parallel Phases
-**Approach**: Aggressive security overhaul - attack critical issues simultaneously
-**Scope**: Eliminate all CRITICAL and HIGH priority vulnerabilities immediately
+## Milestones
 
----
+- ✅ **v1.0 Order/Payment System Fix** - Phases 1-4 (shipped 2026-03-01)
+- 🚧 **v1.1 Security Audit Remediation** - Phases 8-9 (in progress)
 
-## Phase 4: Admin API Security (CRITICAL - Start Immediately)
-**Goal**: Eliminate unprotected admin API routes
+## Phases
 
-### Tasks
-1. **Fix `/api/admin/orders` Auth Bypass**
-   - File: `src/app/api/admin/orders/route.ts`
-   - Add direct auth check in route handler (middleware doesn't cover `/api/admin/*`)
-   - Check user exists in `admin_users` table
-   - Return proper 401/403 responses
+<details>
+<summary>✅ v1.0 Order/Payment System Fix (Phases 1-4) - SHIPPED 2026-03-01</summary>
 
-2. **Audit All Admin Routes**
-   - Scan for any other `/api/admin/*` routes
-   - Verify middleware pattern covers actual routes
-   - Add auth checks to any unprotected admin endpoints
+### Phase 1: Foundation
+**Goal**: Set up project structure and core checkout API
+**Plans**: 2 plans
 
-3. **Test Auth Bypass Prevention**
-   - Manual testing of unauthorized access
-   - Unit tests for auth failure scenarios
-   - Verify admin table membership checking
+Plans:
+- [x] 01-01: Core checkout API implementation
+- [x] 01-02: Stripe webhook event handling
 
-### Exit Criteria
-- Zero unprotected admin API routes
-- 401/403 responses for unauthorized requests
-- Test coverage for auth bypass scenarios
+### Phase 2: Payment Processing
+**Goal**: Secure payment flow with validation and error handling
+**Plans**: 2 plans
 
-### **Duration**: 1-2 hours (URGENT)
+Plans:
+- [x] 02-01: Server-side price validation
+- [x] 02-02: Custom perfume payment flow
 
----
+### Phase 3: Order Confirmation
+**Goal**: Reliable order confirmation with email delivery
+**Plans**: 2 plans
 
-## Phase 5: RLS Verification & Implementation (CRITICAL - Start in Parallel)
-**Goal**: Ensure all database tables have proper Row Level Security
+Plans:
+- [x] 03-01: Success page enhancement
+- [x] 03-02: Email notification system
 
-### Tasks
-1. **Export Current Database Schema**
-   - Export full schema from Supabase dashboard
-   - Commit schema to version control for audit trail
-   - Document current RLS status per table
+### Phase 4: Security Hardening
+**Goal**: Production-ready security measures
+**Plans**: 1 plan
 
-2. **Verify RLS on All Tables**
-   - Check `products`, `orders`, `customers`, `admin_users`, `blog_posts`
-   - Identify tables missing RLS policies
-   - Document risk level per missing policy
+Plans:
+- [x] 04-01: Security audit fixes
 
-3. **Implement Missing RLS Policies**
-   - Create appropriate policies for each table
-   - Test policies don't break existing functionality
-   - Verify unauthorized access is blocked
+</details>
 
-4. **RLS Policy Documentation**
-   - Document all policies created
-   - Include policy rationale and access patterns
-   - Create RLS testing checklist
+### 🚧 v1.1 Security Audit Remediation (In Progress)
 
-### Exit Criteria
-- All tables have RLS enabled with appropriate policies
-- Database schema documented in version control
-- RLS tested with different user roles
-- No unauthorized data access possible
+**Milestone Goal:** Eliminate all CRITICAL and HIGH security vulnerabilities, optimize database performance, and prepare for production scale.
 
-### **Duration**: 2-3 hours
+#### Phase 8: Security & Data Integrity
 
----
+**Goal**: Eliminate all CRITICAL and HIGH security vulnerabilities, fix GDPR compliance, and add critical test coverage
 
-## Phase 6: Bundle Optimization (HIGH - Start After Security)
-**Goal**: Remove 9,067-line static products catalog
+**Depends on**: Phase 4
 
-### Tasks
-1. **Analyze Static Product Usage**
-   - Map all imports of `src/lib/products.ts`
-   - Identify which functions are actually used
-   - Plan migration path to Supabase queries
+**Requirements**: SEC-01, SEC-02, SEC-03, SEC-04, SEC-05, SEC-06, SEC-07, TEST-01, TEST-02, ARCH-01, ARCH-02, ARCH-03, ARCH-04, PROD-01 (14 requirements)
 
-2. **Migrate Product Listing Pages**
-   - Update shop pages to use `product-service.ts`
-   - Replace static product data with database queries
-   - Ensure pagination and filtering work
+**Success Criteria** (what must be TRUE):
+  1. All Supabase tables enforce Row Level Security — anonymous users cannot read orders, customers, admin data
+  2. Sentry respects GDPR — no customer PII (IPs, emails, cookies) sent to third-party monitoring
+  3. Admin surfaces are attack-resistant — SQL injection via search and open redirect via login both fail
+  4. Stripe webhook handles edge cases gracefully — duplicate events, malformed payloads, and failures do not crash or leak data
+  5. Type system is unified — shop pages use consistent Supabase Product types, no legacy type confusion
 
-3. **Update AI Assistant Catalog**
-   - Migrate `src/lib/ai/catalogue-data.ts` to use Supabase
-   - Update AI product recommendations to query database
-   - Test AI assistant with live data
+**Plans**: TBD
 
-4. **Remove Static Products File**
-   - Delete `src/lib/products.ts` completely
-   - Update all imports to use Supabase service
-   - Verify no broken imports remain
+Plans:
+- [ ] 08-01: TBD
+- [ ] 08-02: TBD
 
-5. **Performance Testing**
-   - Measure bundle size reduction
-   - Test page load performance
-   - Ensure database queries are fast enough
+#### Phase 9: Performance & Polish
 
-### Exit Criteria
-- `src/lib/products.ts` file completely removed
-- Bundle size reduced by 200-400KB
-- All functionality preserved
-- Performance maintained or improved
+**Goal**: Optimize database performance, fix rendering issues, and clean up technical debt
 
-### **Duration**: 3-4 hours
+**Depends on**: Phase 8
+
+**Requirements**: TEST-03, ARCH-05, ARCH-06, PERF-01, PERF-02, PERF-03, PERF-04, PERF-05, PERF-06, PROD-02, PROD-03, CLEAN-01, CLEAN-02, CLEAN-03, CLEAN-04 (15 requirements)
+
+**Success Criteria** (what must be TRUE):
+  1. Database queries are indexed — category browsing, blog loading, and order lookups respond in <200ms
+  2. Blog pages are statically rendered — no forced dynamic rendering, proper ISR/caching in place
+  3. Shopping cart renders consistently — no hydration mismatches or loading flicker on page load
+  4. Admin dashboard is responsive — consolidated queries reduce parallel requests from 10 to <5
+  5. Bundle is leaner — Three.js removed saves ~600KB, dead code eliminated
+
+**Plans**: TBD
+
+Plans:
+- [ ] 09-01: TBD
+- [ ] 09-02: TBD
+
+## Progress
+
+**Execution Order:**
+Phases execute in numeric order: 1 → 2 → 3 → 4 → 8 → 9
+
+| Phase | Milestone | Plans Complete | Status | Completed |
+|-------|-----------|----------------|--------|-----------|
+| 1. Foundation | v1.0 | 2/2 | Complete | 2026-02-28 |
+| 2. Payment Processing | v1.0 | 2/2 | Complete | 2026-02-28 |
+| 3. Order Confirmation | v1.0 | 2/2 | Complete | 2026-03-01 |
+| 4. Security Hardening | v1.0 | 1/1 | Complete | 2026-03-01 |
+| 8. Security & Data Integrity | v1.1 | 0/TBD | Not started | - |
+| 9. Performance & Polish | v1.1 | 0/TBD | Not started | - |
 
 ---
-
-## Phase 7: Comprehensive Input Validation (MEDIUM - Final Phase)
-**Goal**: Add Zod validation to all API routes
-
-### Tasks
-1. **Create Zod Schemas for Critical Routes**
-   - `/api/checkout` - cart items, customer data validation
-   - `/api/create-perfume/payment` - perfume composition validation
-   - `/api/admin/orders` - order data validation
-   - `/api/blog` POST/PUT - content validation
-
-2. **Add Validation to All API Routes**
-   - `/api/ai-assistant` - message validation
-   - `/api/heartbeat` - visitor data validation
-   - `/api/contact` - already has Zod (verify completeness)
-   - Any remaining routes accepting user input
-
-3. **Improve Error Responses**
-   - Field-specific validation error messages
-   - Consistent error response format
-   - User-friendly error messages
-
-4. **Production Logging Cleanup**
-   - Replace 10 console.log statements with Sentry
-   - Structured logging with appropriate levels
-   - Remove any PII from logs
-
-### Exit Criteria
-- All API routes have Zod input validation
-- Consistent error response format
-- No console.log in production code
-- Structured logging via Sentry
-
-### **Duration**: 2-3 hours
-
----
-
-## Execution Strategy
-
-### **Parallel Execution**
-- **Phase 4 & 5**: Start IMMEDIATELY in parallel (both CRITICAL)
-- **Phase 6**: Start after Phase 4 complete (independent of Phase 5)
-- **Phase 7**: Start after Phases 4 & 5 complete
-
-### **Quality Gates per Phase**
-1. `npx tsc --noEmit` clean
-2. `npm run build` successful
-3. Existing tests still pass
-4. Manual security testing
-5. Atomic commits with clear messages
-
-### **Risk Management**
-- Each fix tested immediately before next change
-- Feature branches for major changes (bundle optimization)
-- Rollback plan for each atomic commit
-- No breaking changes to user-facing functionality
-
----
-
-## Overall Timeline
-
-**Total Estimated Duration**: 8-10 hours
-- **Critical fixes** (Phases 4 & 5): 3-5 hours
-- **High priority** (Phase 6): 3-4 hours
-- **Medium priority** (Phase 7): 2-3 hours
-
-**Approach**: Aggressive but safe - rapid security fixes with thorough testing
-
----
-
-## Final Verification Gate
-
-### Security Verification
-- [ ] Manual testing of all admin routes (unauthorized access blocked)
-- [ ] RLS policies tested with different user roles
-- [ ] No hardcoded secrets or PII in logs
-- [ ] Input validation tested on all API routes
-
-### Technical Verification
-- [ ] `npx tsc --noEmit` passes clean
-- [ ] `npm run build` successful with reduced bundle
-- [ ] All E2E tests still pass
-- [ ] Performance maintained or improved
-
-### Business Verification
-- [ ] All existing functionality preserved
-- [ ] No breaking changes to user experience
-- [ ] Admin panel still functional
-- [ ] Checkout flow still works
-
-**Target Security Grade**: B → A+ (comprehensive security overhaul)
+*Last updated: 2026-03-02 — v1.1 milestone roadmap created*
