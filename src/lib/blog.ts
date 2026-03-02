@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/server';
+import { createPublicClient } from '@/lib/supabase/public';
 import type { BlogPost, BlogCategory, BlogListParams } from './blog-types';
 
 // Re-export types and utilities for convenience
@@ -7,7 +7,7 @@ export { formatBlogDate, generateSlug, estimateReadTime } from './blog-types';
 
 export async function getBlogPosts(params: BlogListParams = {}) {
   const { page = 1, limit = 9, category, featured, status = 'published' } = params;
-  const supabase = await createClient();
+  const supabase = createPublicClient();
   const offset = (page - 1) * limit;
 
   let query = supabase
@@ -39,7 +39,7 @@ export async function getBlogPosts(params: BlogListParams = {}) {
 }
 
 export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> {
-  const supabase = await createClient();
+  const supabase = createPublicClient();
 
   const { data, error } = await supabase
     .from('blog_posts')
@@ -53,7 +53,7 @@ export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> 
 }
 
 export async function getFeaturedPost(): Promise<BlogPost | null> {
-  const supabase = await createClient();
+  const supabase = createPublicClient();
 
   const { data, error } = await supabase
     .from('blog_posts')
@@ -69,7 +69,7 @@ export async function getFeaturedPost(): Promise<BlogPost | null> {
 }
 
 export async function getRelatedPosts(category: string, excludeSlug: string, limit = 3): Promise<BlogPost[]> {
-  const supabase = await createClient();
+  const supabase = createPublicClient();
 
   const { data, error } = await supabase
     .from('blog_posts')
@@ -85,7 +85,7 @@ export async function getRelatedPosts(category: string, excludeSlug: string, lim
 }
 
 export async function getBlogCategories(): Promise<BlogCategory[]> {
-  const supabase = await createClient();
+  const supabase = createPublicClient();
 
   const { data, error } = await supabase
     .from('blog_categories')
