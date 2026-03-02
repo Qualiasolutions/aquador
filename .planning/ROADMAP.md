@@ -57,11 +57,11 @@ Plans:
   2. All checkout pages say "Free shipping" (no conditional "over €100" language)
   3. Both checkout flows show identical delivery estimate (3-7 business days)
   4. Codebase has no duplicate `escapeHtml` or shipping countries implementations
-**Plans**: TBD
+**Plans**: 2 plans in 1 wave
 
 Plans:
-- [ ] 03-01: Admin search security and code deduplication
-- [ ] 03-02: Shipping messaging standardization
+- [ ] 03-01-PLAN.md — Admin search security and code deduplication
+- [ ] 03-02-PLAN.md — Shipping messaging standardization
 
 ## Progress
 
