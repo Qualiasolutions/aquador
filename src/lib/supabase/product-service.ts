@@ -11,12 +11,15 @@ function escapePostgrestQuery(query: string): string {
   return query.replace(/[%_\\*()[\]!,]/g, '\\$&');
 }
 
+/** Explicit column selection for product queries (avoids select(*) overhead) */
+const PRODUCT_COLUMNS = 'id, name, description, price, sale_price, image, images, category, product_type, gender, brand, size, tags, in_stock, is_active, created_at, updated_at' as const;
+
 // Get all products from Supabase (public-facing, filters inactive)
 export async function getAllProducts(): Promise<Product[]> {
   const supabase = createPublicClient();
   const { data, error } = await supabase
     .from('products')
-    .select('*')
+    .select(PRODUCT_COLUMNS)
     .eq('is_active', true)
     .order('created_at', { ascending: false });
 
@@ -33,7 +36,7 @@ export async function getProductById(id: string): Promise<Product | null> {
   const supabase = createPublicClient();
   const { data, error } = await supabase
     .from('products')
-    .select('*')
+    .select(PRODUCT_COLUMNS)
     .eq('id', id)
     .eq('is_active', true)
     .maybeSingle();
@@ -53,7 +56,7 @@ export async function getProductsByIds(ids: string[]): Promise<Product[]> {
   const supabase = createPublicClient();
   const { data, error } = await supabase
     .from('products')
-    .select('*')
+    .select(PRODUCT_COLUMNS)
     .in('id', ids);
 
   if (error) {
@@ -74,7 +77,7 @@ export async function getProductsByCategory(category: string): Promise<Product[]
   const supabase = createPublicClient();
   const { data, error } = await supabase
     .from('products')
-    .select('*')
+    .select(PRODUCT_COLUMNS)
     .eq('category', category as ProductCategory)
     .eq('is_active', true)
     .order('created_at', { ascending: false });
@@ -92,7 +95,7 @@ export async function getFeaturedProducts(count: number = 6): Promise<Product[]>
   const supabase = createPublicClient();
   const { data, error } = await supabase
     .from('products')
-    .select('*')
+    .select(PRODUCT_COLUMNS)
     .eq('in_stock', true)
     .eq('is_active', true)
     .order('created_at', { ascending: false })
@@ -122,21 +125,23 @@ export async function getAllProductSlugs(): Promise<string[]> {
 }
 
 // Get related products (same category, excluding current, active only)
-export async function getRelatedProducts(productId: string, count: number = 4): Promise<Product[]> {
-  const product = await getProductById(productId);
-  if (!product) return [];
-
+// Requires category parameter to avoid N+1 query (caller must pass product.category)
+export async function getRelatedProducts(
+  productId: string,
+  category: ProductCategory,
+  count: number = 4
+): Promise<Product[]> {
   const supabase = createPublicClient();
   const { data, error } = await supabase
     .from('products')
-    .select('*')
-    .eq('category', product.category)
+    .select(PRODUCT_COLUMNS)
+    .eq('category', category)
     .eq('is_active', true)
     .neq('id', productId)
     .limit(count);
 
   if (error) {
-    Sentry.addBreadcrumb({ category: 'product-service', message: 'Error fetching related products', level: 'error', data: { error, productId } });
+    Sentry.addBreadcrumb({ category: 'product-service', message: 'Error fetching related products', level: 'error', data: { error, productId, category } });
     return [];
   }
 
@@ -149,7 +154,7 @@ export async function searchProducts(query: string): Promise<Product[]> {
   const escaped = escapePostgrestQuery(query);
   const { data, error } = await supabase
     .from('products')
-    .select('*')
+    .select(PRODUCT_COLUMNS)
     .eq('is_active', true)
     .or(`name.ilike.%${escaped}%,description.ilike.%${escaped}%,brand.ilike.%${escaped}%`)
     .order('created_at', { ascending: false });

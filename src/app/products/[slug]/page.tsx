@@ -76,7 +76,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
     notFound();
   }
 
-  const relatedProductsData = await getRelatedProducts(product.id);
+  const relatedProductsData = await getRelatedProducts(product.id, product.category);
 
   // Transform Supabase product to match expected interface
   const transformedProduct = {
