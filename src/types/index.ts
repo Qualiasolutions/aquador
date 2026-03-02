@@ -2,17 +2,8 @@
 export * from './cart';
 export * from './order';
 
-// Re-export product types with renamed exports to avoid conflicts
-export {
-  type ProductType,
-  type ProductSize,
-  type ProductCategory,
-  type ProductVariant,
-  type Product as CatalogProduct,
-  type Category as CatalogCategory,
-  getDefaultVariant,
-  getVariantLabel,
-} from './product';
+// Re-export product types
+export { type ProductType, type ProductSize } from './product';
 
 // Gender type for Lattafa products
 export type ProductGender = 'men' | 'women' | 'unisex';
