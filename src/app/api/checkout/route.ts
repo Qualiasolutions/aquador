@@ -99,15 +99,15 @@ export async function POST(request: NextRequest) {
           },
         },
       ],
+      // Store minimal metadata (Stripe 500-char limit per key)
+      // pid=productId, vid=variantId, qty=quantity
+      // Webhook reconstructs full data from these identifiers (SEC-04)
       metadata: {
         itemCount: items.length.toString(),
         items: JSON.stringify(items.map(i => ({
-          productId: i.productId,
-          variantId: i.variantId,
-          name: i.name,
-          quantity: i.quantity,
-          price: i.price,
-          productType: i.productType,
+          pid: i.productId,
+          vid: i.variantId,
+          qty: i.quantity,
         }))),
       },
     });
