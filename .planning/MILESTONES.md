@@ -1,4 +1,32 @@
-# Milestones
+# Project Milestones: Aquad'or
+
+## v1.1 Security Audit Remediation (Shipped: 2026-03-03)
+
+**Delivered:** Eliminated all critical and high security vulnerabilities, expanded test coverage to 74 API tests across 6 routes, optimized database queries, reduced bundle by ~600KB, and hardened production configuration.
+
+**Phases completed:** 8-9 (15 plans total)
+
+**Key accomplishments:**
+
+- RLS enabled on all 9 Supabase tables with 24 granular access control policies
+- GDPR-compliant Sentry — PII transmission disabled, trace sampling optimized
+- SQL injection and open redirect vulnerabilities eliminated in admin panel
+- 74 API tests across 6 routes including 21-test Stripe webhook suite
+- ~600KB bundle reduction — Three.js removed, CSS-only backgrounds
+- Database indexes, blog ISR, N+1 elimination, cart hydration fix, consistent error handling
+
+**Stats:**
+
+- 77 files created/modified
+- 9,107 lines added, 607 deleted (22,007 LOC total)
+- 2 phases, 15 plans, 53 commits
+- 1 day (March 2-3, 2026)
+
+**Git range:** `docs(08)` → `docs(09)`
+
+**What's next:** Deploy Supabase migrations (RLS + indexes), then plan next milestone.
+
+---
 
 ## v1.0 Order/Payment System Fix (Shipped: 2026-03-02)
 
