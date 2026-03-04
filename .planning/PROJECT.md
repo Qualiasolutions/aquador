@@ -61,7 +61,18 @@ A customer completes a purchase and knows it worked — they see their order det
 
 ### Active
 
-(Empty — next milestone requirements TBD via `/gsd:new-milestone`)
+- [ ] Complete luxury design overhaul with new template and layout structure
+- [ ] Perfect responsive design across all screen sizes (mobile, tablet, desktop)
+- [ ] Premium brand identity preserving gold accents with sophisticated color palette
+- [ ] Smooth animations and micro-interactions throughout user journey
+- [ ] High-end typography and spacing system for luxury feel
+- [ ] Optimized perfume e-commerce UX (product discovery, customization, checkout)
+- [ ] Homepage redesign with luxury brand storytelling
+- [ ] Product catalog with enhanced visual hierarchy and filtering
+- [ ] Custom perfume builder with premium interface design
+- [ ] Cart and checkout flow with luxury shopping experience
+- [ ] Customer account area with premium dashboard design
+- [ ] Admin panel design consistency (maintain functionality, elevate aesthetics)
 
 ### Out of Scope
 
@@ -73,6 +84,17 @@ A customer completes a purchase and knows it worked — they see their order det
 - Full CSP nonce-based approach — requires Next.js middleware changes
 - Framer Motion replacement — 53 files, too broad for current scope
 - Admin dashboard redesign — functional, not UX overhaul
+
+## Current Milestone: v1.2 Design Overhaul & Premium UX
+
+**Goal:** Transform Aquador into a luxury perfume e-commerce experience with Apple-level design quality, perfect responsiveness, and sophisticated brand presentation.
+
+**Target features:**
+- Complete visual overhaul with new luxury template preserving gold brand identity
+- Perfect responsive design with precise spacing, alignment, and premium layout system
+- Smooth animations and sophisticated micro-interactions
+- High-end typography and visual hierarchy optimized for luxury perfume shopping
+- Enhanced product discovery and customization experience with premium interface design
 
 ## Context
 
@@ -135,4 +157,4 @@ Both converge at `/api/webhooks/stripe` which persists orders and sends emails.
 - **CSP limitation**: unsafe-inline required by Next.js/Tailwind
 
 ---
-*Last updated: 2026-03-03 after v1.1 milestone*
+*Last updated: 2026-03-04 after v1.2 milestone start*
