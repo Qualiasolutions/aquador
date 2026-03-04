@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
@@ -10,14 +10,17 @@ import { CartIcon } from '@/components/cart';
 import { SearchBar } from '@/components/search';
 
 const navLinks = [
-  { label: 'Lattafa Originals', href: '/shop/lattafa' },
   { label: 'Shop', href: '/shop' },
+  { label: 'Lattafa Originals', href: '/shop/lattafa' },
   { label: 'Create Your Own', href: '/create-perfume' },
   { label: 'Re-Order', href: '/reorder' },
   { label: 'About', href: '/about' },
   { label: 'Blog', href: '/blog' },
   { label: 'Contact', href: '/contact' },
 ];
+
+const leftLinks = navLinks.slice(0, 3);
+const rightLinks = navLinks.slice(3);
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -30,7 +33,7 @@ export default function Navbar() {
     const handleScroll = () => {
       if (!ticking.current) {
         requestAnimationFrame(() => {
-          setIsScrolled(window.scrollY > 20);
+          setIsScrolled(window.scrollY > 10);
           ticking.current = false;
         });
         ticking.current = true;
@@ -40,186 +43,123 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Lock body scroll when mobile menu is open
   useEffect(() => {
-    if (isMobileOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
+    document.body.style.overflow = isMobileOpen ? 'hidden' : '';
     return () => { document.body.style.overflow = ''; };
   }, [isMobileOpen]);
 
-  // Close mobile menu on route change
   useEffect(() => {
     setIsMobileOpen(false);
     setIsSearchOpen(false);
   }, [pathname]);
 
-  const toggleSearch = useCallback(() => {
-    setIsSearchOpen(prev => !prev);
-  }, []);
+  const checkActive = (href: string) =>
+    pathname === href || (href !== '/' && pathname.startsWith(href));
 
   return (
     <>
       <motion.header
-        initial={{ y: -100 }}
+        initial={{ y: -70 }}
         animate={{ y: 0 }}
-        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-500 ${
           isScrolled
-            ? 'bg-black/95 backdrop-blur-2xl shadow-[0_1px_0_rgba(212,175,55,0.08)]'
+            ? 'bg-black/95 backdrop-blur-2xl'
             : 'bg-transparent'
         }`}
       >
-        {/* Announcement Bar — only visible at top */}
-        <AnimatePresence>
-          {!isScrolled && (
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: 'auto', opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-              className="overflow-hidden border-b border-white/[0.04]"
-            >
-              <div className="container-wide flex items-center justify-center py-2">
-                <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.25em] text-gray-500 font-poppins font-light">
-                  Complimentary shipping on orders over{' '}
-                  <span className="text-gold">€100</span>
-                </p>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* Main Navigation Bar */}
         <nav className="container-wide">
-          <div className={`flex items-center justify-between transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
-            isScrolled ? 'h-16' : 'h-20 md:h-24'
-          }`}>
-            {/* Logo */}
-            <Link href="/" className="flex-shrink-0 relative z-10">
+          <div className="relative flex items-center justify-between h-[52px] md:h-[58px]">
+
+            {/* Left: Hamburger (mobile) + Left nav links (desktop) */}
+            <div className="flex items-center">
+              <button
+                onClick={() => setIsMobileOpen(!isMobileOpen)}
+                className="lg:hidden min-h-[44px] min-w-[44px] flex items-center justify-center text-gray-400 hover:text-white transition-colors duration-300 -ml-3"
+                aria-label={isMobileOpen ? 'Close menu' : 'Open menu'}
+              >
+                <div className="w-[18px] h-3 flex flex-col justify-between">
+                  <span className={`block h-px bg-current transition-all duration-500 origin-center ${
+                    isMobileOpen ? 'rotate-45 translate-y-[5.5px]' : ''
+                  }`} />
+                  <span className={`block h-px bg-current transition-all duration-300 ${
+                    isMobileOpen ? 'opacity-0 scale-x-0' : ''
+                  }`} />
+                  <span className={`block h-px bg-current transition-all duration-500 origin-center ${
+                    isMobileOpen ? '-rotate-45 -translate-y-[5.5px]' : ''
+                  }`} />
+                </div>
+              </button>
+
+              <div className="hidden lg:flex items-center">
+                {leftLinks.map((link) => (
+                  <NavLink key={link.href} {...link} active={checkActive(link.href)} />
+                ))}
+              </div>
+            </div>
+
+            {/* Center: Logo — absolutely centered */}
+            <Link
+              href="/"
+              className="absolute left-1/2 -translate-x-1/2 z-10"
+            >
               <Image
                 src="/aquador.webp"
                 alt="Aquad'or"
-                width={400}
-                height={120}
-                className={`w-auto object-contain transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
-                  isScrolled
-                    ? 'h-10 sm:h-12'
-                    : 'h-14 sm:h-16 md:h-20 lg:h-24'
-                }`}
+                width={280}
+                height={80}
+                className="h-8 sm:h-9 md:h-10 w-auto object-contain"
                 priority
               />
             </Link>
 
-            {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center gap-1 xl:gap-2">
-              {navLinks.map((link) => {
-                const isActive = pathname === link.href ||
-                  (link.href !== '/' && pathname.startsWith(link.href));
+            {/* Right: Right nav links (desktop) + Icons */}
+            <div className="flex items-center">
+              <div className="hidden lg:flex items-center">
+                {rightLinks.map((link) => (
+                  <NavLink key={link.href} {...link} active={checkActive(link.href)} />
+                ))}
+              </div>
 
-                return (
-                  <Link
-                    key={link.label}
-                    href={link.href}
-                    className="relative px-3 xl:px-4 py-2 group"
-                  >
-                    <span
-                      className={`text-[10.5px] xl:text-[11px] uppercase tracking-[0.18em] font-poppins font-light transition-colors duration-300 ${
-                        isActive
-                          ? 'text-gold'
-                          : 'text-gray-400 group-hover:text-white'
-                      }`}
-                    >
-                      {link.label}
-                    </span>
+              {/* Thin separator — desktop only */}
+              <div className="hidden lg:block w-px h-3.5 bg-white/[0.08] mx-2" />
 
-                    {/* Active / hover indicator */}
-                    {isActive ? (
-                      <motion.span
-                        layoutId="navIndicator"
-                        className="absolute bottom-0 left-3 right-3 xl:left-4 xl:right-4 h-px bg-gold"
-                        transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-                      />
-                    ) : (
-                      <span className="absolute bottom-0 left-3 right-3 xl:left-4 xl:right-4 h-px bg-gold/60 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
-                    )}
-                  </Link>
-                );
-              })}
-            </div>
-
-            {/* Right Actions */}
-            <div className="flex items-center gap-1">
-              {/* Search Toggle */}
+              {/* Search toggle */}
               <button
-                onClick={toggleSearch}
-                className="relative min-h-[44px] min-w-[44px] flex items-center justify-center text-gray-400 hover:text-white transition-colors duration-300"
+                onClick={() => setIsSearchOpen(prev => !prev)}
+                className="min-h-[44px] min-w-[44px] flex items-center justify-center text-gray-400 hover:text-white transition-colors duration-300"
                 aria-label={isSearchOpen ? 'Close search' : 'Open search'}
               >
                 <AnimatePresence mode="wait">
                   {isSearchOpen ? (
-                    <motion.div
-                      key="close"
-                      initial={{ opacity: 0, rotate: -90 }}
-                      animate={{ opacity: 1, rotate: 0 }}
-                      exit={{ opacity: 0, rotate: 90 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      <X className="w-[18px] h-[18px]" />
+                    <motion.div key="x" initial={{ opacity: 0, rotate: -90 }} animate={{ opacity: 1, rotate: 0 }} exit={{ opacity: 0, rotate: 90 }} transition={{ duration: 0.15 }}>
+                      <X className="w-[17px] h-[17px]" />
                     </motion.div>
                   ) : (
-                    <motion.div
-                      key="search"
-                      initial={{ opacity: 0, rotate: 90 }}
-                      animate={{ opacity: 1, rotate: 0 }}
-                      exit={{ opacity: 0, rotate: -90 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      <Search className="w-[18px] h-[18px]" />
+                    <motion.div key="s" initial={{ opacity: 0, rotate: 90 }} animate={{ opacity: 1, rotate: 0 }} exit={{ opacity: 0, rotate: -90 }} transition={{ duration: 0.15 }}>
+                      <Search className="w-[17px] h-[17px]" />
                     </motion.div>
                   )}
                 </AnimatePresence>
               </button>
 
-              {/* Cart */}
               <CartIcon />
-
-              {/* Mobile Menu Toggle */}
-              <button
-                onClick={() => setIsMobileOpen(!isMobileOpen)}
-                className="lg:hidden relative min-h-[44px] min-w-[44px] flex items-center justify-center text-gray-400 hover:text-white transition-colors duration-300"
-                aria-label={isMobileOpen ? 'Close menu' : 'Open menu'}
-              >
-                <div className="w-5 h-4 flex flex-col justify-between">
-                  <span className={`block h-px bg-current transition-all duration-500 origin-center ${
-                    isMobileOpen ? 'rotate-45 translate-y-[7.5px]' : ''
-                  }`} />
-                  <span className={`block h-px bg-current transition-all duration-300 ${
-                    isMobileOpen ? 'opacity-0 scale-x-0' : 'opacity-100'
-                  }`} />
-                  <span className={`block h-px bg-current transition-all duration-500 origin-center ${
-                    isMobileOpen ? '-rotate-45 -translate-y-[7.5px]' : ''
-                  }`} />
-                </div>
-              </button>
             </div>
           </div>
         </nav>
 
-        {/* Search Overlay */}
+        {/* Search panel */}
         <AnimatePresence>
           {isSearchOpen && (
             <motion.div
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
               className="overflow-hidden border-t border-white/[0.04] bg-black/95 backdrop-blur-2xl"
             >
-              <div className="container-wide py-6 md:py-8">
-                <div className="max-w-2xl mx-auto">
+              <div className="container-wide py-5">
+                <div className="max-w-lg mx-auto">
                   <SearchBar variant="navbar" placeholder="Search our collection..." />
                 </div>
               </div>
@@ -227,102 +167,100 @@ export default function Navbar() {
           )}
         </AnimatePresence>
 
-        {/* Bottom gold accent — ultra subtle */}
-        <div
-          className={`absolute bottom-0 left-0 right-0 h-px transition-opacity duration-700 ${
-            isScrolled ? 'opacity-100' : 'opacity-0'
-          }`}
-        >
-          <div className="h-full bg-gradient-to-r from-transparent via-gold/15 to-transparent" />
+        {/* Bottom accent line on scroll */}
+        <div className={`absolute bottom-0 left-0 right-0 h-px transition-opacity duration-500 ${
+          isScrolled ? 'opacity-100' : 'opacity-0'
+        }`}>
+          <div className="h-full bg-gradient-to-r from-transparent via-gold/10 to-transparent" />
         </div>
       </motion.header>
 
-      {/* Mobile Full-Screen Overlay */}
+      {/* Mobile full-screen overlay */}
       <AnimatePresence>
         {isMobileOpen && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.35 }}
             className="fixed inset-0 z-40 lg:hidden"
           >
-            {/* Background */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="absolute inset-0 bg-black/[0.97]"
-            >
-              {/* Ambient gold glow */}
-              <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_40%_at_50%_40%,rgba(212,175,55,0.03)_0%,transparent_70%)]" />
-            </motion.div>
+            <div className="absolute inset-0 bg-black/[0.98]">
+              <div className="absolute inset-0 bg-[radial-gradient(ellipse_50%_30%_at_50%_0%,rgba(212,175,55,0.02)_0%,transparent_70%)]" />
+            </div>
 
-            {/* Navigation Content */}
-            <div className="relative h-full flex flex-col pt-24 pb-10 px-8 sm:px-12 overflow-y-auto">
-              {/* Mobile Search */}
+            <div className="relative h-full flex flex-col pt-[60px] pb-8 px-8 sm:px-12 overflow-y-auto">
+              {/* Mobile search */}
               <motion.div
-                initial={{ opacity: 0, y: 15 }}
+                initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                className="mb-10"
+                transition={{ delay: 0.06, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                className="mb-8"
               >
                 <SearchBar variant="shop" placeholder="Search fragrances..." />
               </motion.div>
 
-              {/* Nav Links — large editorial style */}
               <nav className="flex-1">
-                <ul className="space-y-1">
-                  {navLinks.map((link, i) => {
-                    const isActive = pathname === link.href ||
-                      (link.href !== '/' && pathname.startsWith(link.href));
-
-                    return (
-                      <motion.li
-                        key={link.label}
-                        initial={{ opacity: 0, x: -30 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{
-                          delay: 0.15 + i * 0.06,
-                          duration: 0.5,
-                          ease: [0.22, 1, 0.36, 1],
-                        }}
+                <ul className="space-y-0.5">
+                  {navLinks.map((link, i) => (
+                    <motion.li
+                      key={link.label}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.1 + i * 0.045, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                    >
+                      <Link
+                        href={link.href}
+                        onClick={() => setIsMobileOpen(false)}
+                        className={`flex items-center gap-3 py-3 transition-colors duration-300 ${
+                          checkActive(link.href) ? 'text-gold' : 'text-white/70 active:text-gold'
+                        }`}
                       >
-                        <Link
-                          href={link.href}
-                          onClick={() => setIsMobileOpen(false)}
-                          className={`group flex items-center gap-4 py-3.5 transition-colors duration-300 ${
-                            isActive ? 'text-gold' : 'text-white/80 active:text-gold'
-                          }`}
-                        >
-                          {isActive && (
-                            <span className="w-6 h-px bg-gold flex-shrink-0" />
-                          )}
-                          <span className="font-playfair text-2xl sm:text-3xl tracking-wide font-normal">
-                            {link.label}
-                          </span>
-                        </Link>
-                      </motion.li>
-                    );
-                  })}
+                        {checkActive(link.href) && (
+                          <span className="w-5 h-px bg-gold flex-shrink-0" />
+                        )}
+                        <span className="font-playfair text-[22px] sm:text-2xl tracking-wide">
+                          {link.label}
+                        </span>
+                      </Link>
+                    </motion.li>
+                  ))}
                 </ul>
               </nav>
 
-              {/* Footer tagline */}
-              <motion.div
+              <motion.p
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ delay: 0.7, duration: 0.6 }}
-                className="mt-auto pt-8 border-t border-white/[0.04]"
+                transition={{ delay: 0.55, duration: 0.4 }}
+                className="mt-auto pt-6 border-t border-white/[0.04] text-[9px] uppercase tracking-[0.3em] text-gray-600 font-light"
               >
-                <p className="text-[10px] uppercase tracking-[0.3em] text-gray-600 font-poppins font-light">
-                  Where Luxury Meets Distinction
-                </p>
-              </motion.div>
+                Where Luxury Meets Distinction
+              </motion.p>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
     </>
+  );
+}
+
+function NavLink({ label, href, active }: { label: string; href: string; active: boolean }) {
+  return (
+    <Link href={href} className="relative px-3 xl:px-3.5 py-2 group">
+      <span className={`text-[10px] xl:text-[10.5px] uppercase tracking-[0.16em] font-light transition-colors duration-300 whitespace-nowrap ${
+        active ? 'text-gold' : 'text-gray-500 group-hover:text-white'
+      }`}>
+        {label}
+      </span>
+      {active ? (
+        <motion.span
+          layoutId="navActive"
+          className="absolute bottom-0.5 left-3 right-3 xl:left-3.5 xl:right-3.5 h-px bg-gold"
+          transition={{ type: 'spring', stiffness: 400, damping: 28 }}
+        />
+      ) : (
+        <span className="absolute bottom-0.5 left-3 right-3 xl:left-3.5 xl:right-3.5 h-px bg-gold/50 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
+      )}
+    </Link>
   );
 }
