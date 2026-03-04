@@ -110,7 +110,12 @@ Plans:
 ### Phase 12: Interactive Design Polish
 **Goal**: Add sophisticated animations and smooth interactions
 **Requirements**: INTERACT-01, INTERACT-02, INTERACT-03
-**Plans**: TBD
+**Plans**: 3 plans
+
+Plans:
+- [ ] 12-01-PLAN.md — Scroll-triggered animation system with reduced-motion support
+- [ ] 12-02-PLAN.md — Page transition framework and navigation polish
+- [ ] 12-03-PLAN.md — Component integration and performance optimization
 
 **Success Criteria:**
 1. User experiences smooth scroll-triggered animations that enhance rather than distract
@@ -125,7 +130,7 @@ Plans:
 |-------|--------|-------|--------------|
 | 10 | Complete | 3/3 | VISUAL-01, VISUAL-02, VISUAL-03, VISUAL-04 |
 | 11 | Planned | 3/3 | PRODUCT-01, PRODUCT-02, PRODUCT-03 |
-| 12 | Pending | 0/TBD | INTERACT-01, INTERACT-02, INTERACT-03 |
+| 12 | Planned | 3/3 | INTERACT-01, INTERACT-02, INTERACT-03 |
 
 ## Traceability
 
