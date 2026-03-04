@@ -90,6 +90,7 @@
   --gray-500: oklch(40% 0 0);
 
   /* Spacing Scale (consistent across all components) */
+  --space-2xs: 0.25rem;  /* 4px - tight icon gaps */
   --space-xs: 0.5rem;    /* 8px */
   --space-sm: 1rem;      /* 16px */
   --space-md: 1.5rem;    /* 24px */
@@ -98,6 +99,19 @@
   --space-2xl: 4rem;     /* 64px */
   --space-3xl: 6rem;     /* 96px */
   --space-4xl: 8rem;     /* 128px */
+
+  /* Section-specific Spacing - Fluid & Responsive */
+  --section-gap: clamp(3rem, 8vw, 6rem);
+  --section-padding-y: clamp(4rem, 10vw, 8rem);
+  --section-padding-x: clamp(1.5rem, 5vw, 6rem);
+  --content-max-width: 1400px;
+  --prose-max-width: 65ch;
+
+  /* Component-level Spacing */
+  --card-padding: clamp(1.5rem, 3vw, 2.5rem);
+  --card-gap: clamp(1rem, 2vw, 1.5rem);
+  --nav-height: 80px;
+  --nav-height-mobile: 64px;
 
   /* Section Padding (vertical rhythm) */
   --section-py: clamp(4rem, 8vw, 7rem);
@@ -256,6 +270,42 @@ body {
 
   .section-subtitle {
     @apply text-gray-400 text-base md:text-lg max-w-xl mx-auto tracking-wide;
+  }
+
+  /* Section Gap Utility */
+  .section-gap {
+    margin-bottom: var(--section-gap);
+  }
+
+  /* Content Containers */
+  .content-container {
+    max-width: var(--content-max-width);
+    margin: 0 auto;
+    padding: 0 var(--section-padding-x);
+  }
+
+  .prose-container {
+    max-width: var(--prose-max-width);
+    margin: 0 auto;
+  }
+
+  /* Card Grid Utilities - Responsive Auto-fit */
+  .card-grid {
+    display: grid;
+    gap: var(--card-gap);
+    grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+  }
+
+  .card-grid-2 {
+    display: grid;
+    gap: var(--card-gap);
+    grid-template-columns: repeat(auto-fit, minmax(min(400px, 100%), 1fr));
+  }
+
+  .card-grid-3 {
+    display: grid;
+    gap: var(--card-gap);
+    grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
   }
 
   /* ==========================================================================
