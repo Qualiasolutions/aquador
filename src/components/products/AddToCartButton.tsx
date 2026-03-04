@@ -82,7 +82,7 @@ export default function AddToCartButton({ product }: AddToCartButtonProps) {
           <button
             onClick={decreaseQuantity}
             disabled={quantity <= 1}
-            className="w-12 h-12 rounded-full bg-dark-lighter border border-gold/20 flex items-center justify-center text-gray-400 hover:text-gold hover:border-gold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-12 h-12 rounded-full bg-dark-lighter border border-gold-500/20 flex items-center justify-center text-gray-400 hover:text-gold hover:border-gold-500/40 hover:bg-gold-500/10 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             aria-label="Decrease quantity"
           >
             <Minus className="w-4 h-4" />
@@ -90,7 +90,7 @@ export default function AddToCartButton({ product }: AddToCartButtonProps) {
           <span className="w-12 text-center text-white font-semibold">{quantity}</span>
           <button
             onClick={increaseQuantity}
-            className="w-12 h-12 rounded-full bg-dark-lighter border border-gold/20 flex items-center justify-center text-gray-400 hover:text-gold hover:border-gold transition-colors"
+            className="w-12 h-12 rounded-full bg-dark-lighter border border-gold-500/20 flex items-center justify-center text-gray-400 hover:text-gold hover:border-gold-500/40 hover:bg-gold-500/10 transition-colors"
             aria-label="Increase quantity"
           >
             <Plus className="w-4 h-4" />
@@ -104,12 +104,12 @@ export default function AddToCartButton({ product }: AddToCartButtonProps) {
         disabled={!product.inStock || isAdded}
         whileHover={{ scale: product.inStock && !isAdded ? 1.02 : 1 }}
         whileTap={{ scale: product.inStock && !isAdded ? 0.98 : 1 }}
-        className={`w-full py-4 rounded-full font-semibold flex items-center justify-center gap-2 transition-all ${
+        className={`w-full py-4 min-h-[44px] rounded-xl font-medium tracking-[0.05em] flex items-center justify-center gap-2 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2 focus-visible:ring-offset-dark ${
           isAdded
-            ? 'bg-green-500 text-white'
+            ? 'bg-emerald-500/90 text-white'
             : product.inStock
-              ? 'bg-gold text-black hover:bg-gold-light'
-              : 'bg-gray-600 text-gray-400 cursor-not-allowed'
+              ? 'bg-gradient-to-r from-gold-500 to-gold-600 text-black hover:from-gold-600 hover:to-gold-700 shadow-lg shadow-gold-500/20'
+              : 'bg-neutral-800 text-gray-400 border border-neutral-700 cursor-not-allowed'
         }`}
       >
         {isAdded ? (
