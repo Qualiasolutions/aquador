@@ -10,14 +10,14 @@ See: .planning/PROJECT.md (updated 2026-03-03)
 
 ## Current Position
 
-Phase: 12 of 12 (Interactive Design Polish)
+Phase: 11 of 12 (Product Experience Enhancement)
 Plan: 1 of 3 complete
 Status: In progress
-Last activity: 2026-03-04 — Completed 12-01 (Scroll Animation System)
+Last activity: 2026-03-04 — Completed 11-01 (Product Gallery Enhancement)
 
 Progress v1.0+v1.1: [██████████] 100% (22 of 22 plans)
 Progress v1.2 Phase 10: [██████████] 100% (3 of 3 plans)
-Progress v1.2 Phase 12: [███░░░░░░░] 33% (1 of 3 plans)
+Progress v1.2 Phase 11: [███░░░░░░░] 33% (1 of 3 plans)
 
 ## Milestones
 
@@ -42,14 +42,16 @@ All v1.0 + v1.1 decisions logged in PROJECT.md Key Decisions table (24 total).
 | 44px minimum touch targets on all mobile interactive elements | WCAG 2.1 AA compliance, accessibility standard for touch devices | 10-02 |
 | Content-container 1400px max-width | Prevents content stretching on ultrawide, maintains readability | 10-02 |
 
-**v1.2 Interactive Design Polish (Phase 12):**
+**v1.2 Product Experience Enhancement (Phase 11):**
 
 | Decision | Rationale | Plan |
 |----------|-----------|------|
-| Use OKLCH easing constants from globals.css for all animations | Maintains consistency with existing design system, perceptually uniform timing | 12-01 |
-| Disable parallax scrolling on mobile viewports | Prevents jank and GPU layer issues on mobile Safari, improves performance | 12-01 |
-| Reduce animation distance by 50% on mobile | Smaller screens need subtler movement, prevents excessive visual disruption | 12-01 |
-| Default intersection threshold 0.2 with -50px margin | Triggers animations before element fully enters viewport, feels more responsive | 12-01 |
+| Use OptimizedImage with fill mode and sizeType='full' for main images (quality 95) | Leverages Phase 10 image optimization with blur placeholders, ensures consistent luxury quality | 11-01 |
+| Default zoom level 2x on click with transform-origin based on click position | Balances detail inspection with performance, natural zoom center based on user intent | 11-01 |
+| Pinch-to-zoom threshold 20px to avoid false positives on swipe gestures | Prevents accidental zoom during navigation swipes, better mobile UX | 11-01 |
+| Disable navigation (arrows, swipe, dots) when zoomed | Prevents confusion, clear single-purpose state (zoom mode vs navigation mode) | 11-01 |
+| Increase transition duration to 0.4s with custom luxury bezier [0.25, 0.1, 0.25, 1] | Premium feel, slower timing feels more intentional and luxurious | 11-01 |
+| 44px touch targets on mobile dot indicators | WCAG 2.1 AA compliance, maintains accessibility standard from Phase 10 | 11-01 |
 
 ### Pending Checkpoints
 
@@ -63,8 +65,8 @@ None — all blockers resolved.
 ## Session Continuity
 
 Last session: 2026-03-04
-Stopped at: Completed 12-01 (Scroll Animation System)
-Next action: Execute 12-02 (Product Card Interactions) or 12-03 (Filter Animations)
+Stopped at: Completed 11-01 (Product Gallery Enhancement)
+Next action: Execute 11-02 (Product Detail Page Enhancement) or 11-03 (Shop Page Refinements)
 
 ---
 *Last updated: 2026-03-04*
