@@ -137,7 +137,7 @@ export default function ProductGallery({ mainImage, images, name, inStock }: Pro
 
       {/* Main image */}
       <div
-        className="relative aspect-square overflow-hidden rounded-2xl bg-white"
+        className="relative aspect-square overflow-hidden rounded-3xl bg-white/95 backdrop-blur-md"
         onTouchStart={hasMultiple ? handleTouchStart : undefined}
         onTouchMove={hasMultiple ? handleTouchMove : undefined}
         onTouchEnd={hasMultiple ? handleTouchEnd : undefined}
@@ -150,8 +150,8 @@ export default function ProductGallery({ mainImage, images, name, inStock }: Pro
             initial="enter"
             animate="center"
             exit="exit"
-            transition={{ duration: 0.3, ease: 'easeInOut' }}
-            className={`absolute inset-0 flex items-center justify-center ${
+            transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
+            className={`absolute inset-0 flex items-center justify-center transition-all duration-300 ease-out ${
               isZoomed ? 'cursor-zoom-out z-50' : 'cursor-zoom-in'
             }`}
             onClick={handleImageClick}
@@ -193,7 +193,7 @@ export default function ProductGallery({ mainImage, images, name, inStock }: Pro
             <button
               onClick={goPrev}
               disabled={selectedIndex === 0}
-              className="absolute left-3 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-black/40 backdrop-blur-sm text-white flex items-center justify-center hover:bg-black/60 transition-colors disabled:opacity-0 hidden sm:flex"
+              className="absolute left-3 top-1/2 -translate-y-1/2 z-10 w-11 h-11 rounded-full bg-black/40 backdrop-blur-md text-white flex items-center justify-center hover:bg-gold/20 hover:text-gold transition-all duration-300 ease-out disabled:opacity-0 hidden sm:flex focus-visible:ring-2 focus-visible:ring-gold"
               aria-label="Previous image"
             >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 18l-6-6 6-6"/></svg>
@@ -201,7 +201,7 @@ export default function ProductGallery({ mainImage, images, name, inStock }: Pro
             <button
               onClick={goNext}
               disabled={selectedIndex === allImages.length - 1}
-              className="absolute right-3 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-black/40 backdrop-blur-sm text-white flex items-center justify-center hover:bg-black/60 transition-colors disabled:opacity-0 hidden sm:flex"
+              className="absolute right-3 top-1/2 -translate-y-1/2 z-10 w-11 h-11 rounded-full bg-black/40 backdrop-blur-md text-white flex items-center justify-center hover:bg-gold/20 hover:text-gold transition-all duration-300 ease-out disabled:opacity-0 hidden sm:flex focus-visible:ring-2 focus-visible:ring-gold"
               aria-label="Next image"
             >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18l6-6-6-6"/></svg>
@@ -214,14 +214,17 @@ export default function ProductGallery({ mainImage, images, name, inStock }: Pro
       {hasMultiple && (
         <div className="hidden sm:flex gap-3 mt-4 overflow-x-auto pb-1">
           {allImages.map((img, i) => (
-            <button
+            <motion.button
               key={i}
               onClick={() => goTo(i)}
-              className={`relative w-[120px] h-[120px] flex-shrink-0 rounded-lg overflow-hidden transition-all duration-200 ${
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: i * 0.05, duration: 0.3 }}
+              className={`relative w-[120px] h-[120px] min-w-[120px] flex-shrink-0 rounded-lg overflow-hidden transition-all duration-300 ease-out ${
                 i === selectedIndex
-                  ? 'ring-2 ring-gold ring-offset-2 ring-offset-dark'
+                  ? 'ring-2 ring-gold-600 ring-offset-2 ring-offset-dark'
                   : 'opacity-60 hover:opacity-100'
-              }`}
+              } focus-visible:ring-2 focus-visible:ring-gold`}
               aria-label={`View image ${i + 1}`}
             >
               <ProductImage
@@ -230,7 +233,7 @@ export default function ProductGallery({ mainImage, images, name, inStock }: Pro
                 variant="thumbnail"
                 className="object-cover"
               />
-            </button>
+            </motion.button>
           ))}
         </div>
       )}
@@ -242,11 +245,15 @@ export default function ProductGallery({ mainImage, images, name, inStock }: Pro
             <button
               key={i}
               onClick={() => goTo(i)}
-              className={`w-2 h-2 rounded-full transition-all duration-200 ${
-                i === selectedIndex ? 'bg-gold w-4' : 'bg-gold/30'
-              }`}
+              className={`min-h-[44px] min-w-[44px] flex items-center justify-center transition-all duration-300 ease-out focus-visible:ring-2 focus-visible:ring-gold`}
               aria-label={`Go to image ${i + 1}`}
-            />
+            >
+              <span
+                className={`block w-2 h-2 rounded-full transition-all duration-300 ${
+                  i === selectedIndex ? 'bg-gold-500 w-4' : 'bg-gold-500/30'
+                }`}
+              />
+            </button>
           ))}
         </div>
       )}

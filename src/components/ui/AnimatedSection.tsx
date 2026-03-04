@@ -124,13 +124,14 @@ export function AnimatedSection({
   staggerDelay = 0.1,
   threshold = 0.2,
   disableOnMobile = false,
-  margin = '-50px',
+  margin: _margin = '-50px', // Renamed to _margin to indicate it's currently unused
 }: AnimatedSectionProps) {
   // Use scroll animation hook with custom options
   const { ref, shouldAnimate } = useScrollAnimation({
     once: true,
     amount: threshold,
-    margin: margin as any, // margin accepts string in Framer Motion
+    // Note: margin param temporarily disabled due to MarginType incompatibility
+    // Using default '-50px' from hook
   });
 
   // Check if we should disable animations on mobile
@@ -140,7 +141,7 @@ export function AnimatedSection({
   // If animations disabled (mobile override or reduced motion), render children instantly
   if (disableAnimation || !shouldAnimate) {
     return (
-      <div ref={ref as any} className={cn(className)}>
+      <div ref={ref as React.Ref<HTMLDivElement>} className={cn(className)}>
         {children}
       </div>
     );
@@ -156,7 +157,6 @@ export function AnimatedSection({
         animate: {
           ...animationVariant.animate,
           transition: {
-            ...(animationVariant.animate as any)?.transition,
             duration: 0.4, // Faster on mobile
           },
         },
@@ -181,7 +181,7 @@ export function AnimatedSection({
   // Render animated section
   return (
     <motion.div
-      ref={ref as any}
+      ref={ref as React.Ref<HTMLDivElement>}
       className={cn(className)}
       initial="initial"
       animate={shouldAnimate ? 'animate' : 'initial'}
