@@ -11,6 +11,8 @@ interface SectionProps {
   size?: 'sm' | 'default' | 'lg';
   animate?: boolean;
   id?: string;
+  contained?: boolean;
+  noPadding?: boolean;
 }
 
 const backgrounds = {
@@ -34,6 +36,8 @@ export function Section({
   size = 'default',
   animate = true,
   id,
+  contained = false,
+  noPadding = false,
 }: SectionProps) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-50px' });
@@ -42,9 +46,15 @@ export function Section({
     <section
       id={id}
       ref={ref}
-      className={cn(backgrounds[background], sizes[size], className)}
+      className={cn(
+        backgrounds[background],
+        !noPadding && sizes[size],
+        className
+      )}
     >
-      <div className="container-wide">{children}</div>
+      <div className={contained ? 'content-container' : 'container-wide'}>
+        {children}
+      </div>
     </section>
   );
 
@@ -125,7 +135,7 @@ export function PageHero({
   className,
 }: PageHeroProps) {
   return (
-    <section className={cn('relative pt-32 pb-16 overflow-hidden', className)}>
+    <section className={cn('relative pt-32 md:pt-40 lg:pt-44 pb-16 overflow-hidden', className)}>
       {backgroundImage && (
         <>
           <div
