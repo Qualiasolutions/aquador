@@ -14,16 +14,16 @@ const productTypeLabels: Record<string, string> = {
 
 export default function ProductInfo({ product }: ProductInfoProps) {
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Brand */}
       {product.brand && (
-        <p className="text-xs text-gold uppercase tracking-[0.2em]">
+        <p className="text-[clamp(0.625rem,0.5625rem+0.3125vw,0.75rem)] text-gold-500 uppercase tracking-[0.15em]">
           {product.brand}
         </p>
       )}
 
       {/* Name */}
-      <h1 className="text-3xl md:text-4xl font-playfair text-white">
+      <h1 className="text-[clamp(2rem,1.5rem+2.5vw,3.5rem)] font-playfair font-semibold text-white tracking-tight">
         {product.name}
       </h1>
 
@@ -31,7 +31,7 @@ export default function ProductInfo({ product }: ProductInfoProps) {
       <div className="flex items-baseline gap-4">
         {product.salePrice && product.salePrice < product.price ? (
           <>
-            <span className="text-3xl font-playfair text-gold">
+            <span className="text-[clamp(2rem,1.75rem+1.25vw,2.75rem)] font-playfair font-medium text-gold-600">
               {formatPrice(product.salePrice)}
             </span>
             <span className="text-lg text-gray-500 line-through">
@@ -39,7 +39,7 @@ export default function ProductInfo({ product }: ProductInfoProps) {
             </span>
           </>
         ) : (
-          <span className="text-3xl font-playfair text-gold">
+          <span className="text-[clamp(2rem,1.75rem+1.25vw,2.75rem)] font-playfair font-medium text-gold-600">
             {formatPrice(product.price)}
           </span>
         )}
@@ -47,15 +47,15 @@ export default function ProductInfo({ product }: ProductInfoProps) {
 
       {/* Product Details */}
       <div className="flex flex-wrap gap-4 text-sm">
-        <div className="px-4 py-2 bg-dark-lighter rounded-full border border-gold/20">
+        <div className="px-5 py-2.5 bg-dark-lighter/80 backdrop-blur-sm rounded-full border border-gold-500/20">
           <span className="text-gray-400">Type: </span>
           <span className="text-white">{productTypeLabels[product.productType]}</span>
         </div>
-        <div className="px-4 py-2 bg-dark-lighter rounded-full border border-gold/20">
+        <div className="px-5 py-2.5 bg-dark-lighter/80 backdrop-blur-sm rounded-full border border-gold-500/20">
           <span className="text-gray-400">Size: </span>
           <span className="text-white">{product.size}</span>
         </div>
-        <div className="px-4 py-2 bg-dark-lighter rounded-full border border-gold/20">
+        <div className="px-5 py-2.5 bg-dark-lighter/80 backdrop-blur-sm rounded-full border border-gold-500/20">
           <span className="text-gray-400">Status: </span>
           <span className={product.inStock ? 'text-green-400' : 'text-red-400'}>
             {product.inStock ? 'In Stock' : 'Coming Soon'}
@@ -64,8 +64,8 @@ export default function ProductInfo({ product }: ProductInfoProps) {
       </div>
 
       {/* Description */}
-      <div className="pt-4 border-t border-gold/10">
-        <h3 className="text-sm text-gray-400 uppercase tracking-wider mb-3">
+      <div className="pt-6 border-t border-gold-500/10">
+        <h3 className="text-[clamp(0.75rem,0.6875rem+0.3125vw,0.875rem)] text-gray-400 uppercase tracking-[0.1em] mb-3">
           Description
         </h3>
         <RichDescription description={product.description} />
@@ -73,8 +73,8 @@ export default function ProductInfo({ product }: ProductInfoProps) {
 
       {/* Tags */}
       {product.tags && product.tags.length > 0 && (
-        <div className="pt-4 border-t border-gold/10">
-          <h3 className="text-sm text-gray-400 uppercase tracking-wider mb-3">
+        <div className="pt-6 border-t border-gold-500/10">
+          <h3 className="text-[clamp(0.75rem,0.6875rem+0.3125vw,0.875rem)] text-gray-400 uppercase tracking-[0.1em] mb-3">
             Tags
           </h3>
           <div className="flex flex-wrap gap-2">
