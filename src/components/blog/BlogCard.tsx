@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
 import type { BlogPost } from '@/lib/blog-types';
 import { formatBlogDate } from '@/lib/blog-types';
 
@@ -12,11 +13,15 @@ interface BlogCardProps {
 }
 
 export default function BlogCard({ post, index = 0 }: BlogCardProps) {
+  const reducedMotion = useReducedMotion();
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 15 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay: Math.min(index * 0.05, 0.3) }}
+      whileHover={reducedMotion ? {} : { y: -8, scale: 1.02 }}
+      whileTap={reducedMotion ? {} : { scale: 0.98 }}
     >
       <Link href={`/blog/${post.slug}`} className="group block product-card">
         <div className="relative aspect-[3/4] overflow-hidden">

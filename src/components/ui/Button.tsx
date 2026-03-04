@@ -3,6 +3,7 @@
 import { motion, HTMLMotionProps } from 'framer-motion';
 import { forwardRef } from 'react';
 import { cn } from '@/lib/utils';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
 
 interface ButtonProps extends Omit<HTMLMotionProps<'button'>, 'ref'> {
   variant?: 'primary' | 'secondary' | 'outline' | 'ghost';
@@ -12,6 +13,7 @@ interface ButtonProps extends Omit<HTMLMotionProps<'button'>, 'ref'> {
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant = 'primary', size = 'md', isLoading, children, disabled, ...props }, ref) => {
+    const reducedMotion = useReducedMotion();
     const baseStyles = cn(
       'relative inline-flex items-center justify-center',
       'font-medium tracking-wide uppercase',
@@ -24,7 +26,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         'bg-gold text-black',
         'hover:bg-gold-light',
         'shadow-[0_4px_20px_rgba(212,175,55,0.2)]',
-        'hover:shadow-[0_4px_30px_rgba(212,175,55,0.3)]'
+        'hover:shadow-[0_6px_35px_rgba(212,175,55,0.4)]'
       ),
       secondary: cn(
         'bg-dark-light text-white',
@@ -41,6 +43,8 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         'hover:bg-gold/10'
       ),
     };
+
+    const shouldAnimate = !disabled && !isLoading && !reducedMotion;
 
     const sizes = {
       sm: 'px-5 py-2.5 text-xs min-h-[40px]',
@@ -60,8 +64,8 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           className
         )}
         disabled={disabled || isLoading}
-        whileHover={{ scale: disabled || isLoading ? 1 : 1.02 }}
-        whileTap={{ scale: disabled || isLoading ? 1 : 0.98 }}
+        whileHover={shouldAnimate ? { scale: 1.02 } : {}}
+        whileTap={shouldAnimate ? { scale: 0.97 } : {}}
         transition={{ duration: 0.15 }}
         {...props}
       >
