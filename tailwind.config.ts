@@ -12,14 +12,32 @@ const config: Config = {
         background: "var(--background)",
         foreground: "var(--foreground)",
         gold: {
-          DEFAULT: "#D4AF37",
-          light: "#FFD700",
-          dark: "#B8941F",
+          DEFAULT: "#D4AF37", // Backward compatibility
+          light: "#FFD700",   // Backward compatibility
+          dark: "#B8941F",    // Backward compatibility
+          50: "oklch(95% 0.06 85)",
+          100: "oklch(90% 0.08 85)",
+          200: "oklch(85% 0.11 90)",
+          300: "oklch(80% 0.12 87)",
+          400: "oklch(75% 0.12 85)",
+          500: "#D4AF37",     // Same as DEFAULT
+          600: "oklch(65% 0.13 80)",
+          700: "oklch(55% 0.12 75)",
+          800: "oklch(45% 0.10 70)",
+          900: "oklch(35% 0.08 65)",
         },
         dark: {
           DEFAULT: "#0a0a0a",
           light: "#1a1a1a",
           lighter: "#2a2a2a",
+        },
+        gray: {
+          50: "var(--gray-50)",
+          100: "var(--gray-100)",
+          200: "var(--gray-200)",
+          300: "var(--gray-300)",
+          400: "var(--gray-400)",
+          500: "var(--gray-500)",
         },
       },
       fontFamily: {
