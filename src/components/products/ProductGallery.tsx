@@ -1,8 +1,9 @@
 'use client';
 
 import { useState, useCallback, useRef } from 'react';
-import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
+import { ProductImage } from '@/components/ui/ProductImage';
+import { OptimizedImage } from '@/components/ui/OptimizedImage';
 
 const FALLBACK_IMAGE = '/placeholder-product.svg';
 
@@ -74,16 +75,16 @@ export default function ProductGallery({ mainImage, images, name, inStock }: Pro
             animate="center"
             exit="exit"
             transition={{ duration: 0.3, ease: 'easeInOut' }}
-            className="absolute inset-0"
+            className="absolute inset-0 flex items-center justify-center"
           >
-            <Image
+            <OptimizedImage
               src={allImages[selectedIndex] || FALLBACK_IMAGE}
               alt={`${name}${hasMultiple ? ` - Image ${selectedIndex + 1}` : ''}`}
               fill
-              className="object-cover"
+              sizeType="full"
+              quality={95}
               priority={selectedIndex === 0}
-              sizes="(max-width: 768px) 100vw, 50vw"
-              onError={(e) => { (e.target as HTMLImageElement).src = FALLBACK_IMAGE; }}
+              className="object-cover"
             />
           </motion.div>
         </AnimatePresence>
@@ -127,20 +128,18 @@ export default function ProductGallery({ mainImage, images, name, inStock }: Pro
             <button
               key={i}
               onClick={() => goTo(i)}
-              className={`relative w-16 h-16 flex-shrink-0 rounded-lg overflow-hidden transition-all duration-200 ${
+              className={`relative w-[120px] h-[120px] flex-shrink-0 rounded-lg overflow-hidden transition-all duration-200 ${
                 i === selectedIndex
                   ? 'ring-2 ring-gold ring-offset-2 ring-offset-dark'
                   : 'opacity-60 hover:opacity-100'
               }`}
               aria-label={`View image ${i + 1}`}
             >
-              <Image
+              <ProductImage
                 src={img || FALLBACK_IMAGE}
                 alt={`${name} thumbnail ${i + 1}`}
-                fill
+                variant="thumbnail"
                 className="object-cover"
-                sizes="64px"
-                onError={(e) => { (e.target as HTMLImageElement).src = FALLBACK_IMAGE; }}
               />
             </button>
           ))}
