@@ -180,7 +180,7 @@ export default function CreatePerfumePage() {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white pt-24 pb-20">
+    <div className="min-h-screen bg-black text-white pt-32 md:pt-40 lg:pt-44 pb-20">
       {/* Background */}
       <div className="fixed inset-0 -z-10 pointer-events-none">
         <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-gradient-radial from-amber-500/5 to-transparent rounded-full blur-3xl" />

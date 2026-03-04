@@ -54,7 +54,7 @@ export default function BlogPostContent({ post, relatedPosts }: BlogPostContentP
             {/* Breadcrumb */}
             <motion.nav
               className={`flex items-center gap-2 text-xs text-gray-500 ${
-                post.cover_image ? '-mt-20 mb-8 relative z-10' : 'pt-32 mb-8'
+                post.cover_image ? '-mt-20 mb-8 relative z-10' : 'pt-32 md:pt-40 lg:pt-44 mb-8'
               }`}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}

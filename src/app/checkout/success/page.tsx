@@ -65,7 +65,7 @@ export default function CheckoutSuccessPage() {
   // Loading state
   if (loading) {
     return (
-      <div className="min-h-screen bg-gold-ambient pt-32 pb-16">
+      <div className="min-h-screen bg-gold-ambient pt-32 md:pt-40 lg:pt-44 pb-16">
         <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
             initial={{ scale: 0 }}
@@ -84,7 +84,7 @@ export default function CheckoutSuccessPage() {
   // Error state
   if (error || !orderData) {
     return (
-      <div className="min-h-screen bg-gold-ambient pt-32 pb-16">
+      <div className="min-h-screen bg-gold-ambient pt-32 md:pt-40 lg:pt-44 pb-16">
         <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
             initial={{ scale: 0 }}
@@ -116,7 +116,7 @@ export default function CheckoutSuccessPage() {
   const shipping = 0; // Free shipping
 
   return (
-    <div className="min-h-screen bg-gold-ambient pt-32 pb-16">
+    <div className="min-h-screen bg-gold-ambient pt-32 md:pt-40 lg:pt-44 pb-16">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ scale: 0 }}

@@ -175,7 +175,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema).replace(/</g, '\\u003c') }}
       />
 
-      <main className="min-h-screen bg-gold-ambient pt-28 pb-20">
+      <main className="min-h-screen bg-gold-ambient pt-32 md:pt-40 lg:pt-44 pb-20">
         <div className="container-wide">
           {/* Breadcrumb */}
           <nav className="mb-8">

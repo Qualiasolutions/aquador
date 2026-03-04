@@ -1,6 +1,6 @@
 export default function CategoryLoading() {
   return (
-    <main className="min-h-screen bg-dark pt-28 pb-16">
+    <main className="min-h-screen bg-dark pt-32 md:pt-40 lg:pt-44 pb-16">
       {/* Hero skeleton */}
       <div className="relative py-20 overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">

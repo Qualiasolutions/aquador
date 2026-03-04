@@ -195,7 +195,7 @@ export default function ReorderPage() {
 
   if (submitSuccess) {
     return (
-      <div className="min-h-screen bg-black text-white pt-28 pb-20">
+      <div className="min-h-screen bg-black text-white pt-32 md:pt-40 lg:pt-44 pb-20">
         <div className="fixed inset-0 -z-10 pointer-events-none">
           <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-gradient-radial from-emerald-500/8 via-emerald-500/3 to-transparent rounded-full blur-3xl" />
           <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-gradient-radial from-gold/5 via-gold/2 to-transparent rounded-full blur-3xl" />
@@ -234,7 +234,7 @@ export default function ReorderPage() {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white pt-28 pb-20 overflow-hidden">
+    <div className="min-h-screen bg-black text-white pt-32 md:pt-40 lg:pt-44 pb-20 overflow-hidden">
       {/* Premium Ambient Background */}
       <div className="fixed inset-0 -z-10 pointer-events-none">
         <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-gradient-radial from-amber-500/8 via-amber-500/3 to-transparent rounded-full blur-3xl" />

@@ -1,6 +1,6 @@
 export default function ProductLoading() {
   return (
-    <main className="min-h-screen bg-dark pt-28 pb-16">
+    <main className="min-h-screen bg-dark pt-32 md:pt-40 lg:pt-44 pb-16">
       <div className="w-full px-4 sm:px-8 lg:px-16 xl:px-24">
         {/* Breadcrumb skeleton */}
         <div className="mb-8">

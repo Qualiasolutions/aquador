@@ -2,7 +2,7 @@ export default function BlogLoading() {
   return (
     <div className="min-h-screen bg-gold-ambient">
       {/* Hero Skeleton */}
-      <section className="relative pt-32 pb-16">
+      <section className="relative pt-32 md:pt-40 lg:pt-44 pb-16">
         <div className="container-wide">
           <div className="max-w-4xl mx-auto text-center">
             <div className="skeleton h-4 w-32 mx-auto mb-4" />

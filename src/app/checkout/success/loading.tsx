@@ -1,6 +1,6 @@
 export default function CheckoutSuccessLoading() {
   return (
-    <main className="min-h-screen bg-dark pt-32 pb-16">
+    <main className="min-h-screen bg-dark pt-32 md:pt-40 lg:pt-44 pb-16">
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         {/* Success icon skeleton */}
         <div className="w-24 h-24 bg-dark-lighter rounded-full animate-pulse mx-auto mb-8" />

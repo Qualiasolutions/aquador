@@ -71,7 +71,7 @@ export default function LattafaContent({ products }: LattafaContentProps) {
   }, [products]);
 
   return (
-    <div className="pt-24 pb-16 bg-gold-ambient min-h-screen">
+    <div className="pt-32 md:pt-40 lg:pt-44 pb-16 bg-gold-ambient min-h-screen">
       {/* Hero */}
       <section className="relative py-24 overflow-hidden">
         <AnimatedShaderBackground />

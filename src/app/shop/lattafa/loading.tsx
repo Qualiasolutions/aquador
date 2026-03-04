@@ -1,6 +1,6 @@
 export default function LattafaLoading() {
   return (
-    <div className="pt-24 pb-16 bg-dark min-h-screen">
+    <div className="pt-32 md:pt-40 lg:pt-44 pb-16 bg-dark min-h-screen">
       {/* Hero Skeleton */}
       <section className="relative py-24">
         <div className="w-full px-4 sm:px-8 lg:px-16 xl:px-24 text-center">
