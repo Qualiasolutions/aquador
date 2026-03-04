@@ -75,7 +75,12 @@ Plans:
 ### Phase 10: Visual Foundation
 **Goal**: Establish luxury design system with premium typography, colors, and spacing
 **Requirements**: VISUAL-01, VISUAL-02, VISUAL-03, VISUAL-04
-**Plans**: TBD
+**Plans**: 3 plans
+
+Plans:
+- [ ] 10-01-PLAN.md — Typography refinement and color palette sophistication
+- [ ] 10-02-PLAN.md — Spacing system perfection across components
+- [ ] 10-03-PLAN.md — Image optimization pipeline with blur placeholders
 
 **Success Criteria:**
 1. User sees consistent premium typography hierarchy across all pages (luxury font pairing implemented)
@@ -112,7 +117,7 @@ Plans:
 
 | Phase | Status | Plans | Requirements |
 |-------|--------|-------|--------------|
-| 10 | Planning | 0/TBD | VISUAL-01, VISUAL-02, VISUAL-03, VISUAL-04 |
+| 10 | Planned | 3/3 | VISUAL-01, VISUAL-02, VISUAL-03, VISUAL-04 |
 | 11 | Pending | 0/TBD | PRODUCT-01, PRODUCT-02, PRODUCT-03 |
 | 12 | Pending | 0/TBD | INTERACT-01, INTERACT-02, INTERACT-03 |
 
