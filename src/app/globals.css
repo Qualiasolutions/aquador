@@ -6,6 +6,66 @@
    AQUAD'OR DESIGN SYSTEM - Premium Minimalist
    ========================================================================== */
 
+/* ==========================================================================
+   TYPOGRAPHY PHILOSOPHY
+
+   Weight Usage:
+   - Playfair Display (400-800): 5 weights provide refined hierarchy
+     400: Body headings, elegant subtlety
+     500: Featured headings, luxury class
+     600-700: Emphasis, prominent sections
+     800: Hero statements, maximum impact
+
+   - Poppins (100-700): 7 weights for complete flexibility
+     100: Ultra-light accents, decorative text
+     200-300: Body text variations, captions
+     400: Standard body, optimal readability
+     500-600: Emphasis, labels, UI elements
+     700: Strong emphasis, call-to-action
+
+   Letter Spacing Scale:
+   - Tight (-0.02em): Large display text, tighter optical spacing
+   - Normal (0em): Default, body text
+   - Wide (0.02em): Headings, improved legibility
+   - Wider (0.05em): Subheadings, labels
+   - Widest (0.15em): Micro labels, uppercase tracking
+
+   Typography scales fluidly using clamp() for responsive sizing across
+   375px mobile to 1440px+ desktop, maintaining optimal readability at all
+   viewport sizes without breakpoint-specific overrides.
+
+   Font features (liga, kern, dlig) enable professional typesetting with
+   proper ligatures and optical kerning for refined, luxury presentation.
+   ========================================================================== */
+
+/* ==========================================================================
+   COLOR PHILOSOPHY
+
+   OKLCH Color Space:
+   We use OKLCH (Oklab Lightness Chroma Hue) for perceptually uniform colors.
+   Unlike RGB/HSL, OKLCH ensures consistent perceived brightness and saturation
+   across the entire palette, critical for luxury brand consistency.
+
+   Benefits:
+   - Predictable lightness: 75% gold looks equally bright as 75% gray
+   - Smooth gradients: No perceived "dips" in brightness
+   - Accessible contrast: Easier to meet WCAG standards
+   - Future-proof: Wide gamut ready (P3, Rec2020)
+
+   Gold Palette Strategy:
+   - Hue ~85deg: Warm metallic gold
+   - Lightness 35-95%: Full range from deep bronze to champagne
+   - Chroma 0.06-0.13: Maintains richness without oversaturation
+
+   Atmospheric Backgrounds:
+   Subtle cool tones (280deg hue, low chroma 0.003-0.005) add depth to
+   blacks without visible color cast, creating sophisticated ambiance.
+
+   Gray Scale:
+   True neutral (0 chroma) prevents unwanted color contamination in UI
+   elements, ensuring gold accents remain the focal chromatic elements.
+   ========================================================================== */
+
 :root {
   /* Colors - Perceptually Uniform (OKLCH) */
   --background: #000000;
