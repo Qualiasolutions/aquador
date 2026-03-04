@@ -10,13 +10,14 @@ See: .planning/PROJECT.md (updated 2026-03-03)
 
 ## Current Position
 
-Phase: 10 of 12 (Visual Foundation)
-Plan: 3 of 3 complete
-Status: Complete (foundation established, integration in phase 11-12)
-Last activity: 2026-03-04 — Phase 10 complete, shipping to production
+Phase: 12 of 12 (Interactive Design Polish)
+Plan: 1 of 3 complete
+Status: In progress
+Last activity: 2026-03-05 — Completed 12-02-PLAN.md (page transitions & nav polish)
 
 Progress v1.0+v1.1: [██████████] 100% (22 of 22 plans)
 Progress v1.2 Phase 10: [██████████] 100% (3 of 3 plans)
+Progress v1.2 Phase 12: [███░░░░░░░] 33% (1 of 3 plans)
 
 ## Milestones
 
@@ -41,6 +42,15 @@ All v1.0 + v1.1 decisions logged in PROJECT.md Key Decisions table (24 total).
 | 44px minimum touch targets on all mobile interactive elements | WCAG 2.1 AA compliance, accessibility standard for touch devices | 10-02 |
 | Content-container 1400px max-width | Prevents content stretching on ultrawide, maintains readability | 10-02 |
 
+**v1.2 Design Overhaul (Phase 12):**
+
+| Decision | Rationale | Plan |
+|----------|-----------|------|
+| Use opacity-only transitions instead of y-axis movement | Prevents layout shift during navigation, maintains perceived performance | 12-02 |
+| AnimatePresence mode="wait" instead of "sync" | Ensures exit animation completes before enter starts, cleaner visual flow | 12-02 |
+| initial={false} on AnimatePresence | Prevents animation on first page load for faster perceived performance | 12-02 |
+| Use layoutId for active nav indicator | Framer Motion shared layout animations provide smooth indicator movement between links | 12-02 |
+
 ### Pending Checkpoints
 
 - ✅ ~~Supabase migrations~~ — DEPLOYED. Migration history repaired, RLS + indexes pushed.
@@ -52,9 +62,10 @@ None — all blockers resolved.
 
 ## Session Continuity
 
-Last session: 2026-03-04
-Stopped at: Phase 10 complete, deployed to production
-Next action: Plan phase 11 (Product Experience Enhancement)
+Last session: 2026-03-05
+Stopped at: 12-02-PLAN.md complete
+Resume file: .planning/phases/12-interactive-design-polish/12-03-PLAN.md
+Next action: Execute 12-03-PLAN.md (final plan in phase 12)
 
 ---
-*Last updated: 2026-03-04*
+*Last updated: 2026-03-05*
