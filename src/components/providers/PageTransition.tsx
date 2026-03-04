@@ -1,0 +1,62 @@
+'use client'
+
+import { useState, useEffect } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
+import { usePathname } from 'next/navigation'
+import {
+  pageTransitionVariants,
+  pageTransitionReducedMotion
+} from '@/lib/animations/page-transitions'
+
+/**
+ * PageTransition Provider
+ *
+ * Wraps page content with smooth fade transitions on route changes.
+ * Respects user's reduced motion preferences for accessibility.
+ *
+ * Implementation notes:
+ * - Uses usePathname() to detect route changes
+ * - AnimatePresence with mode="wait" prevents transition overlap
+ * - initial={false} prevents animation on first load (faster perceived performance)
+ * - Detects prefers-reduced-motion and switches to faster variants
+ *
+ * @example
+ * ```tsx
+ * <PageTransition>
+ *   {children}
+ * </PageTransition>
+ * ```
+ */
+export function PageTransition({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname()
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
+
+  // Detect reduced motion preference
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
+    setPrefersReducedMotion(mq.matches)
+
+    const handler = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches)
+    mq.addEventListener('change', handler)
+    return () => mq.removeEventListener('change', handler)
+  }, [])
+
+  // Select appropriate transition variant based on user preference
+  const variants = prefersReducedMotion
+    ? pageTransitionReducedMotion
+    : pageTransitionVariants
+
+  return (
+    <AnimatePresence mode="wait" initial={false}>
+      <motion.div
+        key={pathname}
+        variants={variants}
+        initial="initial"
+        animate="animate"
+        exit="exit"
+      >
+        {children}
+      </motion.div>
+    </AnimatePresence>
+  )
+}
