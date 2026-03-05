@@ -10,11 +10,10 @@ export default function Categories() {
   return (
     <section className="py-2 bg-gold-ambient-subtle">
       <div className="container-wide">
-        <div className="flex flex-wrap justify-center gap-0.5">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-1">
           {categories.map((category, index) => (
             <motion.div
               key={category.id}
-              className="w-[calc(50%-1px)] md:w-[calc(33.333%-1.4px)] lg:w-[calc(20%-1.6px)]"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true, margin: '-50px' }}
@@ -22,7 +21,7 @@ export default function Categories() {
             >
               <Link
                 href={`/shop/${category.slug}`}
-                className="group block relative aspect-[3/4] md:aspect-[2/3] lg:h-[480px] overflow-hidden bg-dark-light"
+                className="group block relative aspect-[3/4] overflow-hidden bg-dark-light"
               >
                 {/* Image */}
                 <div className="absolute inset-0">
@@ -31,7 +30,7 @@ export default function Categories() {
                     alt={category.name}
                     fill
                     className="object-cover transition-all duration-700 group-hover:scale-105 filter grayscale-[20%] brightness-[0.7] group-hover:grayscale-0 group-hover:brightness-90"
-                    sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 20vw"
+                    sizes="(max-width: 1024px) 50vw, 25vw"
                   />
                 </div>
 

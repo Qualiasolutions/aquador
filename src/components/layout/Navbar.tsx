@@ -59,13 +59,13 @@ export default function Navbar() {
   return (
     <>
       <motion.header
-        initial={{ y: -70 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-500 ${
+        initial={{ y: -100, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+        className={`fixed left-0 right-0 z-50 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
           isScrolled
-            ? 'bg-black/95 backdrop-blur-2xl'
-            : 'bg-transparent'
+            ? 'top-0 bg-black/95 backdrop-blur-2xl shadow-[0_4px_30px_rgba(212,175,55,0.04)]'
+            : 'top-5 md:top-7 bg-transparent mix-blend-difference'
         }`}
       >
         <nav className="container-wide">
@@ -75,7 +75,7 @@ export default function Navbar() {
             <div className="flex items-center">
               <button
                 onClick={() => setIsMobileOpen(!isMobileOpen)}
-                className="lg:hidden min-h-[44px] min-w-[44px] flex items-center justify-center text-white hover:text-gold transition-colors duration-300 -ml-3"
+                className="xl:hidden min-h-[44px] min-w-[44px] flex items-center justify-center text-white hover:text-gold transition-colors duration-300 -ml-3"
                 aria-label={isMobileOpen ? 'Close menu' : 'Open menu'}
               >
                 <div className="w-[18px] h-3 flex flex-col justify-between">
@@ -91,14 +91,14 @@ export default function Navbar() {
                 </div>
               </button>
 
-              <div className="hidden lg:flex items-center">
+              <div className="hidden xl:flex items-center">
                 {leftLinks.map((link) => (
                   <NavLink key={link.href} {...link} active={checkActive(link.href)} />
                 ))}
               </div>
             </div>
 
-            {/* Center: Logo — absolutely centered */}
+            {/* Center: Logo — absolutely centered, overflows the bar */}
             <Link
               href="/"
               className="absolute left-1/2 -translate-x-1/2 z-10"
@@ -106,23 +106,23 @@ export default function Navbar() {
               <Image
                 src="/aquador.webp"
                 alt="Aquad'or"
-                width={280}
-                height={80}
-                className="h-16 sm:h-[72px] md:h-20 w-auto object-contain"
+                width={400}
+                height={120}
+                className="h-20 sm:h-24 xl:h-20 2xl:h-24 w-auto object-contain"
                 priority
               />
             </Link>
 
             {/* Right: Right nav links (desktop) + Icons */}
             <div className="flex items-center">
-              <div className="hidden lg:flex items-center">
+              <div className="hidden xl:flex items-center">
                 {rightLinks.map((link) => (
                   <NavLink key={link.href} {...link} active={checkActive(link.href)} />
                 ))}
               </div>
 
-              {/* Thin separator — desktop only */}
-              <div className="hidden lg:block w-px h-3.5 bg-white/[0.08] mx-2" />
+              {/* Separator — desktop only */}
+              <div className="hidden xl:block w-px h-3.5 bg-white/[0.08] mx-2" />
 
               {/* Search toggle */}
               <button
@@ -133,11 +133,11 @@ export default function Navbar() {
                 <AnimatePresence mode="wait">
                   {isSearchOpen ? (
                     <motion.div key="x" initial={{ opacity: 0, rotate: -90 }} animate={{ opacity: 1, rotate: 0 }} exit={{ opacity: 0, rotate: 90 }} transition={{ duration: 0.15 }}>
-                      <X className="w-[17px] h-[17px]" />
+                      <X className="w-[18px] h-[18px]" />
                     </motion.div>
                   ) : (
                     <motion.div key="s" initial={{ opacity: 0, rotate: 90 }} animate={{ opacity: 1, rotate: 0 }} exit={{ opacity: 0, rotate: -90 }} transition={{ duration: 0.15 }}>
-                      <Search className="w-[17px] h-[17px]" />
+                      <Search className="w-[18px] h-[18px]" />
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -156,7 +156,7 @@ export default function Navbar() {
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-              className="overflow-hidden border-t border-white/[0.04] bg-black/95 backdrop-blur-2xl"
+              className="overflow-hidden border-t border-gold/10 bg-black/95 backdrop-blur-2xl"
             >
               <div className="container-wide py-5">
                 <div className="max-w-lg mx-auto">
@@ -167,12 +167,8 @@ export default function Navbar() {
           )}
         </AnimatePresence>
 
-        {/* Bottom accent line on scroll */}
-        <div className={`absolute bottom-0 left-0 right-0 h-px transition-opacity duration-500 ${
-          isScrolled ? 'opacity-100' : 'opacity-0'
-        }`}>
-          <div className="h-full bg-gradient-to-r from-transparent via-gold/10 to-transparent" />
-        </div>
+        {/* Gold bottom border — always visible, behind logo (z-0 vs logo z-10) */}
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-gold/20 z-0" />
       </motion.header>
 
       {/* Mobile full-screen overlay */}
@@ -183,14 +179,13 @@ export default function Navbar() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.35 }}
-            className="fixed inset-0 z-40 lg:hidden"
+            className="fixed inset-0 z-40 xl:hidden"
           >
             <div className="absolute inset-0 bg-black/[0.98]">
               <div className="absolute inset-0 bg-[radial-gradient(ellipse_50%_30%_at_50%_0%,rgba(212,175,55,0.02)_0%,transparent_70%)]" />
             </div>
 
-            <div className="relative h-full flex flex-col pt-[60px] pb-8 px-8 sm:px-12 overflow-y-auto">
-              {/* Mobile search */}
+            <div className="relative h-full flex flex-col pt-[72px] pb-8 px-8 sm:px-12 overflow-y-auto">
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}

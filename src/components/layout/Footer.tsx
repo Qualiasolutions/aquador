@@ -38,7 +38,7 @@ export default function Footer() {
                 className="h-20 sm:h-24 md:h-28 lg:h-32 w-auto object-contain"
               />
             </Link>
-            <p className="text-gray-500 text-xs leading-relaxed max-w-[200px]">
+            <p className="text-white/80 text-sm leading-relaxed max-w-[220px] font-playfair italic">
               Where Luxury Meets Distinction.
             </p>
             <div className="flex gap-3">
@@ -46,7 +46,7 @@ export default function Footer() {
                 href="https://instagram.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-2.5 text-gray-500 hover:text-gold transition-colors"
+                className="p-2.5 text-white/60 hover:text-gold transition-colors"
                 aria-label="Instagram"
               >
                 <Instagram className="w-5 h-5" />
@@ -55,7 +55,7 @@ export default function Footer() {
                 href="https://facebook.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-2.5 text-gray-500 hover:text-gold transition-colors"
+                className="p-2.5 text-white/60 hover:text-gold transition-colors"
                 aria-label="Facebook"
               >
                 <Facebook className="w-5 h-5" />
@@ -71,7 +71,7 @@ export default function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-gray-500 hover:text-white transition-colors text-xs"
+                    className="text-white/70 hover:text-white transition-colors text-xs"
                   >
                     {link.label}
                   </Link>
@@ -88,7 +88,7 @@ export default function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-gray-500 hover:text-white transition-colors text-xs"
+                    className="text-white/70 hover:text-white transition-colors text-xs"
                   >
                     {link.label}
                   </Link>
@@ -101,14 +101,14 @@ export default function Footer() {
           <div>
             <h3 className="label-micro-gold mb-5">Contact</h3>
             <ul className="space-y-3">
-              <li className="flex items-start gap-3 text-gray-500 text-xs">
+              <li className="flex items-start gap-3 text-white/70 text-xs">
                 <MapPin className="w-3.5 h-3.5 text-gold/70 flex-shrink-0 mt-0.5" />
                 <span>Ledra 145<br />Nicosia, Cyprus</span>
               </li>
               <li>
                 <a
                   href="tel:99980809"
-                  className="flex items-center gap-3 text-gray-500 hover:text-white transition-colors text-xs"
+                  className="flex items-center gap-3 text-white/70 hover:text-white transition-colors text-xs"
                 >
                   <Phone className="w-3.5 h-3.5 text-gold/70" />
                   +357 99 980809
@@ -117,7 +117,7 @@ export default function Footer() {
               <li>
                 <a
                   href="mailto:info@aquadorcy.com"
-                  className="flex items-center gap-3 text-gray-500 hover:text-white transition-colors text-xs"
+                  className="flex items-center gap-3 text-white/70 hover:text-white transition-colors text-xs"
                 >
                   <Mail className="w-3.5 h-3.5 text-gold/70" />
                   info@aquadorcy.com
@@ -134,10 +134,10 @@ export default function Footer() {
           viewport={{ once: true }}
           className="mt-12 pt-6 border-t border-gold/5 flex flex-col sm:flex-row justify-between items-center gap-3"
         >
-          <p className="text-gray-600 text-[10px] tracking-wide">
+          <p className="text-white/40 text-[10px] tracking-wide">
             © {new Date().getFullYear()} Aquad&apos;or Cyprus
           </p>
-          <p className="text-gray-600 text-[10px] tracking-wide">
+          <p className="text-white/40 text-[10px] tracking-wide">
             Developed & designed by{' '}
             <a
               href="https://qualiasolutions.net"

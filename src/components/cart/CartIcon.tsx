@@ -18,20 +18,29 @@ export default function CartIcon() {
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
-        strokeWidth="1.2"
+        strokeWidth="1"
         strokeLinecap="round"
         strokeLinejoin="round"
-        className="w-[18px] h-[18px]"
+        className="w-[22px] h-[22px]"
       >
-        <path d="M5.5 8.5h13l-1 11h-11l-1-11z" />
-        <path d="M9 8.5V7a3 3 0 0 1 6 0v1.5" />
+        {/* Perfume bottle body */}
+        <rect x="7" y="10" width="10" height="11" rx="1" />
+        {/* Neck */}
+        <rect x="9.5" y="7" width="5" height="3" />
+        {/* Cap */}
+        <rect x="9" y="4.5" width="6" height="2.5" rx="0.5" />
+        {/* Spray nozzle */}
+        <line x1="12" y1="4.5" x2="12" y2="3" />
+        <line x1="10.5" y1="3" x2="13.5" y2="3" />
+        {/* Decorative line on bottle */}
+        <line x1="8.5" y1="14" x2="15.5" y2="14" />
       </svg>
       {itemCount > 0 && (
         <motion.span
           key={itemCount}
           initial={{ scale: 0.5, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          className="absolute top-1.5 right-0.5 w-3.5 h-3.5 bg-gold text-black text-[8px] rounded-full flex items-center justify-center font-medium leading-none"
+          className="absolute top-1 right-0 w-4 h-4 bg-gold text-black text-[9px] rounded-full flex items-center justify-center font-medium leading-none"
         >
           {itemCount > 99 ? '99' : itemCount}
         </motion.span>
