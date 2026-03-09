@@ -31,17 +31,17 @@ export default function CartDrawer() {
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-            className="fixed right-0 top-0 h-full w-full max-w-md bg-dark border-l border-gold/20 z-50 flex flex-col"
+            className="fixed right-0 top-0 h-full w-full max-w-md bg-white border-l border-gold/20 z-50 flex flex-col"
           >
             {/* Header */}
             <div className="flex items-center justify-between p-6 border-b border-gold/20">
               <div className="flex items-center gap-3">
                 <ShoppingBag className="w-5 h-5 text-gold" />
-                <h2 className="text-lg font-playfair text-white">Your Cart</h2>
+                <h2 className="text-lg font-playfair text-black">Your Cart</h2>
               </div>
               <button
                 onClick={closeCart}
-                className="p-2 text-gray-400 hover:text-white transition-colors"
+                className="p-2 text-gray-400 hover:text-black transition-colors"
                 aria-label="Close cart"
               >
                 <X className="w-5 h-5" />
@@ -53,7 +53,7 @@ export default function CartDrawer() {
               {isEmpty ? (
                 <div className="flex flex-col items-center justify-center h-full text-center">
                   <ShoppingBag className="w-16 h-16 text-gray-600 mb-4" />
-                  <h3 className="text-lg font-playfair text-white mb-2">
+                  <h3 className="text-lg font-playfair text-black mb-2">
                     Your cart is empty
                   </h3>
                   <p className="text-gray-400 text-sm mb-6">
@@ -84,7 +84,7 @@ export default function CartDrawer() {
                 {/* Subtotal */}
                 <div className="flex items-center justify-between">
                   <span className="text-gray-400">Subtotal</span>
-                  <span className="text-xl font-playfair text-white">
+                  <span className="text-xl font-playfair text-black">
                     {formatPrice(subtotal)}
                   </span>
                 </div>

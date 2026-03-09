@@ -31,7 +31,7 @@ export default function Categories() {
             >
               <Link
                 href={`/shop/${category.slug}`}
-                className="group block relative aspect-[3/4] overflow-hidden bg-dark-light"
+                className="group block relative aspect-[3/4] overflow-hidden bg-gray-200"
               >
                 {/* Image */}
                 <div className="absolute inset-0">

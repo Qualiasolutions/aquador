@@ -24,11 +24,11 @@ export default function TermsPage() {
           <section>
             <h2 className="text-xl font-playfair text-gold mb-4">1. Use of the Website</h2>
             <div className="space-y-4 text-gray-400">
-              <h3 className="text-lg text-white">1.1 Eligibility</h3>
+              <h3 className="text-lg text-black">1.1 Eligibility</h3>
               <p>
                 By using our website, you represent and warrant that you are at least 18 years old or accessing the site under the supervision of a parent or guardian.
               </p>
-              <h3 className="text-lg text-white">1.2 Account</h3>
+              <h3 className="text-lg text-black">1.2 Account</h3>
               <p>
                 You may be required to create an account to access certain features. You are responsible for maintaining the confidentiality of your account information and for all activities under your account. Notify us immediately of any unauthorized use.
               </p>
@@ -38,15 +38,15 @@ export default function TermsPage() {
           <section>
             <h2 className="text-xl font-playfair text-gold mb-4">2. Products and Orders</h2>
             <div className="space-y-4 text-gray-400">
-              <h3 className="text-lg text-white">2.1 Product Information</h3>
+              <h3 className="text-lg text-black">2.1 Product Information</h3>
               <p>
                 We strive to ensure accuracy of all information on our website. However, we do not guarantee that product descriptions, prices, or other content are accurate, complete, reliable, current, or error-free. We reserve the right to correct errors and update information at any time.
               </p>
-              <h3 className="text-lg text-white">2.2 Order Acceptance</h3>
+              <h3 className="text-lg text-black">2.2 Order Acceptance</h3>
               <p>
                 Your receipt of an order confirmation does not signify our acceptance of your order. We reserve the right to accept or decline your order at any time for any reason.
               </p>
-              <h3 className="text-lg text-white">2.3 Payment</h3>
+              <h3 className="text-lg text-black">2.3 Payment</h3>
               <p>
                 You agree to pay all charges associated with your orders. We accept various payment methods as indicated on our site. All payments must be received in full prior to shipment.
               </p>
@@ -94,9 +94,9 @@ export default function TermsPage() {
             <h2 className="text-xl font-playfair text-gold mb-4">8. Contact Us</h2>
             <div className="text-gray-400 space-y-1">
               <p>If you have questions about these Terms, please contact us:</p>
-              <p><strong className="text-white">Email:</strong> info@aquadorcy.com</p>
-              <p><strong className="text-white">Phone:</strong> +357 99 980809</p>
-              <p><strong className="text-white">Address:</strong> Ledra 145, 1011, Nicosia, Cyprus</p>
+              <p><strong className="text-black">Email:</strong> info@aquadorcy.com</p>
+              <p><strong className="text-black">Phone:</strong> +357 99 980809</p>
+              <p><strong className="text-black">Address:</strong> Ledra 145, 1011, Nicosia, Cyprus</p>
             </div>
           </section>
 

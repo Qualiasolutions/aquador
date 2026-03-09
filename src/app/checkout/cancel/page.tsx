@@ -24,7 +24,7 @@ export default function CheckoutCancelPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="text-4xl md:text-5xl font-playfair text-white mb-4"
+          className="text-4xl md:text-5xl font-playfair text-black mb-4"
         >
           Checkout Cancelled
         </motion.h1>
@@ -50,7 +50,7 @@ export default function CheckoutCancelPage() {
                 <ShoppingBag className="w-6 h-6 text-gold" />
               </div>
               <div className="text-left">
-                <h3 className="text-white font-semibold">Your cart is saved</h3>
+                <h3 className="text-black font-semibold">Your cart is saved</h3>
                 <p className="text-gray-400 text-sm">
                   {itemCount} {itemCount === 1 ? 'item' : 'items'} still in your cart
                 </p>

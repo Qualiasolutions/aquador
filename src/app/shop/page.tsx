@@ -29,7 +29,7 @@ export default async function ShopPage() {
   const products = await getAllProducts();
 
   return (
-    <Suspense fallback={<div className="pt-32 md:pt-40 lg:pt-44 pb-20 bg-black min-h-screen" />}>
+    <Suspense fallback={<div className="pt-32 md:pt-40 lg:pt-44 pb-20 bg-white min-h-screen" />}>
       <ShopContent products={products} categories={categories} />
     </Suspense>
   );

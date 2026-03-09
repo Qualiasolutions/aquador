@@ -51,7 +51,7 @@ export function CheckoutForm({
         initial={reducedMotion ? undefined : { opacity: 0, x: -10 }}
         animate={reducedMotion ? undefined : { opacity: 1, x: 0 }}
         onClick={onBack}
-        className="mb-8 flex items-center gap-2 text-gray-400 hover:text-white transition-colors group focus:outline-none focus-visible:text-amber-400"
+        className="mb-8 flex items-center gap-2 text-gray-400 hover:text-black transition-colors group focus:outline-none focus-visible:text-amber-400"
       >
         <svg
           className="w-4 h-4 transition-transform group-hover:-translate-x-1"

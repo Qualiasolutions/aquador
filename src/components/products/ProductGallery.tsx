@@ -269,7 +269,7 @@ export default function ProductGallery({ mainImage, images, name, inStock }: Pro
               transition={{ delay: i * 0.05, duration: 0.3 }}
               className={`relative w-[120px] h-[120px] min-w-[120px] flex-shrink-0 rounded-lg overflow-hidden transition-all duration-300 ease-out ${
                 i === selectedIndex
-                  ? 'ring-2 ring-gold-600 ring-offset-2 ring-offset-dark'
+                  ? 'ring-2 ring-gold-600 ring-offset-2 ring-offset-white'
                   : 'opacity-60 hover:opacity-100'
               } focus-visible:ring-2 focus-visible:ring-gold`}
               aria-label={`View image ${i + 1}`}

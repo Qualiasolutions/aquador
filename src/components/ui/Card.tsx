@@ -135,8 +135,8 @@ export function FeatureCard({ icon, title, description, index = 0 }: FeatureCard
       <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-gold/10 border border-gold/30 flex items-center justify-center">
         {icon}
       </div>
-      <h3 className="text-xl font-playfair text-white mb-3">{title}</h3>
-      <p className="text-gray-400 text-sm">{description}</p>
+      <h3 className="text-xl font-playfair text-black mb-3">{title}</h3>
+      <p className="text-gray-600 text-sm">{description}</p>
     </motion.div>
   );
 }
@@ -159,9 +159,9 @@ export function InfoCard({ icon, title, details, index = 0 }: InfoCardProps) {
       <div className="w-12 h-12 rounded-full bg-gold/10 border border-gold/30 flex items-center justify-center mb-4">
         {icon}
       </div>
-      <h3 className="text-white font-semibold mb-2">{title}</h3>
+      <h3 className="text-black font-semibold mb-2">{title}</h3>
       {details.map((detail, i) => (
-        <p key={i} className="text-gray-400 text-sm">
+        <p key={i} className="text-gray-600 text-sm">
           {detail}
         </p>
       ))}

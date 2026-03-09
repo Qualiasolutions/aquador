@@ -195,7 +195,7 @@ export default function ReorderPage() {
 
   if (submitSuccess) {
     return (
-      <div className="min-h-screen bg-black text-white pt-32 md:pt-40 lg:pt-44 pb-20">
+      <div className="min-h-screen bg-white text-black pt-32 md:pt-40 lg:pt-44 pb-20">
         <div className="fixed inset-0 -z-10 pointer-events-none">
           <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-gradient-radial from-emerald-500/8 via-emerald-500/3 to-transparent rounded-full blur-3xl" />
           <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-gradient-radial from-gold/5 via-gold/2 to-transparent rounded-full blur-3xl" />
@@ -215,7 +215,7 @@ export default function ReorderPage() {
             <Check className="w-10 h-10 text-emerald-400" />
           </motion.div>
 
-          <h1 className="font-playfair text-4xl text-white mb-4">
+          <h1 className="font-playfair text-4xl text-black mb-4">
             Request Received
           </h1>
           <p className="text-gray-400 mb-8 leading-relaxed">
@@ -234,7 +234,7 @@ export default function ReorderPage() {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white pt-32 md:pt-40 lg:pt-44 pb-20 overflow-hidden">
+    <div className="min-h-screen bg-white text-black pt-32 md:pt-40 lg:pt-44 pb-20 overflow-hidden">
       {/* Premium Ambient Background */}
       <div className="fixed inset-0 -z-10 pointer-events-none">
         <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-gradient-radial from-amber-500/8 via-amber-500/3 to-transparent rounded-full blur-3xl" />
@@ -250,7 +250,7 @@ export default function ReorderPage() {
           }}
         />
 
-        <div className="absolute top-0 left-0 right-0 h-40 bg-gradient-to-b from-black via-black/80 to-transparent" />
+        <div className="absolute top-0 left-0 right-0 h-40 bg-gradient-to-b from-white via-white/80 to-transparent" />
       </div>
 
       {/* Hero Section */}
@@ -263,7 +263,7 @@ export default function ReorderPage() {
           <span className="inline-block text-[10px] tracking-[0.4em] text-gold/60 uppercase mb-4">
             Returning Customer
           </span>
-          <h1 className="font-playfair text-4xl md:text-5xl lg:text-6xl font-light text-white mb-6">
+          <h1 className="font-playfair text-4xl md:text-5xl lg:text-6xl font-light text-black mb-6">
             Re-Order Your{' '}
             <span className="text-gradient-gold">Signature</span>
           </h1>
@@ -304,7 +304,7 @@ export default function ReorderPage() {
                     relative p-5 rounded-2xl border text-left transition-all duration-300
                     ${isSelected
                       ? 'border-gold/50 bg-gradient-to-b from-gold/15 to-gold/5'
-                      : 'border-white/10 bg-white/[0.02] hover:border-white/20 hover:bg-white/[0.04]'
+                      : 'border-black/10 bg-white hover:border-black/20 hover:bg-gray-50'
                     }
                   `}
                 >
@@ -313,7 +313,7 @@ export default function ReorderPage() {
                       <Check className="w-3 h-3 text-black" />
                     </div>
                   )}
-                  <div className={`font-medium mb-1 ${isSelected ? 'text-gold' : 'text-white'}`}>
+                  <div className={`font-medium mb-1 ${isSelected ? 'text-gold' : 'text-black'}`}>
                     {config.label}
                   </div>
                   <div className="text-xs text-gray-500">
@@ -359,7 +359,7 @@ export default function ReorderPage() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, x: -20 }}
                   transition={{ duration: 0.2 }}
-                  className="grid grid-cols-1 sm:grid-cols-[1fr_120px_100px_40px] gap-3 p-4 sm:p-3 rounded-xl bg-white/[0.03] border border-white/5"
+                  className="grid grid-cols-1 sm:grid-cols-[1fr_120px_100px_40px] gap-3 p-4 sm:p-3 rounded-xl bg-white border border-black/10"
                 >
                   {/* Code input */}
                   <div className="sm:contents">
@@ -371,7 +371,7 @@ export default function ReorderPage() {
                       value={row.code}
                       onChange={(e) => updateRow(row.id, 'code', e.target.value)}
                       placeholder="e.g., 42"
-                      className="w-full rounded-lg border border-white/10 bg-white/[0.03] px-4 py-3 text-white placeholder-gray-600
+                      className="w-full rounded-lg border border-black/10 bg-white px-4 py-3 text-black placeholder-gray-600
                                  focus:border-gold/50 focus:outline-none focus:ring-1 focus:ring-gold/30 transition-all text-sm"
                     />
                   </div>
@@ -384,7 +384,7 @@ export default function ReorderPage() {
                     <select
                       value={row.category}
                       onChange={(e) => updateRow(row.id, 'category', e.target.value as 'N' | 'W' | 'M' | '')}
-                      className="w-full rounded-lg border border-white/10 bg-white/[0.03] px-3 py-3 text-white
+                      className="w-full rounded-lg border border-black/10 bg-white px-3 py-3 text-black
                                  focus:border-gold/50 focus:outline-none focus:ring-1 focus:ring-gold/30 transition-all text-sm
                                  appearance-none cursor-pointer"
                       style={{
@@ -394,10 +394,10 @@ export default function ReorderPage() {
                         backgroundSize: '1rem',
                       }}
                     >
-                      <option value="" className="bg-black">Select</option>
-                      <option value="N" className="bg-black">{categoryLabels.N}</option>
-                      <option value="W" className="bg-black">{categoryLabels.W}</option>
-                      <option value="M" className="bg-black">{categoryLabels.M}</option>
+                      <option value="" className="bg-white">Select</option>
+                      <option value="N" className="bg-white">{categoryLabels.N}</option>
+                      <option value="W" className="bg-white">{categoryLabels.W}</option>
+                      <option value="M" className="bg-white">{categoryLabels.M}</option>
                     </select>
                   </div>
 
@@ -413,7 +413,7 @@ export default function ReorderPage() {
                       placeholder="0"
                       min="0"
                       step="0.5"
-                      className="w-full rounded-lg border border-white/10 bg-white/[0.03] px-4 py-3 text-white placeholder-gray-600
+                      className="w-full rounded-lg border border-black/10 bg-white px-4 py-3 text-black placeholder-gray-600
                                  focus:border-gold/50 focus:outline-none focus:ring-1 focus:ring-gold/30 transition-all text-sm
                                  [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                     />
@@ -447,7 +447,7 @@ export default function ReorderPage() {
               type="button"
               onClick={addRow}
               whileHover={!reducedMotion ? { scale: 1.01 } : undefined}
-              className="mt-4 w-full py-4 rounded-xl border border-dashed border-white/20 text-gray-400 text-sm
+              className="mt-4 w-full py-4 rounded-xl border border-dashed border-black/20 text-gray-400 text-sm
                          hover:border-gold/40 hover:text-gold hover:bg-gold/5 transition-all flex items-center justify-center gap-2"
             >
               <Plus className="w-4 h-4" />
@@ -457,10 +457,10 @@ export default function ReorderPage() {
 
           {/* Total indicator */}
           {selectedProduct && (
-            <div className="mt-6 flex items-center justify-between px-4 py-3 rounded-xl bg-white/[0.02] border border-white/5">
+            <div className="mt-6 flex items-center justify-between px-4 py-3 rounded-xl bg-white border border-black/10">
               <span className="text-sm text-gray-400">Total</span>
               <span className={`text-lg font-light ${
-                totalAmount > 0 ? 'text-white' : 'text-gray-600'
+                totalAmount > 0 ? 'text-black' : 'text-gray-600'
               }`}>
                 {totalAmount.toFixed(1)}
                 <span className="text-xs text-gray-500 ml-2">
@@ -495,7 +495,7 @@ export default function ReorderPage() {
               type="button"
               onClick={() => fileInputRef.current?.click()}
               whileHover={!reducedMotion ? { scale: 1.01 } : undefined}
-              className="w-full py-12 rounded-2xl border-2 border-dashed border-white/10 bg-white/[0.02]
+              className="w-full py-12 rounded-2xl border-2 border-dashed border-black/10 bg-white
                          hover:border-gold/30 hover:bg-gold/5 transition-all group"
             >
               <div className="flex flex-col items-center gap-4">
@@ -509,7 +509,7 @@ export default function ReorderPage() {
               </div>
             </motion.button>
           ) : (
-            <div className="relative rounded-2xl overflow-hidden border border-white/10">
+            <div className="relative rounded-2xl overflow-hidden border border-black/10">
               {uploadPreview && (
                 <Image
                   src={uploadPreview}
@@ -572,7 +572,7 @@ export default function ReorderPage() {
             className={`
               relative w-full rounded-full py-5 text-sm tracking-[0.2em] uppercase font-medium transition-all duration-500 overflow-hidden
               ${isSubmitting
-                ? 'cursor-wait bg-white/5 text-gray-600 border border-white/10'
+                ? 'cursor-wait bg-gray-100 text-gray-600 border border-black/10'
                 : 'text-black'
               }
             `}

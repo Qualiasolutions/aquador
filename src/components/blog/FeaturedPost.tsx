@@ -19,7 +19,7 @@ export default function FeaturedPost({ post }: FeaturedPostProps) {
       transition={{ duration: 0.5 }}
     >
       <Link href={`/blog/${post.slug}`} className="group block">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 overflow-hidden rounded-sm bg-dark-light border border-gold/10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 overflow-hidden rounded-sm bg-white border border-gold/10">
           <div className="relative aspect-[16/10] lg:aspect-auto overflow-hidden">
             {post.cover_image ? (
               <Image
@@ -52,12 +52,12 @@ export default function FeaturedPost({ post }: FeaturedPostProps) {
               )}
             </div>
 
-            <h2 className="text-2xl lg:text-3xl font-playfair text-white mb-4 group-hover:text-gold transition-colors duration-300">
+            <h2 className="text-2xl lg:text-3xl font-playfair text-black mb-4 group-hover:text-gold transition-colors duration-300">
               {post.title}
             </h2>
 
             {post.excerpt && (
-              <p className="text-gray-400 text-sm leading-relaxed mb-6 line-clamp-3">
+              <p className="text-gray-600 text-sm leading-relaxed mb-6 line-clamp-3">
                 {post.excerpt}
               </p>
             )}
@@ -70,7 +70,7 @@ export default function FeaturedPost({ post }: FeaturedPostProps) {
                   </span>
                 </div>
                 <div>
-                  <p className="text-xs text-white">{post.author_name}</p>
+                  <p className="text-xs text-black">{post.author_name}</p>
                   {post.read_time && (
                     <p className="text-[10px] text-gray-500">{post.read_time} min read</p>
                   )}

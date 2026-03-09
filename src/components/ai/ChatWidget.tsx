@@ -204,13 +204,13 @@ export default function ChatWidget() {
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            className="chat-window fixed z-50 bg-dark border border-gold/20 shadow-2xl flex flex-col overflow-hidden
+            className="chat-window fixed z-50 bg-white border border-gold/20 shadow-2xl flex flex-col overflow-hidden
               bottom-20 right-4 w-[320px] h-[420px] rounded-2xl
               max-[480px]:bottom-0 max-[480px]:right-0 max-[480px]:left-0 max-[480px]:w-full max-[480px]:h-[100dvh] max-[480px]:rounded-none"
           >
             {/* Header */}
             <div className="bg-gradient-to-r from-gold/10 to-gold-light/10 border-b border-gold/20 p-2.5 flex items-center gap-2.5">
-              <div className="relative w-9 h-9 rounded-full overflow-hidden bg-dark border border-gold/30 flex items-center justify-center">
+              <div className="relative w-9 h-9 rounded-full overflow-hidden bg-white border border-gold/30 flex items-center justify-center">
                 <Image
                   src="/aquador.webp"
                   alt="Aquad'or"
@@ -220,7 +220,7 @@ export default function ChatWidget() {
                 />
               </div>
               <div className="flex-1">
-                <h3 className="text-white font-semibold text-sm flex items-center gap-1.5">
+                <h3 className="text-black font-semibold text-sm flex items-center gap-1.5">
                   Aquad{"'"}or
                   <span className="w-1.5 h-1.5 bg-green-500 rounded-full" />
                 </h3>
@@ -247,7 +247,7 @@ export default function ChatWidget() {
                     className={`max-w-[88%] rounded-2xl px-3 py-2 ${
                       message.role === 'user'
                         ? 'bg-gold text-dark'
-                        : 'bg-dark-lighter text-white border border-gold/10'
+                        : 'bg-gray-100 text-black border border-gold/10'
                     }`}
                   >
                     <p className="text-[13px] whitespace-pre-wrap leading-relaxed">
@@ -266,7 +266,7 @@ export default function ChatWidget() {
                   animate={{ opacity: 1 }}
                   className="flex justify-start"
                 >
-                  <div className="bg-dark-lighter border border-gold/10 rounded-2xl px-3 py-2 flex items-center gap-2">
+                  <div className="bg-gray-100 border border-gold/10 rounded-2xl px-3 py-2 flex items-center gap-2">
                     <Loader2 className="w-3.5 h-3.5 text-gold animate-spin" />
                     <span className="text-xs text-gray-400">Thinking...</span>
                   </div>
@@ -287,7 +287,7 @@ export default function ChatWidget() {
                         setInput(suggestion);
                         inputRef.current?.focus();
                       }}
-                      className="text-[10px] px-2 py-1 bg-dark-lighter border border-gold/20 text-gray-300 rounded-full hover:border-gold hover:text-gold transition-all"
+                      className="text-[10px] px-2 py-1 bg-gray-100 border border-gold/20 text-gray-700 rounded-full hover:border-gold hover:text-gold transition-all"
                     >
                       {suggestion}
                     </button>
@@ -297,7 +297,7 @@ export default function ChatWidget() {
             )}
 
             {/* Input Area */}
-            <div className="border-t border-gold/20 p-2.5 bg-dark-lighter">
+            <div className="border-t border-gold/20 p-2.5 bg-gray-50">
               <div className="flex items-center gap-2">
                 <input
                   ref={inputRef}
@@ -307,7 +307,7 @@ export default function ChatWidget() {
                   onKeyPress={handleKeyPress}
                   placeholder="Ask about fragrances..."
                   disabled={isLoading}
-                  className="flex-1 bg-dark border border-gold/20 text-white placeholder-gray-500 px-3 py-2 text-sm rounded-xl focus:outline-none focus:border-gold transition-colors disabled:opacity-50"
+                  className="flex-1 bg-white border border-gold/20 text-black placeholder-gray-500 px-3 py-2 text-sm rounded-xl focus:outline-none focus:border-gold transition-colors disabled:opacity-50"
                 />
                 <button
                   onClick={handleSend}

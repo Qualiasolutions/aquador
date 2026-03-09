@@ -94,7 +94,7 @@ export default function CheckoutSuccessPage() {
           >
             <XCircle className="w-12 h-12 text-red-500" />
           </motion.div>
-          <h1 className="text-3xl font-playfair text-white mb-4">
+          <h1 className="text-3xl font-playfair text-black mb-4">
             Unable to Load Order Details
           </h1>
           <p className="text-gray-400 mb-8">
@@ -133,10 +133,10 @@ export default function CheckoutSuccessPage() {
           transition={{ delay: 0.2 }}
           className="text-center mb-8"
         >
-          <h1 className="text-4xl md:text-5xl font-playfair text-white mb-4">
+          <h1 className="text-4xl md:text-5xl font-playfair text-black mb-4">
             Thank You!
           </h1>
-          <p className="text-xl text-gray-400 mb-2">
+          <p className="text-xl text-gray-600 mb-2">
             Your order has been confirmed
           </p>
           <p className="text-2xl text-gold font-semibold">
@@ -150,7 +150,7 @@ export default function CheckoutSuccessPage() {
           transition={{ delay: 0.3 }}
           className="bg-dark-light rounded-2xl p-8 border border-gold/20 mb-8"
         >
-          <h2 className="text-xl font-semibold text-white mb-6">Order Details</h2>
+          <h2 className="text-xl font-semibold text-black mb-6">Order Details</h2>
 
           {/* Items table */}
           <div className="overflow-x-auto mb-6">
@@ -166,10 +166,10 @@ export default function CheckoutSuccessPage() {
               <tbody>
                 {orderData.items.map((item, index) => (
                   <tr key={index} className="border-b border-gold/10">
-                    <td className="py-4 text-white">{item.name}</td>
+                    <td className="py-4 text-black">{item.name}</td>
                     <td className="py-4 text-gray-400 text-center">{item.size}</td>
                     <td className="py-4 text-gray-400 text-center">{item.quantity}</td>
-                    <td className="py-4 text-white text-right">{formatPrice(item.price)}</td>
+                    <td className="py-4 text-black text-right">{formatPrice(item.price)}</td>
                   </tr>
                 ))}
               </tbody>
@@ -186,14 +186,14 @@ export default function CheckoutSuccessPage() {
               <span>Shipping</span>
               <span className="text-green-500 font-semibold">FREE</span>
             </div>
-            <div className="flex justify-between text-xl font-semibold text-white pt-2 border-t border-gold/20">
+            <div className="flex justify-between text-xl font-semibold text-black pt-2 border-t border-gold/20">
               <span>Total</span>
               <span className="text-gold">{formatPrice(subtotal + shipping)}</span>
             </div>
           </div>
 
           <p className="text-sm text-gray-500 mt-6 pt-6 border-t border-gold/20">
-            Expect delivery within <strong className="text-white">3-7 business days</strong>
+            Expect delivery within <strong className="text-black">3-7 business days</strong>
           </p>
         </motion.div>
 
@@ -208,7 +208,7 @@ export default function CheckoutSuccessPage() {
               <Package className="w-6 h-6 text-gold" />
             </div>
             <div className="text-left">
-              <h3 className="text-white font-semibold">What happens next?</h3>
+              <h3 className="text-black font-semibold">What happens next?</h3>
               <p className="text-gray-400 text-sm">We&apos;ll send you a confirmation email shortly</p>
             </div>
           </div>
@@ -219,7 +219,7 @@ export default function CheckoutSuccessPage() {
                 <span className="text-gold text-xs font-bold">1</span>
               </div>
               <div>
-                <p className="text-white text-sm font-medium">Order Confirmation</p>
+                <p className="text-black text-sm font-medium">Order Confirmation</p>
                 <p className="text-gray-500 text-xs">You&apos;ll receive an email with your order details</p>
               </div>
             </div>
@@ -228,7 +228,7 @@ export default function CheckoutSuccessPage() {
                 <span className="text-gold text-xs font-bold">2</span>
               </div>
               <div>
-                <p className="text-white text-sm font-medium">Preparation</p>
+                <p className="text-black text-sm font-medium">Preparation</p>
                 <p className="text-gray-500 text-xs">Our team will carefully prepare your fragrances</p>
               </div>
             </div>
@@ -237,7 +237,7 @@ export default function CheckoutSuccessPage() {
                 <span className="text-gold text-xs font-bold">3</span>
               </div>
               <div>
-                <p className="text-white text-sm font-medium">Shipping</p>
+                <p className="text-black text-sm font-medium">Shipping</p>
                 <p className="text-gray-500 text-xs">Expect delivery within 3-7 business days</p>
               </div>
             </div>

@@ -58,7 +58,7 @@ export function CompositionSummary({
               animate={reducedMotion ? undefined : note ? 'filled' : 'animate'}
               className={`
                 flex justify-between items-center py-2.5 px-1
-                ${!isLast ? 'border-b border-white/10' : ''}
+                ${!isLast ? 'border-b border-black/10' : ''}
               `}
             >
               <span className="text-gray-400 tracking-wider text-xs uppercase">

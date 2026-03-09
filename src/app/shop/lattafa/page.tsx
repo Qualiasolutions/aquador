@@ -48,7 +48,7 @@ export default async function LattafaPage() {
   if (products.length === 0) {
     return (
       <div className="pt-32 md:pt-40 lg:pt-44 pb-16 min-h-screen bg-dark text-center">
-        <h1 className="text-4xl font-playfair text-white">No products found</h1>
+        <h1 className="text-4xl font-playfair text-black">No products found</h1>
         <p className="text-gray-400 mt-4">Lattafa Originals collection is currently empty.</p>
         <Link href="/shop" className="text-gold mt-4 inline-block">
           &larr; Back to Shop

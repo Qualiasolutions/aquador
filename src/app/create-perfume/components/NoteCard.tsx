@@ -84,7 +84,7 @@ export function NoteCard({ note, isSelected, onSelect, reducedMotion = false }: 
       {/* Note name */}
       <span className={`
         relative text-center text-xs font-medium tracking-wide z-10 transition-colors duration-300
-        ${isSelected ? 'text-amber-400' : 'text-gray-300 group-hover:text-white'}
+        ${isSelected ? 'text-amber-400' : 'text-gray-700 group-hover:text-black'}
       `}>
         {note.name}
       </span>

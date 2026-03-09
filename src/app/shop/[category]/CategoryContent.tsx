@@ -96,8 +96,8 @@ export default function CategoryContent({ category, products }: CategoryContentP
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <h2 className="text-2xl font-playfair text-white mb-3">Coming Soon</h2>
-              <p className="text-gray-400 text-sm mb-8">
+              <h2 className="text-2xl font-playfair text-black mb-3">Coming Soon</h2>
+              <p className="text-gray-600 text-sm mb-8">
                 We&apos;re curating an exclusive selection for this collection. Check back soon or explore our other categories.
               </p>
               <Link

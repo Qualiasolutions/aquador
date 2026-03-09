@@ -95,7 +95,7 @@ export default function BlogPostContent({ post, relatedPosts }: BlogPostContentP
                 )}
               </div>
 
-              <h1 className="text-3xl sm:text-4xl md:text-5xl font-playfair text-white mb-8 leading-tight">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-playfair text-black mb-8 leading-tight">
                 {post.title}
               </h1>
 
@@ -116,7 +116,7 @@ export default function BlogPostContent({ post, relatedPosts }: BlogPostContentP
                     )}
                   </div>
                   <div>
-                    <p className="text-sm text-white">{post.author_name}</p>
+                    <p className="text-sm text-black">{post.author_name}</p>
                     {post.author_role && (
                       <p className="text-[10px] text-gray-500 uppercase tracking-wider">
                         {post.author_role}

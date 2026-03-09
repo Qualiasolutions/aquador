@@ -104,7 +104,7 @@ export function FragrancePyramid({
                   <span
                     className={`
                       font-medium tracking-wider transition-colors duration-300
-                      ${isActive ? 'text-amber-300' : isFilled ? 'text-white' : 'text-gray-500'}
+                      ${isActive ? 'text-amber-300' : isFilled ? 'text-black' : 'text-gray-500'}
                     `}
                   >
                     {layer.label}
@@ -113,7 +113,7 @@ export function FragrancePyramid({
                     <motion.span
                       initial={reducedMotion ? undefined : { opacity: 0, scale: 0.8 }}
                       animate={reducedMotion ? undefined : { opacity: 1, scale: 1 }}
-                      className="flex items-center gap-1 text-white/80"
+                      className="flex items-center gap-1 text-black/80"
                     >
                       <span>{note.icon}</span>
                       <span className="text-[10px]">{note.name}</span>

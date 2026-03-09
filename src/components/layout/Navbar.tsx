@@ -64,8 +64,8 @@ export default function Navbar() {
         transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
         className={`fixed left-0 right-0 z-50 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
           isScrolled
-            ? 'top-0 bg-black/95 backdrop-blur-2xl shadow-[0_4px_30px_rgba(212,175,55,0.04)]'
-            : 'top-5 md:top-7 bg-transparent mix-blend-difference'
+            ? 'top-0 bg-white/95 backdrop-blur-2xl shadow-[0_4px_30px_rgba(212,175,55,0.04)]'
+            : 'top-5 md:top-7 bg-transparent'
         }`}
       >
         <nav className="container-wide">
@@ -75,7 +75,7 @@ export default function Navbar() {
             <div className="flex items-center h-full">
               <button
                 onClick={() => setIsMobileOpen(!isMobileOpen)}
-                className="xl:hidden min-h-[44px] min-w-[44px] flex items-center justify-center text-white hover:text-gold transition-colors duration-300 -ml-3"
+                className="xl:hidden min-h-[44px] min-w-[44px] flex items-center justify-center text-black/80 hover:text-gold transition-colors duration-300 -ml-3"
                 aria-label={isMobileOpen ? 'Close menu' : 'Open menu'}
               >
                 <div className="w-[18px] h-3 flex flex-col justify-between">
@@ -122,12 +122,12 @@ export default function Navbar() {
               </div>
 
               {/* Separator — desktop only */}
-              <div className="hidden xl:block w-px h-4 bg-white/[0.08] mx-3" />
+              <div className="hidden xl:block w-px h-4 bg-black/[0.08] mx-3" />
 
               {/* Search toggle */}
               <button
                 onClick={() => setIsSearchOpen(prev => !prev)}
-                className="min-h-[44px] min-w-[44px] flex items-center justify-center text-white hover:text-gold transition-colors duration-300"
+                className="min-h-[44px] min-w-[44px] flex items-center justify-center text-black/80 hover:text-gold transition-colors duration-300"
                 aria-label={isSearchOpen ? 'Close search' : 'Open search'}
               >
                 <AnimatePresence mode="wait">
@@ -156,7 +156,7 @@ export default function Navbar() {
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-              className="overflow-hidden border-t border-gold/10 bg-black/95 backdrop-blur-2xl"
+              className="overflow-hidden border-t border-gold/10 bg-white/95 backdrop-blur-2xl"
             >
               <div className="container-wide py-5">
                 <div className="max-w-lg mx-auto">
@@ -181,7 +181,7 @@ export default function Navbar() {
             transition={{ duration: 0.35 }}
             className="fixed inset-0 z-40 xl:hidden"
           >
-            <div className="absolute inset-0 bg-black/[0.98]">
+            <div className="absolute inset-0 bg-white/[0.98]">
               <div className="absolute inset-0 bg-[radial-gradient(ellipse_50%_30%_at_50%_0%,rgba(212,175,55,0.02)_0%,transparent_70%)]" />
             </div>
 
@@ -208,7 +208,7 @@ export default function Navbar() {
                         href={link.href}
                         onClick={() => setIsMobileOpen(false)}
                         className={`flex items-center gap-3 py-3 transition-colors duration-300 ${
-                          checkActive(link.href) ? 'text-gold' : 'text-white/70 active:text-gold'
+                          checkActive(link.href) ? 'text-gold' : 'text-black/70 active:text-gold'
                         }`}
                       >
                         {checkActive(link.href) && (
@@ -227,7 +227,7 @@ export default function Navbar() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.55, duration: 0.4 }}
-                className="mt-auto pt-6 border-t border-white/[0.04] text-[9px] uppercase tracking-[0.3em] text-gray-600 font-light"
+                className="mt-auto pt-6 border-t border-black/[0.06] text-[9px] uppercase tracking-[0.3em] text-gray-600 font-light"
               >
                 Where Luxury Meets Distinction
               </motion.p>
@@ -243,7 +243,7 @@ function NavLink({ label, href, active }: { label: string; href: string; active:
   return (
     <Link href={href} className="relative h-full flex items-center justify-center px-4 xl:px-5 group">
       <span className={`text-[10.5px] xl:text-[11px] uppercase tracking-[0.18em] font-light transition-colors duration-300 whitespace-nowrap leading-none ${
-        active ? 'text-gold' : 'text-white group-hover:text-gold'
+        active ? 'text-gold' : 'text-black/80 group-hover:text-gold'
       }`}>
         {label}
       </span>

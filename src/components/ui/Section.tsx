@@ -101,7 +101,7 @@ export function SectionHeader({
       <h2
         className={cn(
           'text-3xl md:text-4xl lg:text-5xl font-playfair mb-4 tracking-wide',
-          titleVariant === 'white' ? 'text-white' : 'text-gradient-gold'
+          titleVariant === 'white' ? 'text-black' : 'text-gradient-gold'
         )}
       >
         {title}
@@ -109,7 +109,7 @@ export function SectionHeader({
       {align === 'center' && <div className="w-16 h-px bg-gold mx-auto mb-5" />}
       {subtitle && (
         <p className={cn(
-          'text-gray-400 text-base md:text-lg tracking-wide',
+          'text-gray-500 text-base md:text-lg tracking-wide',
           align === 'center' && 'max-w-xl mx-auto'
         )}>
           {subtitle}
@@ -158,13 +158,13 @@ export function PageHero({
           <h1
             className={cn(
               'text-4xl sm:text-5xl md:text-6xl font-playfair mb-6',
-              titleVariant === 'gold' ? 'text-gradient-gold' : 'text-white'
+              titleVariant === 'gold' ? 'text-gradient-gold' : 'text-black'
             )}
           >
             {title}
           </h1>
           {subtitle && (
-            <p className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto">
+            <p className="text-lg md:text-xl text-gray-500 max-w-2xl mx-auto">
               {subtitle}
             </p>
           )}

@@ -65,7 +65,7 @@ export default function CreateSection() {
 
                 {/* Content */}
                 <div className="p-5">
-                  <h3 className="text-lg font-playfair text-white mb-2">
+                  <h3 className="text-lg font-playfair text-black mb-2">
                     {stage.title}
                   </h3>
                   <p className="text-gray-500 text-sm leading-relaxed">

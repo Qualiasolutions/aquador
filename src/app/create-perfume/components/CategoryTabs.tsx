@@ -51,8 +51,8 @@ export function CategoryTabs({
               rounded-full overflow-hidden
               focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 focus-visible:ring-offset-2 focus-visible:ring-offset-black
               ${isActive
-                ? 'text-white'
-                : 'text-gray-400 hover:text-white'
+                ? 'text-black'
+                : 'text-gray-600 hover:text-black'
               }
             `}
             style={{

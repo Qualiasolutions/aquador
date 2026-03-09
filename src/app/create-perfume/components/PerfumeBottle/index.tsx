@@ -70,7 +70,7 @@ export default function PerfumeBottle({ composition, activeLayer, className = ''
                 {layer}
               </span>
               {note && (
-                <span className="block text-sm text-white mt-1">{note.name}</span>
+                <span className="block text-sm text-black mt-1">{note.name}</span>
               )}
             </motion.div>
           )

@@ -48,7 +48,7 @@ export default function CartItem({ item }: CartItemProps) {
 
       {/* Product Info */}
       <div className="flex-1 min-w-0">
-        <h4 className="text-sm font-medium text-white truncate pr-6">
+        <h4 className="text-sm font-medium text-black truncate pr-6">
           {item.name}
         </h4>
         <p className="text-xs text-gray-400 mt-0.5">
@@ -67,7 +67,7 @@ export default function CartItem({ item }: CartItemProps) {
           >
             <Minus className="w-3 h-3" />
           </button>
-          <span className="text-sm text-white w-8 text-center">{item.quantity}</span>
+          <span className="text-sm text-black w-8 text-center">{item.quantity}</span>
           <button
             onClick={handleIncrease}
             className="w-7 h-7 rounded-full bg-dark-lighter border border-gold/20 flex items-center justify-center text-gray-400 hover:text-gold hover:border-gold transition-colors"
@@ -89,7 +89,7 @@ export default function CartItem({ item }: CartItemProps) {
 
       {/* Line Total */}
       <div className="text-right flex-shrink-0">
-        <p className="text-sm font-semibold text-white">
+        <p className="text-sm font-semibold text-black">
           {formatPrice(item.price * item.quantity)}
         </p>
       </div>

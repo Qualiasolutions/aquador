@@ -63,7 +63,7 @@ export function AnimatedFilterBar({
             ${
               activeFilter === null
                 ? 'text-dark'
-                : 'bg-dark-lighter border border-gold-500/20 text-gray-300 hover:border-gold-500/40 hover:text-white'
+                : 'bg-white border border-gold-500/20 text-gray-700 hover:border-gold-500/40 hover:text-black'
             }
           `}
           animate={activeFilter === null ? 'active' : 'inactive'}
@@ -88,7 +88,7 @@ export function AnimatedFilterBar({
                 ${
                   isActive
                     ? 'text-dark'
-                    : 'bg-dark-lighter border border-gold-500/20 text-gray-300 hover:border-gold-500/40 hover:text-white'
+                    : 'bg-white border border-gold-500/20 text-gray-700 hover:border-gold-500/40 hover:text-black'
                 }
               `}
               animate={isActive ? 'active' : 'inactive'}
@@ -140,7 +140,7 @@ export function AnimatedTypeFilter({
               px-3 py-1 min-h-[44px] flex items-center
               text-[10px] uppercase tracking-[0.12em]
               transition-colors
-              ${isActive ? 'text-gold' : 'text-gray-500 hover:text-gray-300'}
+              ${isActive ? 'text-gold' : 'text-gray-600 hover:text-black'}
             `}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}

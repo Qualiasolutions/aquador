@@ -4,16 +4,16 @@ import Button from '@/components/ui/Button';
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-black px-4">
+    <div className="min-h-screen flex items-center justify-center bg-white px-4">
       <div className="text-center max-w-md">
         <div className="mb-8">
           <h1 className="text-8xl md:text-9xl font-playfair text-gradient-gold mb-4">
             404
           </h1>
-          <h2 className="text-2xl font-playfair text-white mb-4">
+          <h2 className="text-2xl font-playfair text-black mb-4">
             Page Not Found
           </h2>
-          <p className="text-gray-400">
+          <p className="text-gray-600">
             The fragrance you&apos;re looking for doesn&apos;t exist or has been moved.
           </p>
         </div>

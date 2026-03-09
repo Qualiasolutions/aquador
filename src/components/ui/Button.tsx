@@ -19,7 +19,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       'relative inline-flex items-center justify-center',
       'font-medium tracking-wide uppercase',
       'transition-all duration-300',
-      'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-black'
+      'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-white'
     );
 
     const styleVariants = {
@@ -30,9 +30,9 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         'hover:shadow-[0_6px_35px_rgba(212,175,55,0.4)]'
       ),
       secondary: cn(
-        'bg-dark-light text-white',
+        'bg-white text-black',
         'border border-gold/20',
-        'hover:border-gold/40 hover:bg-dark-lighter'
+        'hover:border-gold/40 hover:bg-gray-50'
       ),
       outline: cn(
         'bg-transparent text-gold',

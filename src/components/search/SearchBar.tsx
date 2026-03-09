@@ -130,14 +130,14 @@ export default function SearchBar({
           onKeyDown={handleKeyDown}
           placeholder={placeholder}
           className={`
-            w-full bg-transparent border-none outline-none text-white placeholder-gray-400/70 focus-visible:ring-2 focus-visible:ring-gold-500
+            w-full bg-transparent border-none outline-none text-black placeholder-gray-400/70 focus-visible:ring-2 focus-visible:ring-gold-500
             ${isNavbar ? 'px-3 py-3 text-sm' : 'px-4 py-3.5 text-base'}
           `}
         />
         {query && (
           <button
             onClick={handleClear}
-            className={`${isNavbar ? 'mr-3' : 'mr-4'} text-gray-400 hover:text-white transition-colors`}
+            className={`${isNavbar ? 'mr-3' : 'mr-4'} text-gray-400 hover:text-black transition-colors`}
           >
             <X className={isNavbar ? 'w-5 h-5' : 'w-5 h-5'} />
           </button>
@@ -153,7 +153,7 @@ export default function SearchBar({
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.2 }}
-              className="absolute top-full left-0 right-0 mt-1 bg-black/95 backdrop-blur-xl border border-gold/20 shadow-xl overflow-hidden z-50"
+              className="absolute top-full left-0 right-0 mt-1 bg-white/95 backdrop-blur-xl border border-gold/20 shadow-xl overflow-hidden z-50"
             >
               <div className="max-h-[400px] overflow-y-auto">
                 {results.map((product) => (
@@ -178,7 +178,7 @@ export default function SearchBar({
                           {product.brand}
                         </p>
                       )}
-                      <p className="text-sm text-white truncate">{product.name}</p>
+                      <p className="text-sm text-black truncate">{product.name}</p>
                       <p className="text-xs text-gold">{formatPrice(product.sale_price || product.price)}</p>
                     </div>
                   </Link>
@@ -201,9 +201,9 @@ export default function SearchBar({
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
-              className="absolute top-full left-0 right-0 mt-1 bg-black/95 backdrop-blur-xl border border-gold/20 shadow-xl p-4 z-50"
+              className="absolute top-full left-0 right-0 mt-1 bg-white/95 backdrop-blur-xl border border-gold/20 shadow-xl p-4 z-50"
             >
-              <p className="text-gray-400 text-sm text-center">No products found for &quot;{query}&quot;</p>
+              <p className="text-gray-600 text-sm text-center">No products found for &quot;{query}&quot;</p>
             </motion.div>
           )}
         </AnimatePresence>

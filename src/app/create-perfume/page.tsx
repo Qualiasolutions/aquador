@@ -16,7 +16,7 @@ const CustomPerfumeBottle = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="flex items-center justify-center h-[400px] bg-dark-900/50 backdrop-blur-sm rounded-lg">
+      <div className="flex items-center justify-center h-[400px] bg-white/50 backdrop-blur-sm rounded-lg">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gold-500" />
       </div>
     )
@@ -212,7 +212,7 @@ export default function CreatePerfumePage() {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white pt-32 md:pt-40 lg:pt-44 pb-20">
+    <div className="min-h-screen bg-white text-black pt-32 md:pt-40 lg:pt-44 pb-20">
       {/* Background */}
       <div className="fixed inset-0 -z-10 pointer-events-none">
         <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-gradient-radial from-amber-500/5 to-transparent rounded-full blur-3xl" />
@@ -225,7 +225,7 @@ export default function CreatePerfumePage() {
             {/* Header */}
             <div className="text-center mb-8 px-4">
               <span className="text-[10px] tracking-[0.4em] text-gold/60 uppercase">Bespoke Fragrance Atelier</span>
-              <h1 className="font-playfair text-3xl md:text-4xl lg:text-5xl text-white mt-2">
+              <h1 className="font-playfair text-3xl md:text-4xl lg:text-5xl text-black mt-2">
                 Create Your <span className="text-gradient-gold">Signature</span>
               </h1>
             </div>
@@ -234,7 +234,7 @@ export default function CreatePerfumePage() {
             <div className="max-w-6xl mx-auto px-4 grid lg:grid-cols-[280px_240px_1fr] gap-8 items-start">
 
               {/* Left: Layer Steps */}
-              <div className="bg-white/[0.02] rounded-2xl p-5 border border-white/5 space-y-5">
+              <div className="bg-black/[0.02] rounded-2xl p-5 border border-black/[0.06] space-y-5">
                 <span className="text-[10px] tracking-[0.3em] text-gold/60 uppercase block">Build Your Scent</span>
                 <div className="space-y-2">
                   {(['base', 'heart', 'top'] as NoteLayer[]).map((layer) => {
@@ -247,14 +247,14 @@ export default function CreatePerfumePage() {
                         onClick={() => setActiveLayer(layer)}
                         aria-label={`Select ${layer} notes layer`}
                         className={`w-full flex items-center gap-3 p-3 rounded-xl text-left transition-all ${
-                          isActive ? 'bg-gold/15 border border-gold/30' : isDone ? 'bg-emerald-500/10 border border-emerald-500/20' : 'bg-white/[0.02] border border-white/5 hover:bg-white/[0.04]'
+                          isActive ? 'bg-gold/15 border border-gold/30' : isDone ? 'bg-emerald-500/10 border border-emerald-500/20' : 'bg-black/[0.02] border border-black/[0.06] hover:bg-black/[0.04]'
                         }`}
                       >
-                        <span className={`w-8 h-8 rounded-full flex items-center justify-center text-sm ${isActive ? 'bg-gold text-black' : isDone ? 'bg-emerald-500 text-black' : 'bg-white/10 text-gray-500'}`}>
+                        <span className={`w-8 h-8 rounded-full flex items-center justify-center text-sm ${isActive ? 'bg-gold text-black' : isDone ? 'bg-emerald-500 text-black' : 'bg-black/10 text-gray-600'}`}>
                           {isDone && !isActive ? '✓' : layerInfo[layer].icon}
                         </span>
                         <div className="flex-1 min-w-0">
-                          <span className={`block text-sm font-medium ${isActive ? 'text-gold' : 'text-white'}`}>{layerInfo[layer].title}</span>
+                          <span className={`block text-sm font-medium ${isActive ? 'text-gold' : 'text-black'}`}>{layerInfo[layer].title}</span>
                           <span className="text-xs text-gray-500 truncate block">{note ? note.name : layerInfo[layer].subtitle}</span>
                         </div>
                       </button>
@@ -263,7 +263,7 @@ export default function CreatePerfumePage() {
                 </div>
 
                 {/* Categories */}
-                <div className="mt-6 pt-4 border-t border-white/5">
+                <div className="mt-6 pt-4 border-t border-black/[0.06]">
                   <span className="text-[10px] tracking-[0.3em] text-gold/60 uppercase block mb-3">Fragrance Family</span>
                   <div className="flex flex-wrap gap-2">
                     {fragranceCategories.map((cat) => (
@@ -275,7 +275,7 @@ export default function CreatePerfumePage() {
                         className={`px-3 py-1.5 text-xs rounded-full transition-all ${
                           activeCategory === cat.key
                             ? 'bg-gold/20 text-gold border border-gold/30'
-                            : 'bg-white/5 text-gray-400 border border-white/10 hover:text-white'
+                            : 'bg-black/5 text-gray-600 border border-black/10 hover:text-black'
                         }`}
                       >
                         {cat.label}
@@ -285,7 +285,7 @@ export default function CreatePerfumePage() {
                 </div>
 
                 {/* 3D Preview Toggle */}
-                <div className="pt-5 border-t border-white/5">
+                <div className="pt-5 border-t border-black/[0.06]">
                   <button
                     onClick={() => setShow3DPreview(!show3DPreview)}
                     aria-pressed={show3DPreview}
@@ -293,7 +293,7 @@ export default function CreatePerfumePage() {
                     className={`w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-medium transition-all ${
                       show3DPreview
                         ? 'bg-gold/15 text-gold border border-gold/30'
-                        : 'bg-white/5 text-gray-400 border border-white/10 hover:bg-white/[0.08] hover:text-white'
+                        : 'bg-black/5 text-gray-600 border border-black/10 hover:bg-black/[0.08] hover:text-black'
                     }`}
                   >
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -311,14 +311,14 @@ export default function CreatePerfumePage() {
                     <BottleSVG composition={composition} activeLayer={activeLayer} />
                     <div className="mt-4 flex gap-1">
                       {[0, 1, 2].map((i) => (
-                        <div key={i} className={`w-2 h-2 rounded-full ${i < completedCount ? 'bg-gold' : 'bg-white/20'}`} />
+                        <div key={i} className={`w-2 h-2 rounded-full ${i < completedCount ? 'bg-gold' : 'bg-black/20'}`} />
                       ))}
                     </div>
                     <span className="text-[10px] text-gray-500 mt-1">{completedCount}/3 selected</span>
                   </>
                 ) : (
                   <div className="w-full">
-                    <div className="bg-gradient-to-b from-dark-900/30 to-dark-900/60 backdrop-blur-sm rounded-xl border border-gold/20 overflow-hidden">
+                    <div className="bg-gradient-to-b from-gray-100/30 to-gray-100/60 backdrop-blur-sm rounded-xl border border-gold/20 overflow-hidden">
                       <Scene className="w-full h-[400px]">
                         <Lighting simplified={isMobile} />
                         <CustomPerfumeBottle
@@ -331,7 +331,7 @@ export default function CreatePerfumePage() {
                     </div>
                     <div className="mt-4 flex gap-1 justify-center">
                       {[0, 1, 2].map((i) => (
-                        <div key={i} className={`w-2 h-2 rounded-full ${i < completedCount ? 'bg-gold' : 'bg-white/20'}`} />
+                        <div key={i} className={`w-2 h-2 rounded-full ${i < completedCount ? 'bg-gold' : 'bg-black/20'}`} />
                       ))}
                     </div>
                     <span className="text-[10px] text-gray-500 mt-1 block text-center">{completedCount}/3 selected</span>
@@ -362,11 +362,11 @@ export default function CreatePerfumePage() {
                         whileHover={!reducedMotion && !isUsed ? { scale: 1.03 } : undefined}
                         whileTap={!reducedMotion && !isUsed ? { scale: 0.97 } : undefined}
                         className={`relative flex flex-col items-center gap-2 p-4 rounded-xl transition-all ${
-                          isSelected ? 'bg-gold/20 ring-2 ring-gold' : isUsed ? 'bg-white/[0.02] opacity-40 cursor-not-allowed' : 'bg-white/[0.03] hover:bg-white/[0.08] border border-white/5'
+                          isSelected ? 'bg-gold/20 ring-2 ring-gold' : isUsed ? 'bg-white/[0.02] opacity-40 cursor-not-allowed' : 'bg-black/[0.03] hover:bg-black/[0.08] border border-black/[0.06]'
                         }`}
                       >
                         <span className="text-2xl">{note.icon}</span>
-                        <span className={`text-xs font-medium ${isSelected ? 'text-gold' : 'text-gray-300'}`}>{note.name}</span>
+                        <span className={`text-xs font-medium ${isSelected ? 'text-gold' : 'text-gray-700'}`}>{note.name}</span>
                       </motion.button>
                     )
                   })}
@@ -388,19 +388,19 @@ export default function CreatePerfumePage() {
         ) : (
           /* Checkout Form */
           <motion.div key="checkout" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-xl mx-auto px-4">
-            <button onClick={() => setShowForm(false)} aria-label="Go back to perfume composer" className="mb-8 flex items-center gap-2 text-gray-400 hover:text-white transition-colors">
+            <button onClick={() => setShowForm(false)} aria-label="Go back to perfume composer" className="mb-8 flex items-center gap-2 text-gray-600 hover:text-black transition-colors">
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
               <span className="text-sm">Back</span>
             </button>
 
-            <div className="bg-white/[0.03] rounded-2xl p-6 md:p-8 border border-white/5">
+            <div className="bg-black/[0.02] rounded-2xl p-6 md:p-8 border border-black/[0.06]">
               <h2 className="font-playfair text-2xl text-center mb-6">Finalize Your Creation</h2>
 
               {/* Blend summary */}
               <div className="flex flex-wrap gap-2 justify-center mb-8">
-                {composition.base && <span className="px-3 py-1 bg-white/5 rounded-full text-sm">{composition.base.icon} {composition.base.name}</span>}
-                {composition.heart && <span className="px-3 py-1 bg-white/5 rounded-full text-sm">{composition.heart.icon} {composition.heart.name}</span>}
-                {composition.top && <span className="px-3 py-1 bg-white/5 rounded-full text-sm">{composition.top.icon} {composition.top.name}</span>}
+                {composition.base && <span className="px-3 py-1 bg-black/5 rounded-full text-sm">{composition.base.icon} {composition.base.name}</span>}
+                {composition.heart && <span className="px-3 py-1 bg-black/5 rounded-full text-sm">{composition.heart.icon} {composition.heart.name}</span>}
+                {composition.top && <span className="px-3 py-1 bg-black/5 rounded-full text-sm">{composition.top.icon} {composition.top.name}</span>}
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-6">
@@ -413,7 +413,7 @@ export default function CreatePerfumePage() {
                     onChange={(e) => setPerfumeName(e.target.value)}
                     placeholder="e.g., Midnight Bloom"
                     maxLength={30}
-                    className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:border-gold/50 focus:outline-none"
+                    className="w-full bg-black/[0.02] border border-black/10 rounded-xl px-4 py-3 text-black placeholder-gray-400 focus:border-gold/50 focus:outline-none"
                   />
                 </div>
 
@@ -428,7 +428,7 @@ export default function CreatePerfumePage() {
                           onClick={() => setSelectedVolume(vol)}
                           aria-pressed={selectedVolume === vol}
                           className={`p-4 rounded-xl border text-center transition-all ${
-                            selectedVolume === vol ? 'border-gold/50 bg-gold/10 text-gold' : 'border-white/10 bg-white/[0.02] text-gray-400 hover:border-white/20'
+                            selectedVolume === vol ? 'border-gold/50 bg-gold/10 text-gold' : 'border-black/10 bg-black/[0.02] text-gray-600 hover:border-black/20'
                           }`}
                         >
                           <div className="text-2xl font-light">{vol}</div>
@@ -447,16 +447,16 @@ export default function CreatePerfumePage() {
                     onChange={(e) => setSpecialRequests(e.target.value)}
                     placeholder="Any preferences..."
                     rows={3}
-                    className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:border-gold/50 focus:outline-none resize-none"
+                    className="w-full bg-black/[0.02] border border-black/10 rounded-xl px-4 py-3 text-black placeholder-gray-400 focus:border-gold/50 focus:outline-none resize-none"
                   />
                 </div>
 
                 {error && <div className="bg-red-500/10 border border-red-500/30 rounded-xl px-4 py-3 text-red-400 text-sm">{error}</div>}
 
-                <div className="flex items-center justify-between pt-4 border-t border-white/10">
+                <div className="flex items-center justify-between pt-4 border-t border-black/10">
                   <div>
                     <div className="text-xs text-gray-500">Total</div>
-                    <div className="text-3xl font-light text-white">€{selectedVolume ? calculatePrice(selectedVolume).toFixed(2) : '0.00'}</div>
+                    <div className="text-3xl font-light text-black">€{selectedVolume ? calculatePrice(selectedVolume).toFixed(2) : '0.00'}</div>
                   </div>
                   <button
                     type="submit"

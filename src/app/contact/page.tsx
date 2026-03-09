@@ -104,7 +104,7 @@ export default function ContactPage() {
               transition={{ delay: 0.2 }}
             >
               <div className="glass-card p-8">
-                <h2 className="text-2xl font-playfair text-white mb-6">Send us a Message</h2>
+                <h2 className="text-2xl font-playfair text-black mb-6">Send us a Message</h2>
 
                 {isSubmitted ? (
                   <motion.div
@@ -113,8 +113,8 @@ export default function ContactPage() {
                     className="text-center py-12"
                   >
                     <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
-                    <h3 className="text-xl font-semibold text-white mb-2">Message Sent!</h3>
-                    <p className="text-gray-400">We&apos;ll get back to you as soon as possible.</p>
+                    <h3 className="text-xl font-semibold text-black mb-2">Message Sent!</h3>
+                    <p className="text-gray-600">We&apos;ll get back to you as soon as possible.</p>
                   </motion.div>
                 ) : (
                   <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
@@ -224,7 +224,7 @@ export default function ContactPage() {
               className="space-y-8"
             >
               <div>
-                <h2 className="text-2xl font-playfair text-white mb-6">Get in Touch</h2>
+                <h2 className="text-2xl font-playfair text-black mb-6">Get in Touch</h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {contactInfo.map((item, index) => (
                     <motion.div
@@ -237,9 +237,9 @@ export default function ContactPage() {
                       <div className="w-10 h-10 rounded-full bg-gold/10 border border-gold/30 flex items-center justify-center mb-3">
                         {item.icon}
                       </div>
-                      <h3 className="text-white font-medium text-sm mb-1">{item.title}</h3>
+                      <h3 className="text-black font-medium text-sm mb-1">{item.title}</h3>
                       {item.details.map((detail, i) => (
-                        <p key={i} className="text-gray-400 text-xs">
+                        <p key={i} className="text-gray-600 text-xs">
                           {detail}
                         </p>
                       ))}

@@ -50,10 +50,10 @@ export default function AboutPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <h2 className="text-2xl md:text-3xl font-playfair text-white mb-6">
+              <h2 className="text-2xl md:text-3xl font-playfair text-black mb-6">
                 Where Luxury Meets <span className="text-gold">Distinction</span>
               </h2>
-              <div className="space-y-4 text-gray-400 text-sm leading-relaxed">
+              <div className="space-y-4 text-gray-600 text-sm leading-relaxed">
                 <p>
                   Founded in the heart of Nicosia, Aquad&apos;or has established itself as Cyprus&apos;s premier destination for luxury fragrances. Our curated collection features high-end and niche perfumes from globally recognized brands.
                 </p>
@@ -117,10 +117,10 @@ export default function AboutPage() {
             viewport={{ once: true }}
             className="max-w-2xl mx-auto text-center"
           >
-            <h2 className="text-2xl md:text-3xl font-playfair text-white mb-5">
+            <h2 className="text-2xl md:text-3xl font-playfair text-black mb-5">
               Experience the Difference
             </h2>
-            <p className="text-gray-400 text-sm mb-8">
+            <p className="text-gray-600 text-sm mb-8">
               Visit our boutique in Nicosia or explore our collection online.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">

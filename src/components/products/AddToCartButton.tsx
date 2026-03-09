@@ -92,15 +92,15 @@ export default function AddToCartButton({ product }: AddToCartButtonProps) {
           <button
             onClick={decreaseQuantity}
             disabled={quantity <= 1}
-            className="w-12 h-12 rounded-full bg-dark-lighter border border-gold-500/20 flex items-center justify-center text-gray-400 hover:text-gold hover:border-gold-500/40 hover:bg-gold-500/10 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-12 h-12 rounded-full bg-gray-100 border border-gold-500/20 flex items-center justify-center text-gray-600 hover:text-gold hover:border-gold-500/40 hover:bg-gold-500/10 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             aria-label="Decrease quantity"
           >
             <Minus className="w-4 h-4" />
           </button>
-          <span className="w-12 text-center text-white font-semibold">{quantity}</span>
+          <span className="w-12 text-center text-black font-semibold">{quantity}</span>
           <button
             onClick={increaseQuantity}
-            className="w-12 h-12 rounded-full bg-dark-lighter border border-gold-500/20 flex items-center justify-center text-gray-400 hover:text-gold hover:border-gold-500/40 hover:bg-gold-500/10 transition-colors"
+            className="w-12 h-12 rounded-full bg-gray-100 border border-gold-500/20 flex items-center justify-center text-gray-600 hover:text-gold hover:border-gold-500/40 hover:bg-gold-500/10 transition-colors"
             aria-label="Increase quantity"
           >
             <Plus className="w-4 h-4" />
@@ -124,7 +124,7 @@ export default function AddToCartButton({ product }: AddToCartButtonProps) {
         }
         animate={isAdded && !reducedMotion ? tapVariants.pulse : undefined}
         transition={{ duration: 0.15 }}
-        className={`w-full py-4 min-h-[44px] rounded-xl font-medium tracking-[0.05em] flex items-center justify-center gap-2 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2 focus-visible:ring-offset-dark ${
+        className={`w-full py-4 min-h-[44px] rounded-xl font-medium tracking-[0.05em] flex items-center justify-center gap-2 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white ${
           isAdded
             ? 'bg-emerald-500/90 text-white'
             : product.inStock

@@ -52,7 +52,7 @@ export default function CookieConsent() {
           transition={{ type: 'spring', damping: 25, stiffness: 300 }}
           className="fixed bottom-0 left-0 right-0 z-50 p-4 md:p-6"
         >
-          <div className="max-w-4xl mx-auto bg-dark-light border border-gold/20 rounded-2xl shadow-2xl overflow-hidden">
+          <div className="max-w-4xl mx-auto bg-white border border-gold/20 rounded-2xl shadow-2xl overflow-hidden">
             <div className="p-6 md:p-8">
               <div className="flex items-start gap-4">
                 <div className="hidden sm:flex w-12 h-12 rounded-full bg-gold/10 border border-gold/30 items-center justify-center flex-shrink-0">
@@ -62,10 +62,10 @@ export default function CookieConsent() {
                 <div className="flex-1">
                   <div className="flex items-start justify-between gap-4">
                     <div>
-                      <h3 className="text-lg font-playfair text-white mb-2">
+                      <h3 className="text-lg font-playfair text-black mb-2">
                         We Value Your Privacy
                       </h3>
-                      <p className="text-sm text-gray-400 mb-4 max-w-2xl">
+                      <p className="text-sm text-gray-600 mb-4 max-w-2xl">
                         We use cookies to enhance your browsing experience, serve personalized content,
                         and analyze our traffic. By clicking &quot;Accept All&quot;, you consent to our use of cookies.
                         Read our{' '}
@@ -78,7 +78,7 @@ export default function CookieConsent() {
 
                     <button
                       onClick={handleDecline}
-                      className="p-2 text-gray-500 hover:text-white transition-colors md:hidden"
+                      className="p-2 text-gray-500 hover:text-black transition-colors md:hidden"
                       aria-label="Close cookie banner"
                     >
                       <X className="w-5 h-5" />
@@ -100,7 +100,7 @@ export default function CookieConsent() {
                     </button>
                     <Link
                       href="/privacy"
-                      className="px-6 py-3 text-gray-400 hover:text-white transition-colors text-center"
+                      className="px-6 py-3 text-gray-600 hover:text-black transition-colors text-center"
                     >
                       Learn More
                     </Link>

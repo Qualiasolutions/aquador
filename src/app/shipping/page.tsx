@@ -44,17 +44,17 @@ export default function ShippingPage() {
                 <p>
                   Thank you for shopping at Aquad&apos;or Cyprus! We understand that receiving your order promptly and securely is important. This policy outlines our shipping and return processes.
                 </p>
-                <h3 className="text-lg text-white">Order Processing</h3>
+                <h3 className="text-lg text-black">Order Processing</h3>
                 <p>
                   We strive to process and ship all orders within 24 business hours (excluding Sundays and public holidays) after receiving your order confirmation.
                 </p>
-                <h3 className="text-lg text-white">Delivery Times</h3>
+                <h3 className="text-lg text-black">Delivery Times</h3>
                 <ul className="list-disc pl-6 space-y-2">
-                  <li><strong className="text-white">Nicosia Area:</strong> Same-day delivery for orders placed before noon, next-day delivery for orders placed after noon.</li>
-                  <li><strong className="text-white">Major Cities in Cyprus:</strong> Within 1-2 business days.</li>
-                  <li><strong className="text-white">Other Areas in Cyprus:</strong> Within 2-3 business days.</li>
+                  <li><strong className="text-black">Nicosia Area:</strong> Same-day delivery for orders placed before noon, next-day delivery for orders placed after noon.</li>
+                  <li><strong className="text-black">Major Cities in Cyprus:</strong> Within 1-2 business days.</li>
+                  <li><strong className="text-black">Other Areas in Cyprus:</strong> Within 2-3 business days.</li>
                 </ul>
-                <h3 className="text-lg text-white">Tracking Your Order</h3>
+                <h3 className="text-lg text-black">Tracking Your Order</h3>
                 <p>
                   Once your order is shipped, you&apos;ll receive a notification email with a tracking number that allows you to monitor your package&apos;s progress.
                 </p>
@@ -74,20 +74,20 @@ export default function ShippingPage() {
                 <p>
                   We want you to be completely satisfied with your purchase. If, for any reason, you&apos;re not happy with your order, we offer returns and exchanges within 14 days of receiving your package.
                 </p>
-                <h3 className="text-lg text-white">Eligibility for Return/Exchange</h3>
+                <h3 className="text-lg text-black">Eligibility for Return/Exchange</h3>
                 <ul className="list-disc pl-6 space-y-2">
                   <li>Unopened, unused, and undamaged items in their original packaging with all tags attached are eligible.</li>
                   <li>For hygiene reasons, we cannot accept returns of opened perfumes.</li>
                   <li>Items damaged during shipping must be reported within 24 hours of receipt for a replacement.</li>
                 </ul>
-                <h3 className="text-lg text-white">Return Process</h3>
+                <h3 className="text-lg text-black">Return Process</h3>
                 <ol className="list-decimal pl-6 space-y-2">
                   <li>Contact our Customer Service team at +357 99 980809 or info@aquadorcy.com to initiate a return.</li>
                   <li>We&apos;ll provide you with a return authorization number (RAN) and instructions.</li>
                   <li>Pack the item securely in its original packaging and include the RAN slip.</li>
                   <li>Ship the package to the address we provide. You are responsible for return shipping costs.</li>
                 </ol>
-                <h3 className="text-lg text-white">Refunds</h3>
+                <h3 className="text-lg text-black">Refunds</h3>
                 <p>
                   Once we receive your returned item and verify it meets the return criteria, we&apos;ll initiate a refund to your original payment method within 5-7 business days. Shipping costs will not be refunded.
                 </p>

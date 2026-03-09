@@ -61,7 +61,7 @@ export function ProductCard({ product, priority = false, variant = 'default' }: 
     >
       <Link
         href={`/products/${product.id}`}
-        className={`group block bg-dark-lighter/80 backdrop-blur-sm border border-gold-500/10 hover:border-gold-500/30 rounded-2xl ${padding} shadow-lg shadow-black/20 hover:shadow-xl hover:shadow-gold-500/10 transition-all duration-300 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2 focus-visible:ring-offset-dark`}
+        className={`group block bg-white border border-gold-500/10 hover:border-gold-500/30 rounded-2xl ${padding} shadow-lg shadow-black/10 hover:shadow-xl hover:shadow-gold-500/10 transition-all duration-300 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white`}
         aria-label={`View ${product.name}`}
         onMouseEnter={() => {
           setIsHovered(true);
@@ -131,7 +131,7 @@ export function ProductCard({ product, priority = false, variant = 'default' }: 
         {/* Out of Stock Overlay */}
         {!inStock && (
           <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px] flex items-center justify-center rounded-xl">
-            <div className="bg-dark-lighter/90 backdrop-blur-sm border border-gold-500/20 text-gold-500 text-xs uppercase tracking-wider px-4 py-2 font-medium rounded-full">
+            <div className="bg-white/90 backdrop-blur-sm border border-gold-500/20 text-gold-500 text-xs uppercase tracking-wider px-4 py-2 font-medium rounded-full">
               Coming Soon
             </div>
           </div>
@@ -146,7 +146,7 @@ export function ProductCard({ product, priority = false, variant = 'default' }: 
         </p>
 
         {/* Product Name */}
-        <h3 className={`${nameSize} font-playfair font-medium tracking-tight text-white line-clamp-2 group-hover:text-gold-400 transition-colors`}>
+        <h3 className={`${nameSize} font-playfair font-medium tracking-tight text-black line-clamp-2 group-hover:text-gold-400 transition-colors`}>
           {product.name}
         </h3>
 

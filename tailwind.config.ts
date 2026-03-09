@@ -27,9 +27,9 @@ const config: Config = {
           900: "oklch(35% 0.08 65)",
         },
         dark: {
-          DEFAULT: "#0a0a0a",
-          light: "#1a1a1a",
-          lighter: "#2a2a2a",
+          DEFAULT: "#FAFAF8",
+          light: "#F5F3EF",
+          lighter: "#EDE9E3",
         },
         gray: {
           50: "var(--gray-50)",
@@ -70,7 +70,8 @@ const config: Config = {
       },
       backgroundImage: {
         "gold-gradient": "linear-gradient(135deg, #D4AF37 0%, #FFD700 50%, #D4AF37 100%)",
-        "dark-gradient": "linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%)",
+        "dark-gradient": "linear-gradient(135deg, #FAFAF8 0%, #F5F3EF 50%, #FAFAF8 100%)",
+        "light-gradient": "linear-gradient(135deg, #FAFAF8 0%, #F5F3EF 50%, #FAFAF8 100%)",
       },
     },
   },

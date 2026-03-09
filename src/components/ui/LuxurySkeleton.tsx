@@ -28,11 +28,11 @@ export function LuxurySkeleton({ className = '' }: LuxurySkeletonProps) {
 
   return (
     <div
-      className={`bg-dark-lighter border border-gold-500/5 rounded-2xl ${className}`}
+      className={`bg-gray-100 border border-gold-500/5 rounded-2xl ${className}`}
       style={{
         background: prefersReducedMotion
-          ? 'oklch(0.15 0.01 85)' // Static dark background with slight gold tint
-          : 'linear-gradient(90deg, oklch(0.15 0.01 85) 25%, oklch(0.15 0.01 85 / 0.95) 37.5%, oklch(0.78 0.11 85 / 0.08) 50%, oklch(0.15 0.01 85 / 0.95) 62.5%, oklch(0.15 0.01 85) 75%)',
+          ? 'oklch(0.94 0.005 85)' // Static light background with slight gold tint
+          : 'linear-gradient(90deg, oklch(0.94 0.005 85) 25%, oklch(0.94 0.005 85 / 0.95) 37.5%, oklch(0.78 0.11 85 / 0.08) 50%, oklch(0.94 0.005 85 / 0.95) 62.5%, oklch(0.94 0.005 85) 75%)',
         backgroundSize: prefersReducedMotion ? '100% 100%' : '200% 100%',
         animation: prefersReducedMotion ? 'none' : 'luxuryShimmer 2s ease-in-out infinite',
       }}
@@ -59,14 +59,14 @@ export function LuxuryProductCardSkeleton() {
   }, []);
 
   return (
-    <div className="rounded-2xl overflow-hidden border border-gold-500/10 bg-dark-lighter">
+    <div className="rounded-2xl overflow-hidden border border-gold-500/10 bg-gray-100">
       {/* Image placeholder - aspect-[4/5] matching ProductImage card variant */}
       <div
         className="w-full aspect-[4/5]"
         style={{
           background: prefersReducedMotion
-            ? 'oklch(0.15 0.01 85)'
-            : 'linear-gradient(90deg, oklch(0.15 0.01 85) 25%, oklch(0.15 0.01 85 / 0.95) 37.5%, oklch(0.78 0.11 85 / 0.08) 50%, oklch(0.15 0.01 85 / 0.95) 62.5%, oklch(0.15 0.01 85) 75%)',
+            ? 'oklch(0.94 0.005 85)'
+            : 'linear-gradient(90deg, oklch(0.94 0.005 85) 25%, oklch(0.15 0.01 85 / 0.95) 37.5%, oklch(0.78 0.11 85 / 0.08) 50%, oklch(0.15 0.01 85 / 0.95) 62.5%, oklch(0.94 0.005 85) 75%)',
           backgroundSize: prefersReducedMotion ? '100% 100%' : '200% 100%',
           animation: prefersReducedMotion ? 'none' : 'luxuryShimmer 2s ease-in-out infinite',
         }}
@@ -79,8 +79,8 @@ export function LuxuryProductCardSkeleton() {
           className="h-2.5 w-16 rounded"
           style={{
             background: prefersReducedMotion
-              ? 'oklch(0.15 0.01 85)'
-              : 'linear-gradient(90deg, oklch(0.15 0.01 85) 25%, oklch(0.15 0.01 85 / 0.95) 37.5%, oklch(0.78 0.11 85 / 0.08) 50%, oklch(0.15 0.01 85 / 0.95) 62.5%, oklch(0.15 0.01 85) 75%)',
+              ? 'oklch(0.94 0.005 85)'
+              : 'linear-gradient(90deg, oklch(0.94 0.005 85) 25%, oklch(0.15 0.01 85 / 0.95) 37.5%, oklch(0.78 0.11 85 / 0.08) 50%, oklch(0.15 0.01 85 / 0.95) 62.5%, oklch(0.94 0.005 85) 75%)',
             backgroundSize: prefersReducedMotion ? '100% 100%' : '200% 100%',
             animation: prefersReducedMotion ? 'none' : 'luxuryShimmer 2s ease-in-out infinite',
             animationDelay: '0.1s',
@@ -92,8 +92,8 @@ export function LuxuryProductCardSkeleton() {
           className="h-4 w-3/4 rounded"
           style={{
             background: prefersReducedMotion
-              ? 'oklch(0.15 0.01 85)'
-              : 'linear-gradient(90deg, oklch(0.15 0.01 85) 25%, oklch(0.15 0.01 85 / 0.95) 37.5%, oklch(0.78 0.11 85 / 0.08) 50%, oklch(0.15 0.01 85 / 0.95) 62.5%, oklch(0.15 0.01 85) 75%)',
+              ? 'oklch(0.94 0.005 85)'
+              : 'linear-gradient(90deg, oklch(0.94 0.005 85) 25%, oklch(0.15 0.01 85 / 0.95) 37.5%, oklch(0.78 0.11 85 / 0.08) 50%, oklch(0.15 0.01 85 / 0.95) 62.5%, oklch(0.94 0.005 85) 75%)',
             backgroundSize: prefersReducedMotion ? '100% 100%' : '200% 100%',
             animation: prefersReducedMotion ? 'none' : 'luxuryShimmer 2s ease-in-out infinite',
             animationDelay: '0.2s',
@@ -105,8 +105,8 @@ export function LuxuryProductCardSkeleton() {
           className="h-5 w-20 rounded"
           style={{
             background: prefersReducedMotion
-              ? 'oklch(0.15 0.01 85)'
-              : 'linear-gradient(90deg, oklch(0.15 0.01 85) 25%, oklch(0.15 0.01 85 / 0.95) 37.5%, oklch(0.78 0.11 85 / 0.08) 50%, oklch(0.15 0.01 85 / 0.95) 62.5%, oklch(0.15 0.01 85) 75%)',
+              ? 'oklch(0.94 0.005 85)'
+              : 'linear-gradient(90deg, oklch(0.94 0.005 85) 25%, oklch(0.15 0.01 85 / 0.95) 37.5%, oklch(0.78 0.11 85 / 0.08) 50%, oklch(0.15 0.01 85 / 0.95) 62.5%, oklch(0.94 0.005 85) 75%)',
             backgroundSize: prefersReducedMotion ? '100% 100%' : '200% 100%',
             animation: prefersReducedMotion ? 'none' : 'luxuryShimmer 2s ease-in-out infinite',
             animationDelay: '0.3s',
@@ -203,8 +203,8 @@ export function LuxuryFilterSkeleton() {
             className={`h-[44px] ${pill.width} rounded-lg`}
             style={{
               background: prefersReducedMotion
-                ? 'oklch(0.15 0.01 85)'
-                : 'linear-gradient(90deg, oklch(0.15 0.01 85) 25%, oklch(0.15 0.01 85 / 0.95) 37.5%, oklch(0.78 0.11 85 / 0.08) 50%, oklch(0.15 0.01 85 / 0.95) 62.5%, oklch(0.15 0.01 85) 75%)',
+                ? 'oklch(0.94 0.005 85)'
+                : 'linear-gradient(90deg, oklch(0.94 0.005 85) 25%, oklch(0.15 0.01 85 / 0.95) 37.5%, oklch(0.78 0.11 85 / 0.08) 50%, oklch(0.15 0.01 85 / 0.95) 62.5%, oklch(0.94 0.005 85) 75%)',
               backgroundSize: prefersReducedMotion ? '100% 100%' : '200% 100%',
               animation: prefersReducedMotion ? 'none' : 'luxuryShimmer 2s ease-in-out infinite',
               animationDelay: `${index * 0.1}s`,
@@ -247,15 +247,15 @@ export function LuxuryHeroSkeleton() {
         }
       `}</style>
 
-      <div className="relative py-16 md:py-20 overflow-hidden bg-dark-lighter/50">
+      <div className="relative py-16 md:py-20 overflow-hidden bg-gray-100/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
           {/* Title */}
           <div
             className="h-12 w-64 rounded mx-auto"
             style={{
               background: prefersReducedMotion
-                ? 'oklch(0.15 0.01 85)'
-                : 'linear-gradient(90deg, oklch(0.15 0.01 85) 25%, oklch(0.15 0.01 85 / 0.95) 37.5%, oklch(0.78 0.11 85 / 0.08) 50%, oklch(0.15 0.01 85 / 0.95) 62.5%, oklch(0.15 0.01 85) 75%)',
+                ? 'oklch(0.94 0.005 85)'
+                : 'linear-gradient(90deg, oklch(0.94 0.005 85) 25%, oklch(0.15 0.01 85 / 0.95) 37.5%, oklch(0.78 0.11 85 / 0.08) 50%, oklch(0.15 0.01 85 / 0.95) 62.5%, oklch(0.94 0.005 85) 75%)',
               backgroundSize: prefersReducedMotion ? '100% 100%' : '200% 100%',
               animation: prefersReducedMotion ? 'none' : 'luxuryShimmer 2s ease-in-out infinite',
             }}
@@ -266,8 +266,8 @@ export function LuxuryHeroSkeleton() {
             className="h-6 w-96 max-w-full rounded mx-auto"
             style={{
               background: prefersReducedMotion
-                ? 'oklch(0.15 0.01 85)'
-                : 'linear-gradient(90deg, oklch(0.15 0.01 85) 25%, oklch(0.15 0.01 85 / 0.95) 37.5%, oklch(0.78 0.11 85 / 0.08) 50%, oklch(0.15 0.01 85 / 0.95) 62.5%, oklch(0.15 0.01 85) 75%)',
+                ? 'oklch(0.94 0.005 85)'
+                : 'linear-gradient(90deg, oklch(0.94 0.005 85) 25%, oklch(0.15 0.01 85 / 0.95) 37.5%, oklch(0.78 0.11 85 / 0.08) 50%, oklch(0.15 0.01 85 / 0.95) 62.5%, oklch(0.94 0.005 85) 75%)',
               backgroundSize: prefersReducedMotion ? '100% 100%' : '200% 100%',
               animation: prefersReducedMotion ? 'none' : 'luxuryShimmer 2s ease-in-out infinite',
               animationDelay: '0.2s',

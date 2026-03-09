@@ -24,11 +24,11 @@ export default function PrivacyPage() {
           <section>
             <h2 className="text-xl font-playfair text-gold mb-4">1. Information We Collect</h2>
             <div className="space-y-4 text-gray-400">
-              <h3 className="text-lg text-white">1.1 Personal Data</h3>
+              <h3 className="text-lg text-black">1.1 Personal Data</h3>
               <p>
                 We may collect personal identification information including: name, email address, mailing address, phone number, and credit card information when you register, place an order, subscribe to our newsletter, or fill out forms.
               </p>
-              <h3 className="text-lg text-white">1.2 Non-Personal Data</h3>
+              <h3 className="text-lg text-black">1.2 Non-Personal Data</h3>
               <p>
                 We may collect non-personal information about your interaction with our site, including browser name, computer type, and technical information about your means of connection such as operating system and Internet service provider.
               </p>
@@ -39,11 +39,11 @@ export default function PrivacyPage() {
             <h2 className="text-xl font-playfair text-gold mb-4">2. How We Use Your Information</h2>
             <div className="space-y-4 text-gray-400">
               <ul className="list-disc pl-6 space-y-2">
-                <li><strong className="text-white">Customer Service:</strong> To respond to your requests and support needs.</li>
-                <li><strong className="text-white">User Experience:</strong> To understand how users interact with our services.</li>
-                <li><strong className="text-white">Process Transactions:</strong> To complete your orders. We do not share this information except to provide the service.</li>
-                <li><strong className="text-white">Send Communications:</strong> To send order updates and occasional company news. You can unsubscribe at any time.</li>
-                <li><strong className="text-white">Improve Our Site:</strong> Based on your feedback and usage patterns.</li>
+                <li><strong className="text-black">Customer Service:</strong> To respond to your requests and support needs.</li>
+                <li><strong className="text-black">User Experience:</strong> To understand how users interact with our services.</li>
+                <li><strong className="text-black">Process Transactions:</strong> To complete your orders. We do not share this information except to provide the service.</li>
+                <li><strong className="text-black">Send Communications:</strong> To send order updates and occasional company news. You can unsubscribe at any time.</li>
+                <li><strong className="text-black">Improve Our Site:</strong> Based on your feedback and usage patterns.</li>
               </ul>
             </div>
           </section>
@@ -81,10 +81,10 @@ export default function PrivacyPage() {
             <div className="space-y-4 text-gray-400">
               <p>We retain your data for the following periods:</p>
               <ul className="list-disc pl-6 space-y-2">
-                <li><strong className="text-white">Contact form submissions:</strong> Retained for 90 days, then automatically deleted.</li>
-                <li><strong className="text-white">Payment records:</strong> Processed and retained by Stripe in accordance with their retention policy (up to 7 years for legal and regulatory compliance).</li>
-                <li><strong className="text-white">Shopping cart data:</strong> Stored in your browser&apos;s localStorage until you clear your browser data or remove items.</li>
-                <li><strong className="text-white">Cookie consent preferences:</strong> Stored in your browser&apos;s localStorage until you clear your browser data.</li>
+                <li><strong className="text-black">Contact form submissions:</strong> Retained for 90 days, then automatically deleted.</li>
+                <li><strong className="text-black">Payment records:</strong> Processed and retained by Stripe in accordance with their retention policy (up to 7 years for legal and regulatory compliance).</li>
+                <li><strong className="text-black">Shopping cart data:</strong> Stored in your browser&apos;s localStorage until you clear your browser data or remove items.</li>
+                <li><strong className="text-black">Cookie consent preferences:</strong> Stored in your browser&apos;s localStorage until you clear your browser data.</li>
               </ul>
             </div>
           </section>
@@ -100,9 +100,9 @@ export default function PrivacyPage() {
             <h2 className="text-xl font-playfair text-gold mb-4">Contact Us</h2>
             <div className="text-gray-400 space-y-1">
               <p>If you have questions about this Privacy Policy, please contact us:</p>
-              <p><strong className="text-white">Email:</strong> info@aquadorcy.com</p>
-              <p><strong className="text-white">Phone:</strong> +357 99 980809</p>
-              <p><strong className="text-white">Address:</strong> Ledra 145, 1011, Nicosia, Cyprus</p>
+              <p><strong className="text-black">Email:</strong> info@aquadorcy.com</p>
+              <p><strong className="text-black">Phone:</strong> +357 99 980809</p>
+              <p><strong className="text-black">Address:</strong> Ledra 145, 1011, Nicosia, Cyprus</p>
             </div>
           </section>
             </div>
