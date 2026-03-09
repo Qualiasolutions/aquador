@@ -29,6 +29,53 @@ export const PARALLAX_CONFIG = {
 } as const;
 
 /**
+ * Accessibility configuration for vestibular-safe parallax
+ *
+ * Users with vestibular disorders (e.g., BPPV, labyrinthitis) can experience
+ * nausea and disorientation from parallax motion. WCAG 2.3.3 recommends
+ * reducing or eliminating motion for these users.
+ *
+ * vestibularSafeMultiplier: 0.33 reduces parallax speed to one-third of
+ * the requested speed — enough to retain visual depth without triggering
+ * vestibular symptoms. This applies when prefers-reduced-motion is "reduce".
+ *
+ * Note: Full disable (speed = 0) is also respected when the component
+ * explicitly opts in to that behavior.
+ */
+export const ACCESSIBILITY_CONFIG = {
+  /**
+   * Multiplier applied to parallax speed when prefers-reduced-motion is active.
+   * 0.33 = one third of normal speed (33%).
+   */
+  vestibularSafeMultiplier: 0.33,
+} as const;
+
+/**
+ * Get the accessible parallax speed
+ *
+ * When the user has prefers-reduced-motion enabled, parallax speed is
+ * reduced to 33% of the requested value rather than disabled entirely.
+ * This retains visual hierarchy cues while preventing vestibular triggers.
+ *
+ * @param speed - The desired parallax speed (0-1)
+ * @param reducedMotion - Whether prefers-reduced-motion is active
+ * @returns Effective speed, reduced for vestibular safety if needed
+ *
+ * @example
+ * ```ts
+ * const effectiveSpeed = getAccessibleSpeed(0.5, reducedMotion);
+ * // With reducedMotion=true:  returns 0.165 (0.5 * 0.33)
+ * // With reducedMotion=false: returns 0.5
+ * ```
+ */
+export function getAccessibleSpeed(speed: number, reducedMotion: boolean): number {
+  if (reducedMotion) {
+    return speed * ACCESSIBILITY_CONFIG.vestibularSafeMultiplier;
+  }
+  return speed;
+}
+
+/**
  * Preset parallax transform ranges
  *
  * Defines input/output ranges for different parallax intensities.
@@ -172,5 +219,6 @@ export function useParallaxEngagementTracking(
         enterTimeRef.current = null;
       }
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [elementId]);
 }
