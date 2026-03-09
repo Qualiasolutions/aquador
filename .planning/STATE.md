@@ -6,14 +6,14 @@ See: .planning/PROJECT.md (updated 2026-03-09)
 
 **Core value:** A customer completes a purchase and knows it worked — they see their order details on screen, receive a confirmation email, and the store is notified. No silent failures, no misleading messages, no security holes.
 
-**Current focus:** v2.0 Immersive Luxury Experience - Phase 13 (Parallax & Visual Foundation)
+**Current focus:** v2.0 Immersive Luxury Experience - Phase 15 (Immersive Navigation & Discovery)
 
 ## Current Position
 
 Phase: 15 of 17 (Immersive Navigation & Discovery)
-Plan: 2 of 4 (Plan 02 complete)
+Plan: 1 of 3 (Plan 01 complete)
 Status: In progress - Wave 1 execution
-Last activity: 2026-03-09 — Completed 15-02 (Discovery & Quick View)
+Last activity: 2026-03-09 — Completed 15-01 (Animated Filters & Category Transitions)
 
 Progress: [█████████████░░░░░░░] 68% (32/47 total plans complete)
 
@@ -37,10 +37,9 @@ All v1.0 + v1.1 + v1.2 decisions logged in PROJECT.md Key Decisions table.
 - **Phase 13-01:** Framer Motion useScroll/useTransform for parallax (zero bundle increase)
 - **Phase 13-01:** Speed-based parallax API (0.3=slow, 0.5=medium, 0.8=fast) over distance-based
 - **Phase 13-01:** Parallax disabled by default on mobile (<768px) for Safari performance
-- **Phase 15-02:** 700ms image zoom timing for luxury feel (slower = more intentional)
-- **Phase 15-02:** Mobile tap-to-reveal pattern (first tap = overlay, second tap = navigate)
-- **Phase 15-02:** Progressive grid loading starts at 2 rows (8 products) for performance
-- **Phase 15-02:** Extract fragrance notes from tags using "note-*" prefix pattern
+- **Phase 15-01:** Spring animations (stiffness 400, damping 25) for filter pills - snappy luxury feel
+- **Phase 15-01:** AnimatePresence mode="popLayout" for smooth product grid transitions
+- **Phase 15-01:** 30ms stagger delay for product reveals (elegant sequential animation)
 
 ### Pending Checkpoints
 
@@ -63,12 +62,12 @@ All v1.0 + v1.1 + v1.2 decisions logged in PROJECT.md Key Decisions table.
 ## Session Continuity
 
 Last session: 2026-03-09
-Completed: Phase 15 Plan 02 - Discovery & Quick View (fully autonomous)
+Completed: Phase 15 Plan 01 - Animated Filters & Category Transitions (fully autonomous)
 Tasks: 2/2 complete (all tasks executed successfully)
-Commits: 686989c, 0d3a98f
-Duration: 3 minutes
-Files: 3 created, 1 modified
-Resume: Ready for 15-03 or continue with other Phase 15 plans
+Commits: 51b6875, d506b67
+Duration: 3.75 minutes
+Files: 3 created, 2 modified
+Resume: Ready for 15-02 or continue with other Phase 15 plans
 
 ---
-*Last updated: 2026-03-09 after Phase 15-02 autonomous execution (complete)*
+*Last updated: 2026-03-09 after Phase 15-01 autonomous execution (complete)*
