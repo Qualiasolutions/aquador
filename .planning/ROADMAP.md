@@ -159,12 +159,13 @@ Plans:
   4. User experiences 3D product visualization in custom perfume builder interface
   5. User can view multiple product angles with smooth interpolation between views
   6. User experiences optimized 3D performance on mobile devices with progressive loading
-**Plans**: TBD
+**Plans**: 4 plans
 
 Plans:
-- [ ] 14-01: TBD
-- [ ] 14-02: TBD
-- [ ] 14-03: TBD
+- [ ] 14-01-PLAN.md — 3D infrastructure with R3F, lighting, and base model
+- [ ] 14-02-PLAN.md — Product page 3D viewer with dynamic loading
+- [ ] 14-03-PLAN.md — Custom perfume builder 3D integration
+- [ ] 14-04-PLAN.md — Mobile optimization and performance tuning
 
 ### Phase 15: Immersive Navigation & Discovery
 **Goal**: Create immersive product browsing with advanced filtering, touch gestures, and seamless category transitions
@@ -177,12 +178,11 @@ Plans:
   4. User navigates product catalog with touch-optimized gestures on mobile devices
   5. User experiences seamless category transitions with visual continuity between views
   6. User sees elegant skeleton screens during content loading with luxury placeholders
-**Plans**: 3 plans
+**Plans**: TBD
 
 Plans:
-- [ ] 15-01-PLAN.md — Animated filter system and category transitions
-- [ ] 15-02-PLAN.md — Immersive product discovery with hover states and progressive disclosure
-- [ ] 15-03-PLAN.md — Touch gestures and luxury skeleton loading screens
+- [ ] 15-01: TBD
+- [ ] 15-02: TBD
 
 ### Phase 16: Analytics & Engagement Tracking
 **Goal**: Implement comprehensive tracking of user interactions with immersive elements for engagement analysis
@@ -235,10 +235,10 @@ Phases execute in numeric order: 1 → 4 → 8 → 9 → 10 → 11 → 12 → 13
 | 11. Product Experience | v1.2 | 3/3 | Complete | 2026-03-04 |
 | 12. Interactive Design | v1.2 | 3/3 | Complete | 2026-03-04 |
 | 13. Parallax & Visual | v2.0 | 0/3 | Not started | - |
-| 14. 3D Product Showcase | v2.0 | 0/? | Not started | - |
-| 15. Navigation & Discovery | v2.0 | 0/3 | Not started | - |
+| 14. 3D Product Showcase | v2.0 | 0/4 | Planned | - |
+| 15. Navigation & Discovery | v2.0 | 0/? | Not started | - |
 | 16. Analytics Tracking | v2.0 | 0/? | Not started | - |
 | 17. Accessibility & Polish | v2.0 | 0/? | Not started | - |
 
 ---
-*Last updated: 2026-03-09 after Phase 13 planning*
+*Last updated: 2026-03-09 after Phase 14 planning*
