@@ -23,7 +23,7 @@ export function useDeviceCapabilities(): DeviceCapabilities {
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ||
                     window.matchMedia('(max-width: 768px)').matches;
 
-    // @ts-ignore - deviceMemory not in TypeScript DOM lib
+    // @ts-expect-error - deviceMemory not in TypeScript DOM lib
     const memoryGB = (navigator.deviceMemory as number | undefined) || null;
 
     const isLowEnd = memoryGB !== null && memoryGB < 4;
