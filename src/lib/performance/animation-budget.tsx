@@ -12,6 +12,8 @@
 
 import { createContext, useContext, useState, useEffect } from 'react';
 import type { ReactNode } from 'react';
+import { usePerformanceMonitor } from '@/lib/analytics/performance-monitor';
+import { track } from '@vercel/analytics';
 
 /**
  * Animation budget thresholds
@@ -83,6 +85,42 @@ export function AnimationBudgetProvider({ children }: { children: ReactNode }) {
     isPerformant: true,
     shouldSimplify: false,
   });
+
+  // Monitor global FPS and frame drops via RAF — fires analytics on unmount if degraded
+  usePerformanceMonitor('animation_budget_global');
+
+  // Track quality adjustment when performance degrades (shouldSimplify flips to true)
+  useEffect(() => {
+    if (!budget.shouldSimplify) return;
+    try {
+      track('animation_quality_adjusted', {
+        reason: budget.averageFps < 45 ? 'fps_drop' : 'frame_drops',
+        avg_fps: Math.round(budget.averageFps),
+        device_type: typeof window !== 'undefined'
+          ? (window.innerWidth < 768 ? 'mobile' : window.innerWidth < 1024 ? 'tablet' : 'desktop')
+          : 'desktop',
+        timestamp: Date.now(),
+      });
+    } catch {
+      // Fail silently
+    }
+  }, [budget.shouldSimplify, budget.averageFps]);
+
+  // Track when FPS drops below POOR threshold (budget exceeded)
+  useEffect(() => {
+    if (budget.averageFps >= PERFORMANCE_THRESHOLDS.POOR) return;
+    try {
+      track('animation_budget_exceeded', {
+        avg_fps: Math.round(budget.averageFps),
+        budget_threshold: PERFORMANCE_THRESHOLDS.POOR,
+        device_type: typeof window !== 'undefined'
+          ? (window.innerWidth < 768 ? 'mobile' : window.innerWidth < 1024 ? 'tablet' : 'desktop')
+          : 'desktop',
+      });
+    } catch {
+      // Fail silently
+    }
+  }, [budget.averageFps]);
 
   useEffect(() => {
     // Skip FPS tracking on server
