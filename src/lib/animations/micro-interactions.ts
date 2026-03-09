@@ -163,10 +163,10 @@ export const tapVariants = {
    * <motion.button animate={tapVariants.pulse}>✓ Added!</motion.button>
    */
   pulse: {
-    scale: [1, 1.1, 1],
+    scale: [1, 1.1, 1] as number[],
     transition: {
       duration: 0.3,
-      ease: EXPO_EASE,
+      ease: [0.16, 1, 0.3, 1] as any,
     },
   },
 } as const;
@@ -243,7 +243,7 @@ export const loadingVariants = {
    * <motion.span animate={loadingVariants.pulse}>Loading...</motion.span>
    */
   pulse: {
-    opacity: [0.5, 1, 0.5],
+    opacity: [0.5, 1, 0.5] as number[],
     transition: {
       duration: 1.5,
       repeat: Infinity,
@@ -260,7 +260,7 @@ export const loadingVariants = {
    * <motion.span custom={0} variants={loadingVariants} animate="dots">.</motion.span>
    */
   dots: {
-    opacity: [0.3, 1, 0.3],
+    opacity: [0.3, 1, 0.3] as number[],
     transition: {
       duration: 1.2,
       repeat: Infinity,

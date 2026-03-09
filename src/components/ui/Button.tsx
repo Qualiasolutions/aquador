@@ -4,6 +4,7 @@ import { motion, HTMLMotionProps } from 'framer-motion';
 import { forwardRef } from 'react';
 import { cn } from '@/lib/utils';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { hoverVariants, tapVariants, focusVariants } from '@/lib/animations/micro-interactions';
 
 interface ButtonProps extends Omit<HTMLMotionProps<'button'>, 'ref'> {
   variant?: 'primary' | 'secondary' | 'outline' | 'ghost';
@@ -21,7 +22,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-black'
     );
 
-    const variants = {
+    const styleVariants = {
       primary: cn(
         'bg-gold text-black',
         'hover:bg-gold-light',
@@ -44,8 +45,6 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       ),
     };
 
-    const shouldAnimate = !disabled && !isLoading && !reducedMotion;
-
     const sizes = {
       sm: 'px-5 py-2.5 text-xs min-h-[40px]',
       md: 'px-7 py-3 text-sm min-h-[44px]',
@@ -53,19 +52,41 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       icon: 'p-2 min-h-[44px] min-w-[44px]',
     };
 
+    // Determine hover animation based on variant
+    const getHoverVariant = () => {
+      if (disabled || isLoading || reducedMotion) return undefined;
+
+      switch (variant) {
+        case 'primary':
+          return hoverVariants.glow;
+        case 'secondary':
+        case 'outline':
+          return hoverVariants.scale;
+        case 'ghost':
+          return { backgroundColor: 'rgba(212, 175, 55, 0.15)' };
+        default:
+          return hoverVariants.scale;
+      }
+    };
+
+    const getTapVariant = () => {
+      if (disabled || isLoading || reducedMotion) return undefined;
+      return tapVariants.shrink;
+    };
+
     return (
       <motion.button
         ref={ref}
         className={cn(
           baseStyles,
-          variants[variant],
+          styleVariants[variant],
           sizes[size],
           (disabled || isLoading) && 'opacity-50 cursor-not-allowed pointer-events-none',
           className
         )}
         disabled={disabled || isLoading}
-        whileHover={shouldAnimate ? { scale: 1.02 } : {}}
-        whileTap={shouldAnimate ? { scale: 0.97 } : {}}
+        whileHover={getHoverVariant()}
+        whileTap={getTapVariant()}
         transition={{ duration: 0.15 }}
         {...props}
       >
