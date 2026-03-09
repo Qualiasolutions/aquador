@@ -11,11 +11,11 @@ See: .planning/PROJECT.md (updated 2026-03-09)
 ## Current Position
 
 Phase: 13 of 17 (Parallax & Visual Foundation)
-Plan: Ready to plan first phase
-Status: Ready to plan
-Last activity: 2026-03-09 — v2.0 roadmap created with 5 phases covering 36 requirements
+Plan: 1 of 3 (Plan 01 complete)
+Status: In progress - Wave 1 complete
+Last activity: 2026-03-09 — Completed 13-01-PLAN.md (Parallax Visual Foundation)
 
-Progress: [████████████░░░░░░░░] 64% (30/47 total plans complete)
+Progress: [████████████░░░░░░░░] 66% (31/47 total plans complete)
 
 ## Milestones
 
@@ -34,6 +34,9 @@ All v1.0 + v1.1 + v1.2 decisions logged in PROJECT.md Key Decisions table.
 - v1.2: CSS-only backgrounds replaced Three.js (600KB savings) — informs 3D approach
 - v1.2: Framer Motion in 53 files — needs optimization for parallax/3D features
 - v1.2: Disable parallax on mobile Safari — pattern for v2.0 performance
+- **Phase 13-01:** Framer Motion useScroll/useTransform for parallax (zero bundle increase)
+- **Phase 13-01:** Speed-based parallax API (0.3=slow, 0.5=medium, 0.8=fast) over distance-based
+- **Phase 13-01:** Parallax disabled by default on mobile (<768px) for Safari performance
 
 ### Pending Checkpoints
 
@@ -56,8 +59,9 @@ All v1.0 + v1.1 + v1.2 decisions logged in PROJECT.md Key Decisions table.
 ## Session Continuity
 
 Last session: 2026-03-09
-Stopped at: v2.0 roadmap creation complete (5 phases, 36 requirements mapped)
-Next action: `/qualia:plan-phase 13`
+Stopped at: Phase 13 Plan 01 complete - Parallax Visual Foundation
+Resume file: .planning/phases/13-parallax-visual-foundation/13-01-SUMMARY.md
+Next action: Continue Phase 13 (Plan 02 or Plan 03)
 
 ---
-*Last updated: 2026-03-09 after v2.0 roadmap creation*
+*Last updated: 2026-03-09 after Phase 13-01 execution*
