@@ -69,11 +69,11 @@ export function ProgressiveLoader({
       {currentStage.icon === 'spinner' && (
         <LoadingSpinner size="lg" />
       )}
-      <p className="text-sm text-neutral-400 animate-pulse">
+      <p className={`text-sm text-neutral-400 ${reducedMotion ? '' : 'animate-pulse'}`}>
         {currentStage.message}
       </p>
       <div className="flex gap-2">
-        {stages.map((stage, idx) => (
+        {stages.map((_stage, idx) => (
           <div
             key={idx}
             className={`h-1 w-8 rounded-full transition-colors duration-300 ${
