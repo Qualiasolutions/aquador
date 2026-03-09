@@ -38,7 +38,7 @@ const createTransition = (
 ): Transition => ({
   duration,
   delay,
-  ease: ease as any,
+  ease: ease as [number, number, number, number],
 });
 
 /**

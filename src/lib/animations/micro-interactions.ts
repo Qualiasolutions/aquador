@@ -165,7 +165,7 @@ export const tapVariants = {
     scale: [1, 1.1, 1] as number[],
     transition: {
       duration: 0.3,
-      ease: [0.16, 1, 0.3, 1] as any,
+      ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
     },
   },
 } as const;
@@ -284,7 +284,7 @@ export const loadingVariants = {
  */
 export function createHoverEffect(
   type: keyof typeof hoverVariants,
-  options?: Record<string, any>
+  options?: Record<string, unknown>
 ) {
   const base = hoverVariants[type];
   return {
@@ -303,13 +303,13 @@ export function createHoverEffect(
  * @example
  * const combined = combineVariants(hoverVariants.lift, hoverVariants.glow);
  */
-export function combineVariants(variant1: any, variant2: any) {
+export function combineVariants(variant1: Record<string, unknown>, variant2: Record<string, unknown>) {
   return {
     ...variant1,
     ...variant2,
     transition: {
-      ...(typeof variant1 === 'object' && 'transition' in variant1 ? variant1.transition : {}),
-      ...(typeof variant2 === 'object' && 'transition' in variant2 ? variant2.transition : {}),
+      ...(typeof variant1 === 'object' && 'transition' in variant1 ? variant1.transition as Record<string, unknown> : {}),
+      ...(typeof variant2 === 'object' && 'transition' in variant2 ? variant2.transition as Record<string, unknown> : {}),
     },
   };
 }
@@ -330,8 +330,8 @@ export function combineVariants(variant1: any, variant2: any) {
  * );
  */
 export function withReducedMotion(
-  variants: any,
-  fallback: any,
+  variants: Record<string, unknown>,
+  fallback: Record<string, unknown>,
   isReducedMotion: boolean
 ) {
   return isReducedMotion ? fallback : variants;
