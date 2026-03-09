@@ -12,6 +12,7 @@ import { ErrorBoundary, AbortErrorSuppressor } from "@/components/providers/Erro
 import VisitorTracker from "@/components/VisitorTracker";
 import { PageTransition } from "@/components/providers/PageTransition";
 import { AnimationBudgetProvider } from "@/lib/performance/animation-budget";
+import { ScrollDepthTracker } from "@/components/analytics/ScrollDepthTracker";
 
 const ChatWidget = dynamic(() => import("@/components/ai/ChatWidget"), {
   ssr: false,
@@ -124,6 +125,7 @@ export default function RootLayout({
               <Footer />
               <CartDrawer />
               <CookieConsent />
+              <ScrollDepthTracker />
               <ChatWidget />
             </CartProvider>
           </AnimationBudgetProvider>

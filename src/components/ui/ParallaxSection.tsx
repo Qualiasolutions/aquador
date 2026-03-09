@@ -3,6 +3,7 @@
 import { motion, MotionProps } from 'framer-motion';
 import { useParallax } from '@/hooks/useParallax';
 import { ElementType, ReactNode } from 'react';
+import { useParallaxEngagementTracking } from '@/lib/animations/parallax';
 
 /**
  * Props for ParallaxSection component
@@ -44,6 +45,12 @@ export interface ParallaxSectionProps {
    * @default [0, 1]
    */
   range?: [number, number];
+
+  /**
+   * Analytics element ID for parallax engagement tracking
+   * If provided, tracks time this element is visible in viewport (>1s)
+   */
+  trackingId?: string;
 }
 
 /**
@@ -84,12 +91,16 @@ export function ParallaxSection({
   as = 'div',
   disableOnMobile = true,
   range = [0, 1],
+  trackingId,
 }: ParallaxSectionProps) {
   const { ref, transform, shouldAnimate } = useParallax({
     speed,
     disableOnMobile,
     range,
   });
+
+  // Track parallax engagement when element is visible >1s
+  useParallaxEngagementTracking(ref, trackingId ?? `parallax-${speed}`);
 
   // Create motion component with the specified element type
   const MotionComponent = motion[as as keyof typeof motion] as React.ComponentType<
