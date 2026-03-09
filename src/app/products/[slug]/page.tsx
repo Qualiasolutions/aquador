@@ -8,6 +8,7 @@ import AddToCartButton from '@/components/products/AddToCartButton';
 import RelatedProducts from '@/components/products/RelatedProducts';
 import ProductGallery from '@/components/products/ProductGallery';
 import ParallaxWrapper from './ParallaxWrapper';
+import { ProductViewTracker } from '@/components/products/ProductViewTracker';
 
 export const revalidate = 3600;
 
@@ -166,6 +167,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
   return (
     <>
+      {/* Analytics: track time spent on product page (client-side, >3s threshold) */}
+      <ProductViewTracker productSlug={slug} productName={product.name} />
+
       {/* Structured Data */}
       <script
         type="application/ld+json"
