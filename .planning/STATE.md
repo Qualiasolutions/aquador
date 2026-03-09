@@ -6,16 +6,16 @@ See: .planning/PROJECT.md (updated 2026-03-09)
 
 **Core value:** A customer completes a purchase and knows it worked — they see their order details on screen, receive a confirmation email, and the store is notified. No silent failures, no misleading messages, no security holes.
 
-**Current focus:** v2.0 Immersive Luxury Experience - Phase 14 (3D Product Showcase) in progress
+**Current focus:** v2.0 Immersive Luxury Experience - Phase 14 complete, ready for Phase 16
 
 ## Current Position
 
-Phase: 14 of 17 (3D Product Showcase)
-Plan: 3 of 4 complete
-Status: In progress - Wave 2 execution
-Last activity: 2026-03-09 — Completed 14-03 (Custom Perfume Builder 3D Integration)
+Phase: 14 of 17 (3D Product Showcase) — COMPLETE
+Plan: 4 of 4 complete
+Status: Phase 14 done
+Last activity: 2026-03-09 — Completed 14-04 (Mobile Optimization)
 
-Progress: [██████████████░░░░░░] 78% (37/47 total plans complete)
+Progress: [███████████████░░░░░] 80% (38/47 total plans complete)
 
 ## Milestones
 
@@ -52,6 +52,9 @@ All v1.0 + v1.1 + v1.2 decisions logged in PROJECT.md Key Decisions table.
 - **Phase 14-03:** Heart note color drives liquid visualization (top/base reserved for future gradient)
 - **Phase 14-03:** Toggle between 2D SVG and 3D preview (user choice for performance)
 - **Phase 14-03:** Auto-rotation at 0.3 rad/s for smooth showcase effect
+- **Phase 14-04:** PerformanceMonitor for adaptive DPR (auto-scales 1.0-2.0 based on frame rate)
+- **Phase 14-04:** useDeviceCapabilities hook for mobile/memory detection
+- **Phase 14-04:** Simplified lighting (no shadows) on mobile via device detection
 
 ### Pending Checkpoints
 
@@ -76,13 +79,10 @@ All v1.0 + v1.1 + v1.2 decisions logged in PROJECT.md Key Decisions table.
 ## Session Continuity
 
 Last session: 2026-03-09
-Completed: Phase 14 Plan 03 - Custom Perfume Builder 3D Integration (fully autonomous)
-Tasks: 3/3 complete (Tasks 1-2 already complete from previous work, Task 3 executed)
-Commits: 6d9bb53 (Task 1), b29886e (Task 2), 04f56b5 (Task 3)
-Duration: 2 minutes 37 seconds
-Files: 1 modified (CustomPerfumeBottle.tsx and notes.ts already had required features)
-Phase 14 Status: Plans 01, 02, 03 complete, 1 plan remaining (14-04 Mobile Optimization)
-Resume: Ready for Phase 14-04 (Mobile Optimization) to complete Phase 14
+Completed: Phase 14 — all 4 plans complete (3D Product Showcase)
+Commits: 6fbe1cd (14-04 mobile optimization)
+Phase 14 Status: COMPLETE (Plans 01-04 all done)
+Resume: Ready for Phase 16 (Phase 15 already complete)
 
 ---
-*Last updated: 2026-03-09 after Phase 14-03 autonomous execution*
+*Last updated: 2026-03-09 after Phase 14-04 completion*
