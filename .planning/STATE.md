@@ -6,16 +6,16 @@ See: .planning/PROJECT.md (updated 2026-03-09)
 
 **Core value:** A customer completes a purchase and knows it worked — they see their order details on screen, receive a confirmation email, and the store is notified. No silent failures, no misleading messages, no security holes.
 
-**Current focus:** v2.0 Immersive Luxury Experience - Phase 17 in progress (Plan 1/3 done)
+**Current focus:** v2.0 Immersive Luxury Experience - Phase 17 in progress (Plan 2/3 done)
 
 ## Current Position
 
 Phase: 17 of 17 (Accessibility & Polish) — In progress
-Plan: 1 of 3 complete
+Plan: 2 of 3 complete
 Status: In progress
-Last activity: 2026-03-09 — Completed 17-01 (Accessibility Foundations)
+Last activity: 2026-03-09 — Completed 17-02 (ARIA Support for 3D and Animated UI)
 
-Progress: [█████████████████░░░] 89% (42/47 total plans complete)
+Progress: [█████████████████░░░] 91% (43/47 total plans complete)
 
 ## Milestones
 
@@ -73,6 +73,9 @@ All v1.0 + v1.1 + v1.2 decisions logged in PROJECT.md Key Decisions table.
 - **Phase 17-01:** 33% speed reduction for reduced-motion parallax (WCAG 2.3.3) — not full disable, retains visual depth
 - **Phase 17-01:** useKeyboardControls fires callbacks, Scene.tsx owns OrbitControls mutation — decoupled hook design
 - **Phase 17-01:** localStorage for hints dismissal — dismissed once, gone forever across sessions
+    - **Phase 17-02:** aria-live=polite (not assertive) for 3D state — avoids interrupting ongoing screen reader speech
+    - **Phase 17-02:** Decorative parallax gets role=presentation + aria-hidden; ariaLabel prop unlocks meaningful variant
+    - **Phase 17-02:** isHighContrastMode adds outline:2px solid currentColor — uses currentColor so it inherits theme
 
 ### Pending Checkpoints
 
@@ -97,10 +100,10 @@ All v1.0 + v1.1 + v1.2 decisions logged in PROJECT.md Key Decisions table.
 ## Session Continuity
 
 Last session: 2026-03-09
-Completed: Phase 17-01 — Accessibility Foundations (3 tasks)
-Commits: 37712bb (task 1 vestibular parallax), 6919afb (task 2 keyboard controls), f42c15b (task 3 keyboard hints)
-Phase 17 Status: In progress — Plan 1/3 done
-Resume: Phase 17 Plan 2 — .planning/phases/17-accessibility-polish/17-02-PLAN.md
+Completed: Phase 17-02 — ARIA Support for 3D and Animated UI (3 tasks)
+Commits: 151b44b (task 1 aria-labels lib), 634a135 (task 2 Scene ARIA), 2ed4860 (task 3 animated UI ARIA)
+Phase 17 Status: In progress — Plan 2/3 done
+Resume: Phase 17 Plan 3 — .planning/phases/17-accessibility-polish/17-03-PLAN.md
 
 ---
 *Last updated: 2026-03-09 after Phase 17-01 completion*
