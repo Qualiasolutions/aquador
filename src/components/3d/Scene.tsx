@@ -1,6 +1,6 @@
 'use client';
 
-import { Suspense, useState, useRef, useCallback } from 'react';
+import { Suspense, useState, useRef, useCallback, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, PerformanceMonitor } from '@react-three/drei';
 import type { OrbitControls as OrbitControlsImpl } from 'three-stdlib';
@@ -14,6 +14,9 @@ import {
   get3DStateAnnouncement,
   isHighContrastMode,
 } from '@/lib/accessibility/aria-labels';
+import { ProgressiveLoader } from '@/components/ui/ProgressiveLoader';
+import { DEFAULT_3D_STAGES } from '@/lib/loading/states';
+import { measureLoadTime, endLoadMeasurement } from '@/lib/performance/metrics';
 
 type SceneProps = {
   children: React.ReactNode;
@@ -28,11 +31,17 @@ export function Scene({
   productName,
 }: SceneProps) {
   const capabilities = useDeviceCapabilities();
+  const { supports3D } = capabilities;
   const [dpr, setDpr] = useState(capabilities.recommendedDPR);
   const [announcement, setAnnouncement] = useState('');
   const rotateStartTimeRef = useRef<number | null>(null);
   const controlsRef = useRef<OrbitControlsImpl>(null);
   const highContrast = isHighContrastMode();
+
+  useEffect(() => {
+    measureLoadTime('3D-Scene');
+    return () => { endLoadMeasurement('3D-Scene'); };
+  }, []);
 
   const handleRotateStart = useCallback(() => {
     rotateStartTimeRef.current = performance.now();
@@ -121,6 +130,22 @@ export function Scene({
     onReset: handleKeyReset,
   });
 
+  if (!supports3D) {
+    return (
+      <div
+        className="flex items-center justify-center bg-neutral-900 rounded-lg aspect-square"
+        role="img"
+        aria-label={`${productName ?? 'Perfume'} — product image`}
+      >
+        <div className="w-32 h-32 rounded-full bg-gradient-to-b from-gold-500/20 to-neutral-800 flex items-center justify-center">
+          <span className="text-gold-500 text-xs text-center px-4">
+            3D viewer not available on this device
+          </span>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div
       className={`${className} relative`}
@@ -146,7 +171,9 @@ export function Scene({
           onIncline={() => setDpr(prev => Math.min(prev + 0.5, 2))}
           onDecline={() => setDpr(prev => Math.max(prev - 0.5, 1))}
         >
-          <Suspense fallback={null}>
+          <Suspense fallback={
+            <ProgressiveLoader stages={DEFAULT_3D_STAGES} className="h-full" />
+          }>
             {children}
             <OrbitControls
               ref={controlsRef}

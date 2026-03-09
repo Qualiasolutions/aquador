@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
 
-type DeviceCapabilities = {
+export interface DeviceCapabilities {
   isMobile: boolean;
   isLowEnd: boolean;
   canHandle3D: boolean;
   recommendedDPR: number;
   memoryGB: number | null;
-};
+  savesData: boolean;
+  supports3D: boolean;
+}
 
 export function useDeviceCapabilities(): DeviceCapabilities {
   const [capabilities, setCapabilities] = useState<DeviceCapabilities>({
@@ -15,6 +17,8 @@ export function useDeviceCapabilities(): DeviceCapabilities {
     canHandle3D: true,
     recommendedDPR: 1.5,
     memoryGB: null,
+    savesData: false,
+    supports3D: true,
   });
 
   useEffect(() => {
@@ -34,12 +38,23 @@ export function useDeviceCapabilities(): DeviceCapabilities {
 
     const canHandle3D = !isLowEnd || memoryGB === null;
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const connection = (navigator as any).connection;
+    const savesData = connection?.saveData === true ||
+      connection?.effectiveType === 'slow-2g' ||
+      connection?.effectiveType === '2g';
+
+    // supports3D: desktop always gets 3D; mobile only if not low-end and not data-saving
+    const supports3D = !isMobile || (!isLowEnd && !savesData);
+
     setCapabilities({
       isMobile,
       isLowEnd,
       canHandle3D,
       recommendedDPR,
       memoryGB,
+      savesData,
+      supports3D,
     });
   }, []);
 
