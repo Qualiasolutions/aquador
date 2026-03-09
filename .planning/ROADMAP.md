@@ -141,11 +141,12 @@ Plans:
   3. User encounters progressive content reveals triggered by scroll position
   4. User experiences all animations running at consistent 60fps on desktop and mobile
   5. User sees sophisticated micro-interactions on hover and touch with instant visual feedback
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] 13-01: TBD
-- [ ] 13-02: TBD
+- [ ] 13-01-PLAN.md — Parallax scrolling system (homepage + product pages)
+- [ ] 13-02-PLAN.md — Enhanced micro-interactions and hover effects
+- [ ] 13-03-PLAN.md — Cinematic transitions and performance optimization
 
 ### Phase 14: 3D Product Showcase
 **Goal**: Implement interactive 3D product viewing with rotation, zoom, and realistic rendering
@@ -232,11 +233,11 @@ Phases execute in numeric order: 1 → 4 → 8 → 9 → 10 → 11 → 12 → 13
 | 10. Visual Foundation | v1.2 | 3/3 | Complete | 2026-03-04 |
 | 11. Product Experience | v1.2 | 3/3 | Complete | 2026-03-04 |
 | 12. Interactive Design | v1.2 | 3/3 | Complete | 2026-03-04 |
-| 13. Parallax & Visual | v2.0 | 0/? | Not started | - |
+| 13. Parallax & Visual | v2.0 | 0/3 | Not started | - |
 | 14. 3D Product Showcase | v2.0 | 0/? | Not started | - |
 | 15. Navigation & Discovery | v2.0 | 0/? | Not started | - |
 | 16. Analytics Tracking | v2.0 | 0/? | Not started | - |
 | 17. Accessibility & Polish | v2.0 | 0/? | Not started | - |
 
 ---
-*Last updated: 2026-03-09 after v2.0 roadmap creation*
+*Last updated: 2026-03-09 after Phase 13 planning*
