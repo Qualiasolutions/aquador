@@ -8,6 +8,7 @@ import { PerfumeComposition, FragranceNote, PerfumeVolume, FragranceCategory } f
 import { isCompositionComplete } from '@/lib/perfume/composition'
 import { validatePerfumeForm } from '@/lib/perfume/validation'
 import { calculatePrice } from '@/lib/perfume/pricing'
+import { useDeviceCapabilities } from '@/hooks/useDeviceCapabilities'
 
 // Dynamically import 3D components (client-side only)
 const CustomPerfumeBottle = dynamic(
@@ -155,6 +156,7 @@ export default function CreatePerfumePage() {
   const [error, setError] = useState<string | null>(null)
   const [showForm, setShowForm] = useState(false)
   const [show3DPreview, setShow3DPreview] = useState(false)
+  const { isMobile } = useDeviceCapabilities()
   const reducedMotion = useReducedMotion()
 
   const handleSelectNote = (note: FragranceNote) => {
@@ -318,7 +320,7 @@ export default function CreatePerfumePage() {
                   <div className="w-full">
                     <div className="bg-gradient-to-b from-dark-900/30 to-dark-900/60 backdrop-blur-sm rounded-xl border border-gold/20 overflow-hidden">
                       <Scene className="w-full h-[400px]">
-                        <Lighting simplified={false} />
+                        <Lighting simplified={isMobile} />
                         <CustomPerfumeBottle
                           _topNoteColor={topNoteColor}
                           heartNoteColor={heartNoteColor}
