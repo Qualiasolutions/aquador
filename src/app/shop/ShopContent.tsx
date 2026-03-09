@@ -12,6 +12,7 @@ import {
   gridItemVariants,
   FILTER_TIMING,
 } from '@/lib/animations/filter-transitions';
+import { DiscoveryGrid } from '@/components/shop/DiscoveryGrid';
 import type { Product } from '@/lib/supabase/types';
 import type { Category } from '@/types';
 
@@ -142,27 +143,31 @@ export default function ShopContent({ products, categories }: ShopContentProps) 
 
       {/* Products Grid */}
       <section className="container-wide pb-20">
-        <AnimatePresence mode="popLayout">
-          <motion.div
-            key={`${selectedCategory}-${selectedType}-${searchQuery}`}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            transition={{ staggerChildren: FILTER_TIMING.stagger, delayChildren: 0.1 }}
-            className="card-grid"
-          >
-            {filteredProducts.map((product, i) => (
-              <motion.div
-                key={product.id}
-                variants={gridItemVariants}
-                layout
-                transition={gridLayoutTransition}
-              >
-                <ProductCard product={product} priority={i < 4} />
-              </motion.div>
-            ))}
-          </motion.div>
-        </AnimatePresence>
+        {hasActiveFilters ? (
+          <AnimatePresence mode="popLayout">
+            <motion.div
+              key={`${selectedCategory}-${selectedType}-${searchQuery}`}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              transition={{ staggerChildren: FILTER_TIMING.stagger, delayChildren: 0.1 }}
+              className="card-grid"
+            >
+              {filteredProducts.map((product, i) => (
+                <motion.div
+                  key={product.id}
+                  variants={gridItemVariants}
+                  layout
+                  transition={gridLayoutTransition}
+                >
+                  <ProductCard product={product} priority={i < 4} />
+                </motion.div>
+              ))}
+            </motion.div>
+          </AnimatePresence>
+        ) : (
+          <DiscoveryGrid products={filteredProducts} priority={4} />
+        )}
 
         {filteredProducts.length === 0 && (
           <motion.div
