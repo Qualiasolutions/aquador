@@ -51,10 +51,11 @@ export function ProductQuickView({ product, isVisible, onClose }: ProductQuickVi
   const fragranceNotes = extractFragranceNotes(product.tags);
   const hasNotes = fragranceNotes.length > 0;
 
-  // Truncate description to first 80 characters
-  const truncatedDescription = product.description.length > 80
-    ? product.description.slice(0, 80) + '...'
-    : product.description;
+  // Strip HTML tags and truncate description to first 80 characters
+  const plainDescription = product.description.replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').trim();
+  const truncatedDescription = plainDescription.length > 80
+    ? plainDescription.slice(0, 80) + '...'
+    : plainDescription;
 
   // If reduced motion, show/hide instantly without animation
   const variants = reducedMotion

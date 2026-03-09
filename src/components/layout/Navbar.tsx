@@ -241,7 +241,7 @@ export default function Navbar() {
 
 function NavLink({ label, href, active }: { label: string; href: string; active: boolean }) {
   return (
-    <Link href={href} className="relative h-full flex items-center px-4 xl:px-5 group -mb-px">
+    <Link href={href} className="relative h-full flex items-center justify-center px-4 xl:px-5 group">
       <span className={`text-[10.5px] xl:text-[11px] uppercase tracking-[0.18em] font-light transition-colors duration-300 whitespace-nowrap leading-none ${
         active ? 'text-gold' : 'text-white group-hover:text-gold'
       }`}>
@@ -250,11 +250,11 @@ function NavLink({ label, href, active }: { label: string; href: string; active:
       {active ? (
         <motion.span
           layoutId="navActive"
-          className="absolute bottom-2 left-4 right-4 xl:left-5 xl:right-5 h-px bg-gold"
+          className="absolute bottom-0 left-4 right-4 xl:left-5 xl:right-5 h-px bg-gold"
           transition={{ type: 'spring', stiffness: 400, damping: 28 }}
         />
       ) : (
-        <span className="absolute bottom-2 left-4 right-4 xl:left-5 xl:right-5 h-px bg-gold/50 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
+        <span className="absolute bottom-0 left-4 right-4 xl:left-5 xl:right-5 h-px bg-gold/50 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
       )}
     </Link>
   );

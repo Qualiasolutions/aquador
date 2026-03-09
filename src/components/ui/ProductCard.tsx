@@ -87,18 +87,19 @@ export function ProductCard({ product, priority = false, variant = 'default' }: 
         }}
       >
       {/* Product Image */}
-      <div className="relative mb-3 md:mb-4 overflow-hidden rounded-xl">
+      <div className="relative mb-3 md:mb-4 overflow-hidden rounded-xl aspect-[4/5]">
         <motion.div
           variants={reducedMotion ? {} : imageZoomVariants}
           initial="rest"
           animate={isHovered ? 'hover' : 'rest'}
+          className="h-full"
         >
           <ProductImage
             src={product.image}
             alt={product.name}
             variant="card"
             priority={priority}
-            className="w-full"
+            className="w-full h-full object-cover"
           />
         </motion.div>
 
@@ -138,13 +139,11 @@ export function ProductCard({ product, priority = false, variant = 'default' }: 
       </div>
 
       {/* Product Info */}
-      <div className="space-y-2">
+      <div className="space-y-2 min-h-[7rem]">
         {/* Brand */}
-        {product.brand && (
-          <p className={`${brandSize} tracking-[0.15em] uppercase text-gold-500 font-medium`}>
-            {product.brand}
-          </p>
-        )}
+        <p className={`${brandSize} tracking-[0.15em] uppercase text-gold-500 font-medium ${!product.brand ? 'invisible' : ''}`}>
+          {product.brand || '\u00A0'}
+        </p>
 
         {/* Product Name */}
         <h3 className={`${nameSize} font-playfair font-medium tracking-tight text-white line-clamp-2 group-hover:text-gold-400 transition-colors`}>
