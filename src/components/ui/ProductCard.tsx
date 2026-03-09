@@ -6,7 +6,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { formatPrice } from '@/lib/currency';
@@ -15,6 +15,7 @@ import { ProductQuickView } from '@/components/shop/ProductQuickView';
 import { hoverVariants, tapVariants } from '@/lib/animations/micro-interactions';
 import { imageZoomVariants } from '@/lib/animations/discovery-animations';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { preloadProduct } from '@/lib/preload/strategy';
 import type { LegacyProduct } from '@/types';
 import type { Product } from '@/lib/supabase/types';
 
@@ -28,6 +29,7 @@ export function ProductCard({ product, priority = false, variant = 'default' }: 
   const reducedMotion = useReducedMotion();
   const [isHovered, setIsHovered] = useState(false);
   const [isTapRevealed, setIsTapRevealed] = useState(false);
+  const cancelPreloadRef = useRef<(() => void) | null>(null);
 
   // Normalize property names to handle both LegacyProduct (camelCase) and Supabase Product (snake_case)
   const inStock = 'in_stock' in product ? product.in_stock : product.inStock;
@@ -61,10 +63,15 @@ export function ProductCard({ product, priority = false, variant = 'default' }: 
         href={`/products/${product.id}`}
         className={`group block bg-dark-lighter/80 backdrop-blur-sm border border-gold-500/10 hover:border-gold-500/30 rounded-2xl ${padding} shadow-lg shadow-black/20 hover:shadow-xl hover:shadow-gold-500/10 transition-all duration-300 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2 focus-visible:ring-offset-dark`}
         aria-label={`View ${product.name}`}
-        onMouseEnter={() => setIsHovered(true)}
+        onMouseEnter={() => {
+          setIsHovered(true);
+          cancelPreloadRef.current = preloadProduct(String(product.id));
+        }}
         onMouseLeave={() => {
           setIsHovered(false);
           setIsTapRevealed(false);
+          cancelPreloadRef.current?.();
+          cancelPreloadRef.current = null;
         }}
         onClick={(e) => {
           // Mobile tap-to-reveal pattern: first tap shows overlay, second tap navigates
