@@ -12,11 +12,11 @@ type ProductViewerProps = {
   className?: string;
 };
 
-function ProductViewer3DContent() {
+function ProductViewer3DContent({ productName }: { productName: string }) {
   const { isMobile } = useDeviceCapabilities();
 
   return (
-    <Scene>
+    <Scene productName={productName}>
       <PerfumeBottle position={[0, 0, 0]} />
       <Lighting simplified={isMobile} />
     </Scene>
@@ -39,7 +39,7 @@ export function ProductViewer({
           </div>
         }
       >
-        <ProductViewer3DContent />
+        <ProductViewer3DContent productName={productName} />
       </Suspense>
     </div>
   );
