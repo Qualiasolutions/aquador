@@ -6,11 +6,14 @@
 
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { formatPrice } from '@/lib/currency';
 import { ProductImage } from './ProductImage';
+import { ProductQuickView } from '@/components/shop/ProductQuickView';
 import { hoverVariants, tapVariants } from '@/lib/animations/micro-interactions';
+import { imageZoomVariants } from '@/lib/animations/discovery-animations';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import type { LegacyProduct } from '@/types';
 import type { Product } from '@/lib/supabase/types';
@@ -23,6 +26,8 @@ interface ProductCardProps {
 
 export function ProductCard({ product, priority = false, variant = 'default' }: ProductCardProps) {
   const reducedMotion = useReducedMotion();
+  const [isHovered, setIsHovered] = useState(false);
+  const [isTapRevealed, setIsTapRevealed] = useState(false);
 
   // Normalize property names to handle both LegacyProduct (camelCase) and Supabase Product (snake_case)
   const inStock = 'in_stock' in product ? product.in_stock : product.inStock;
@@ -56,16 +61,51 @@ export function ProductCard({ product, priority = false, variant = 'default' }: 
         href={`/products/${product.id}`}
         className={`group block bg-dark-lighter/80 backdrop-blur-sm border border-gold-500/10 hover:border-gold-500/30 rounded-2xl ${padding} shadow-lg shadow-black/20 hover:shadow-xl hover:shadow-gold-500/10 transition-all duration-300 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2 focus-visible:ring-offset-dark`}
         aria-label={`View ${product.name}`}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => {
+          setIsHovered(false);
+          setIsTapRevealed(false);
+        }}
+        onClick={(e) => {
+          // Mobile tap-to-reveal pattern: first tap shows overlay, second tap navigates
+          // Only apply on touch devices (check if we have touch capability)
+          if (window.matchMedia('(pointer: coarse)').matches) {
+            if (!isTapRevealed) {
+              e.preventDefault();
+              setIsTapRevealed(true);
+              setIsHovered(true);
+            }
+            // Second tap: allow default navigation
+          }
+        }}
       >
       {/* Product Image */}
       <div className="relative mb-3 md:mb-4 overflow-hidden rounded-xl">
-        <ProductImage
-          src={product.image}
-          alt={product.name}
-          variant="card"
-          priority={priority}
-          className="w-full transition-transform duration-500 group-hover:scale-105"
-        />
+        <motion.div
+          variants={reducedMotion ? {} : imageZoomVariants}
+          initial="rest"
+          animate={isHovered ? 'hover' : 'rest'}
+        >
+          <ProductImage
+            src={product.image}
+            alt={product.name}
+            variant="card"
+            priority={priority}
+            className="w-full"
+          />
+        </motion.div>
+
+        {/* ProductQuickView Overlay - only show for Supabase Product type */}
+        {'tags' in product && (
+          <ProductQuickView
+            product={product as Product}
+            isVisible={isHovered}
+            onClose={() => {
+              setIsHovered(false);
+              setIsTapRevealed(false);
+            }}
+          />
+        )}
 
         {/* Hover overlay with subtle backdrop blur */}
         <motion.div

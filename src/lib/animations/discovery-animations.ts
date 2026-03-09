@@ -17,7 +17,7 @@
  * @module discovery-animations
  */
 
-import type { Transition, Variants } from 'framer-motion';
+import type { Variants } from 'framer-motion';
 
 /**
  * Timing constants for discovery interactions
