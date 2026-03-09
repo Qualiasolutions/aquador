@@ -1,0 +1,126 @@
+/**
+ * ARIA label utilities for 3D scenes and animated UI elements.
+ *
+ * Centralizes accessible label strings so they stay consistent across
+ * components and are easy to update or localize.
+ */
+
+// ---------------------------------------------------------------------------
+// 3D scene labels
+// ---------------------------------------------------------------------------
+
+/**
+ * Returns the accessible label for a 3D scene container.
+ *
+ * @param productName - Optional product name to include in the label
+ * @returns ARIA label string for role="img" on the scene wrapper
+ */
+export function get3DSceneLabel(productName?: string): string {
+  if (productName) {
+    return `Interactive 3D viewer for ${productName}. Use arrow keys to rotate, plus and minus to zoom, R to reset.`;
+  }
+  return 'Interactive 3D viewer. Use arrow keys to rotate, plus and minus to zoom, R to reset.';
+}
+
+/**
+ * Returns a human-readable announcement for a 3D interaction state change.
+ * Intended for aria-live regions that notify screen readers.
+ *
+ * @param action - The interaction that occurred
+ * @param productName - Optional product name for context
+ * @returns Announcement string, or empty string when no announcement is needed
+ */
+export function get3DStateAnnouncement(
+  action: 'rotate' | 'zoom_in' | 'zoom_out' | 'reset',
+  productName?: string
+): string {
+  const subject = productName ? `${productName} view` : '3D view';
+
+  switch (action) {
+    case 'rotate':
+      return `${subject} rotated`;
+    case 'zoom_in':
+      return `${subject} zoomed in`;
+    case 'zoom_out':
+      return `${subject} zoomed out`;
+    case 'reset':
+      return `${subject} reset to default position`;
+    default:
+      return '';
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Filter bar labels
+// ---------------------------------------------------------------------------
+
+/**
+ * Returns the ARIA label for a filter pill.
+ *
+ * @param filterLabel - The visible filter label (e.g. "Women", "Niche")
+ * @param isActive - Whether the filter is currently active
+ * @returns ARIA label string
+ */
+export function getFilterLabel(filterLabel: string, isActive: boolean): string {
+  return isActive
+    ? `${filterLabel} filter, currently selected`
+    : `Filter by ${filterLabel}`;
+}
+
+/**
+ * Returns the live-region announcement when a filter is applied.
+ *
+ * @param filterLabel - The filter that was activated, or null for "All"
+ * @param resultCount - Optional product count to announce
+ * @returns Announcement string for aria-live="polite" region
+ */
+export function getFilterAnnouncement(
+  filterLabel: string | null,
+  resultCount?: number
+): string {
+  const filter = filterLabel ?? 'All';
+  if (resultCount !== undefined) {
+    return `Showing ${resultCount} ${resultCount === 1 ? 'product' : 'products'} for ${filter}`;
+  }
+  return `Filter set to ${filter}`;
+}
+
+// ---------------------------------------------------------------------------
+// Parallax labels
+// ---------------------------------------------------------------------------
+
+/**
+ * Returns the ARIA label for a decorative parallax section.
+ * Parallax backgrounds are purely decorative — they get role="presentation"
+ * so screen readers skip them entirely.  This helper produces the label for
+ * the rare case where a parallax section carries meaningful content.
+ *
+ * @param description - Optional meaningful description (omit for decorative)
+ * @returns ARIA label string, or undefined when the element is decorative
+ */
+export function getParallaxLabel(description?: string): string | undefined {
+  return description;
+}
+
+// ---------------------------------------------------------------------------
+// High-contrast mode detection
+// ---------------------------------------------------------------------------
+
+/**
+ * Returns true when the user has enabled a high-contrast mode via the
+ * forced-colors CSS media feature (Windows High Contrast) or the
+ * prefers-contrast: more media query.
+ *
+ * Safe to call server-side — returns false when window is unavailable.
+ */
+export function isHighContrastMode(): boolean {
+  if (typeof window === 'undefined') return false;
+
+  // Windows High Contrast / Forced Colors
+  if (window.matchMedia('(forced-colors: active)').matches) return true;
+
+  // macOS / browser "more contrast" preference
+  if (window.matchMedia('(prefers-contrast: more)').matches) return true;
+
+  return false;
+}
