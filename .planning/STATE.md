@@ -6,23 +6,23 @@ See: .planning/PROJECT.md (updated 2026-03-09)
 
 **Core value:** A customer completes a purchase and knows it worked — they see their order details on screen, receive a confirmation email, and the store is notified. No silent failures, no misleading messages, no security holes.
 
-**Current focus:** v2.0 Immersive Luxury Experience - Phase 17 in progress (Plan 2/3 done)
+**Current focus:** v2.0 Immersive Luxury Experience - COMPLETE (Phase 17 done)
 
 ## Current Position
 
-Phase: 17 of 17 (Accessibility & Polish) — In progress
-Plan: 2 of 3 complete
-Status: In progress
-Last activity: 2026-03-09 — Completed 17-02 (ARIA Support for 3D and Animated UI)
+Phase: 17 of 17 (Accessibility & Polish) — Complete
+Plan: 3 of 3 complete
+Status: Phase complete — v2.0 all phases done
+Last activity: 2026-03-09 — Completed 17-03 (Progressive Loading, Preloading & Mobile 3D Optimization)
 
-Progress: [█████████████████░░░] 91% (43/47 total plans complete)
+Progress: [████████████████████] 100% (47/47 total plans complete)
 
 ## Milestones
 
 - ✅ **v1.0** Order/Payment System Fix — shipped 2026-03-02
 - ✅ **v1.1** Security Audit Remediation — shipped 2026-03-03
 - ✅ **v1.2** Design Overhaul & Premium UX — shipped 2026-03-04
-- 🚧 **v2.0** Immersive Luxury Experience — in progress (Phases 13-17)
+- ✅ **v2.0** Immersive Luxury Experience — COMPLETE (Phases 13-17, 2026-03-09)
 
 ## Accumulated Context
 
@@ -76,6 +76,11 @@ All v1.0 + v1.1 + v1.2 decisions logged in PROJECT.md Key Decisions table.
     - **Phase 17-02:** aria-live=polite (not assertive) for 3D state — avoids interrupting ongoing screen reader speech
     - **Phase 17-02:** Decorative parallax gets role=presentation + aria-hidden; ariaLabel prop unlocks meaningful variant
     - **Phase 17-02:** isHighContrastMode adds outline:2px solid currentColor — uses currentColor so it inherits theme
+- **Phase 17-03:** Loading state machine pattern: stages defined in states.ts, consumed via ProgressiveLoader
+- **Phase 17-03:** supports3D false only on mobile AND (low-end OR data-saving) — desktop always gets 3D
+- **Phase 17-03:** link[rel="prefetch"] over Next.js router.prefetch for hover preload — no client router dependency
+- **Phase 17-03:** 300ms hover debounce for prefetch, cancel via ref on mouseLeave
+- **Phase 17-03:** ProgressiveLoader does NOT re-export LoadingStage — consumers import from states.ts directly
 
 ### Pending Checkpoints
 
@@ -100,10 +105,11 @@ All v1.0 + v1.1 + v1.2 decisions logged in PROJECT.md Key Decisions table.
 ## Session Continuity
 
 Last session: 2026-03-09
-Completed: Phase 17-02 — ARIA Support for 3D and Animated UI (3 tasks)
-Commits: 151b44b (task 1 aria-labels lib), 634a135 (task 2 Scene ARIA), 2ed4860 (task 3 animated UI ARIA)
-Phase 17 Status: In progress — Plan 2/3 done
-Resume: Phase 17 Plan 3 — .planning/phases/17-accessibility-polish/17-03-PLAN.md
+Completed: Phase 17-03 — Progressive Loading, Preloading & Mobile 3D Optimization (3 tasks)
+Commits: d2b13a3 (task 1 states.ts + ProgressiveLoader), 70f1d6b (task 2 device capabilities + metrics + Scene), cd4e74c (task 3 preload strategy + ProductCard + loading.tsx)
+Phase 17 Status: COMPLETE — all 3 plans done
+v2.0 Status: COMPLETE — all 17 phases done
+Next: Deploy to production, Lighthouse audit, real-device mobile testing
 
 ---
-*Last updated: 2026-03-09 after Phase 17-01 completion*
+*Last updated: 2026-03-09 after Phase 17-03 completion (v2.0 fully complete)*
