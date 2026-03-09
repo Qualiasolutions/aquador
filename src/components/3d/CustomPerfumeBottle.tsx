@@ -5,9 +5,9 @@ import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
 type CustomPerfumeBottleProps = {
-  topNoteColor?: string;
+  _topNoteColor?: string;
   heartNoteColor?: string;
-  baseNoteColor?: string;
+  _baseNoteColor?: string;
   autoRotate?: boolean;
 };
 
@@ -23,15 +23,15 @@ type CustomPerfumeBottleProps = {
  *
  * Integration: Used in /create-perfume page to visualize custom perfume composition in real-time.
  *
- * @param topNoteColor - Hex color from selected top note (reserved for future multi-layer liquid)
+ * @param _topNoteColor - Hex color from selected top note (reserved for future multi-layer liquid)
  * @param heartNoteColor - Hex color from selected heart note (primary liquid color)
- * @param baseNoteColor - Hex color from selected base note (reserved for future multi-layer liquid)
+ * @param _baseNoteColor - Hex color from selected base note (reserved for future multi-layer liquid)
  * @param autoRotate - Enable continuous Y-axis rotation (default: true)
  */
 export function CustomPerfumeBottle({
-  topNoteColor = '#D4AF37',
+  _topNoteColor = '#D4AF37',
   heartNoteColor = '#D4AF37',
-  baseNoteColor = '#D4AF37',
+  _baseNoteColor = '#D4AF37',
   autoRotate = true
 }: CustomPerfumeBottleProps) {
   const groupRef = useRef<THREE.Group>(null);
