@@ -8,6 +8,7 @@ import { CAMERA_CONFIG, ORBIT_CONFIG, KEYBOARD_CONFIG } from '@/lib/three/config
 import { useDeviceCapabilities } from '@/hooks/useDeviceCapabilities';
 import { useKeyboardControls } from '@/hooks/useKeyboardControls';
 import { track3DInteraction } from '@/lib/analytics/engagement-tracker';
+import { KeyboardHints } from '@/components/3d/KeyboardHints';
 
 type SceneProps = {
   children: React.ReactNode;
@@ -110,7 +111,7 @@ export function Scene({
   });
 
   return (
-    <div className={className}>
+    <div className={`${className} relative`}>
       <Canvas
         camera={CAMERA_CONFIG}
         gl={{ preserveDrawingBuffer: true }}
@@ -131,6 +132,8 @@ export function Scene({
           </Suspense>
         </PerformanceMonitor>
       </Canvas>
+      {/* DOM sibling — positioned absolutely over the Canvas */}
+      <KeyboardHints />
     </div>
   );
 }
