@@ -21,7 +21,6 @@
 import type { Transition } from 'framer-motion';
 
 // Easing constants from variants.ts
-const EXPO_EASE = [0.16, 1, 0.3, 1] as const;
 const SMOOTH_EASE = [0.22, 1, 0.36, 1] as const;
 
 /**

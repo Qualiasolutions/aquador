@@ -4,7 +4,7 @@ import { motion, HTMLMotionProps } from 'framer-motion';
 import { forwardRef } from 'react';
 import { cn } from '@/lib/utils';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
-import { hoverVariants, tapVariants, focusVariants } from '@/lib/animations/micro-interactions';
+import { hoverVariants, tapVariants } from '@/lib/animations/micro-interactions';
 
 interface ButtonProps extends Omit<HTMLMotionProps<'button'>, 'ref'> {
   variant?: 'primary' | 'secondary' | 'outline' | 'ghost';

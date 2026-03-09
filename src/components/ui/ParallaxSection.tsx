@@ -1,7 +1,7 @@
 'use client';
 
 import { motion, MotionProps } from 'framer-motion';
-import { useParallax, UseParallaxOptions } from '@/hooks/useParallax';
+import { useParallax } from '@/hooks/useParallax';
 import { ElementType, ReactNode } from 'react';
 
 /**
