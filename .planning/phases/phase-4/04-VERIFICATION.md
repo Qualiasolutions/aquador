@@ -126,7 +126,7 @@ Confidence based on:
 ### PASSED - READY FOR EXECUTION
 
 **Next Steps:**
-1. Proceed to /gsd:execute-phase 4
+1. Proceed to /qualia:execute-phase 4
 2. Follow task sequence: 1 → 2 → 3 → 4
 3. Run verification commands after each task
 4. Create atomic commits as specified
