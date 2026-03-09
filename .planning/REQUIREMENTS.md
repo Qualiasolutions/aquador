@@ -129,54 +129,61 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| VFX-01 | TBD | Pending |
-| VFX-02 | TBD | Pending |
-| VFX-03 | TBD | Pending |
-| VFX-04 | TBD | Pending |
-| VFX-05 | TBD | Pending |
-| VFX-06 | TBD | Pending |
-| 3D-01 | TBD | Pending |
-| 3D-02 | TBD | Pending |
-| 3D-03 | TBD | Pending |
-| 3D-04 | TBD | Pending |
-| 3D-05 | TBD | Pending |
-| 3D-06 | TBD | Pending |
-| NAV-01 | TBD | Pending |
-| NAV-02 | TBD | Pending |
-| NAV-03 | TBD | Pending |
-| NAV-04 | TBD | Pending |
-| NAV-05 | TBD | Pending |
-| NAV-06 | TBD | Pending |
-| PERF-01 | TBD | Pending |
-| PERF-02 | TBD | Pending |
-| PERF-03 | TBD | Pending |
-| PERF-04 | TBD | Pending |
-| PERF-05 | TBD | Pending |
-| PERF-06 | TBD | Pending |
-| TRACK-01 | TBD | Pending |
-| TRACK-02 | TBD | Pending |
-| TRACK-03 | TBD | Pending |
-| TRACK-04 | TBD | Pending |
-| TRACK-05 | TBD | Pending |
-| TRACK-06 | TBD | Pending |
-| LOAD-01 | TBD | Pending |
-| LOAD-02 | TBD | Pending |
-| LOAD-03 | TBD | Pending |
-| LOAD-04 | TBD | Pending |
-| LOAD-05 | TBD | Pending |
-| LOAD-06 | TBD | Pending |
-| A11Y-01 | TBD | Pending |
-| A11Y-02 | TBD | Pending |
-| A11Y-03 | TBD | Pending |
-| A11Y-04 | TBD | Pending |
-| A11Y-05 | TBD | Pending |
-| A11Y-06 | TBD | Pending |
+| VFX-01 | Phase 13 | Pending |
+| VFX-02 | Phase 13 | Pending |
+| VFX-03 | Phase 13 | Pending |
+| VFX-04 | Phase 13 | Pending |
+| VFX-05 | Phase 13 | Pending |
+| VFX-06 | Phase 15 | Pending |
+| 3D-01 | Phase 14 | Pending |
+| 3D-02 | Phase 14 | Pending |
+| 3D-03 | Phase 14 | Pending |
+| 3D-04 | Phase 14 | Pending |
+| 3D-05 | Phase 14 | Pending |
+| 3D-06 | Phase 14 | Pending |
+| NAV-01 | Phase 15 | Pending |
+| NAV-02 | Phase 15 | Pending |
+| NAV-03 | Phase 15 | Pending |
+| NAV-04 | Phase 15 | Pending |
+| NAV-05 | Phase 15 | Pending |
+| NAV-06 | Phase 15 | Pending |
+| PERF-01 | Phase 13 | Pending |
+| PERF-02 | Phase 13 | Pending |
+| PERF-03 | Phase 17 | Pending |
+| PERF-04 | Phase 14 | Pending |
+| PERF-05 | Phase 13 | Pending |
+| PERF-06 | Phase 17 | Pending |
+| TRACK-01 | Phase 16 | Pending |
+| TRACK-02 | Phase 16 | Pending |
+| TRACK-03 | Phase 16 | Pending |
+| TRACK-04 | Phase 16 | Pending |
+| TRACK-05 | Phase 16 | Pending |
+| TRACK-06 | Phase 16 | Pending |
+| LOAD-01 | Phase 15 | Pending |
+| LOAD-02 | Phase 15 | Pending |
+| LOAD-03 | Phase 14 | Pending |
+| LOAD-04 | Phase 17 | Pending |
+| LOAD-05 | Phase 17 | Pending |
+| LOAD-06 | Phase 17 | Pending |
+| A11Y-01 | Phase 17 | Pending |
+| A11Y-02 | Phase 17 | Pending |
+| A11Y-03 | Phase 17 | Pending |
+| A11Y-04 | Phase 17 | Pending |
+| A11Y-05 | Phase 17 | Pending |
+| A11Y-06 | Phase 17 | Pending |
 
 **Coverage:**
 - v2.0 requirements: 36 total
-- Mapped to phases: 0 (pending roadmap)
-- Unmapped: 36 ⚠️
+- Mapped to phases: 36/36 ✓
+- Unmapped: 0 ✓
+
+**Phase Distribution:**
+- Phase 13 (Parallax & Visual): 8 requirements
+- Phase 14 (3D Showcase): 8 requirements
+- Phase 15 (Navigation & Discovery): 9 requirements
+- Phase 16 (Analytics): 6 requirements
+- Phase 17 (Accessibility & Polish): 11 requirements
 
 ---
 *Requirements defined: 2026-03-09*
-*Last updated: 2026-03-09 after v2.0 definition*
+*Last updated: 2026-03-09 after v2.0 roadmap creation*
