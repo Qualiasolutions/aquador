@@ -36,6 +36,12 @@ export interface AnimatedSectionProps {
   disableOnMobile?: boolean;
   /** Custom intersection margin (e.g., "-50px" triggers 50px before viewport) */
   margin?: string;
+  /**
+   * Optional ARIA label for the section wrapper.
+   * Use when the section contains a meaningful landmark that screen readers
+   * should identify (e.g. "Featured products").
+   */
+  ariaLabel?: string;
 }
 
 /**
@@ -125,6 +131,7 @@ export function AnimatedSection({
   threshold = 0.2,
   disableOnMobile = false,
   margin: _margin = '-50px', // Renamed to _margin to indicate it's currently unused
+  ariaLabel,
 }: AnimatedSectionProps) {
   // Use scroll animation hook with custom options
   const { ref, shouldAnimate } = useScrollAnimation({
@@ -141,7 +148,11 @@ export function AnimatedSection({
   // If animations disabled (mobile override or reduced motion), render children instantly
   if (disableAnimation || !shouldAnimate) {
     return (
-      <div ref={ref as React.Ref<HTMLDivElement>} className={cn(className)}>
+      <div
+        ref={ref as React.Ref<HTMLDivElement>}
+        className={cn(className)}
+        aria-label={ariaLabel}
+      >
         {children}
       </div>
     );
@@ -189,6 +200,7 @@ export function AnimatedSection({
       transition={{
         delay,
       }}
+      aria-label={ariaLabel}
     >
       {children}
     </motion.div>

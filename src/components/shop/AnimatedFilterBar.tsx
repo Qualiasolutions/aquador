@@ -1,7 +1,9 @@
 'use client';
 
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { filterVariants, FILTER_TIMING } from '@/lib/animations/filter-transitions';
+import { getFilterAnnouncement } from '@/lib/accessibility/aria-labels';
 
 export interface AnimatedFilterBarProps {
   filters: Array<{ id: string; label: string }>;
@@ -31,59 +33,74 @@ export function AnimatedFilterBar({
   onFilterChange,
   className = '',
 }: AnimatedFilterBarProps) {
+  const [announcement, setAnnouncement] = useState('');
+
+  const handleFilterChange = (id: string | null) => {
+    onFilterChange(id);
+    const label = id === null ? null : (filters.find(f => f.id === id)?.label ?? id);
+    setAnnouncement(getFilterAnnouncement(label));
+  };
+
   return (
-    <div
-      className={`flex flex-wrap justify-center gap-2 ${className}`}
-      role="group"
-      aria-label="Product category filters"
-    >
-      {/* All filter */}
-      <motion.button
-        onClick={() => onFilterChange(null)}
-        className={`
-          px-4 py-2.5 min-h-[44px] rounded-lg
-          text-[10.5px] uppercase tracking-[0.15em] font-medium
-          transition-colors
-          ${
-            activeFilter === null
-              ? 'text-dark'
-              : 'bg-dark-lighter border border-gold-500/20 text-gray-300 hover:border-gold-500/40 hover:text-white'
-          }
-        `}
-        animate={activeFilter === null ? 'active' : 'inactive'}
-        variants={filterVariants}
-        aria-pressed={activeFilter === null}
+    <>
+      {/* Screen reader live region — announces active filter to assistive technology */}
+      <div aria-live="polite" aria-atomic="true" className="sr-only">
+        {announcement}
+      </div>
+
+      <div
+        className={`flex flex-wrap justify-center gap-2 ${className}`}
+        role="group"
+        aria-label="Product category filters"
       >
-        All
-      </motion.button>
+        {/* All filter */}
+        <motion.button
+          onClick={() => handleFilterChange(null)}
+          className={`
+            px-4 py-2.5 min-h-[44px] rounded-lg
+            text-[10.5px] uppercase tracking-[0.15em] font-medium
+            transition-colors
+            ${
+              activeFilter === null
+                ? 'text-dark'
+                : 'bg-dark-lighter border border-gold-500/20 text-gray-300 hover:border-gold-500/40 hover:text-white'
+            }
+          `}
+          animate={activeFilter === null ? 'active' : 'inactive'}
+          variants={filterVariants}
+          aria-pressed={activeFilter === null}
+        >
+          All
+        </motion.button>
 
-      {/* Filter pills */}
-      {filters.map((filter) => {
-        const isActive = activeFilter === filter.id;
+        {/* Filter pills */}
+        {filters.map((filter) => {
+          const isActive = activeFilter === filter.id;
 
-        return (
-          <motion.button
-            key={filter.id}
-            onClick={() => onFilterChange(filter.id)}
-            className={`
-              px-4 py-2.5 min-h-[44px] rounded-lg
-              text-[10.5px] uppercase tracking-[0.15em] font-medium
-              transition-colors
-              ${
-                isActive
-                  ? 'text-dark'
-                  : 'bg-dark-lighter border border-gold-500/20 text-gray-300 hover:border-gold-500/40 hover:text-white'
-              }
-            `}
-            animate={isActive ? 'active' : 'inactive'}
-            variants={filterVariants}
-            aria-pressed={isActive}
-          >
-            {filter.label}
-          </motion.button>
-        );
-      })}
-    </div>
+          return (
+            <motion.button
+              key={filter.id}
+              onClick={() => handleFilterChange(filter.id)}
+              className={`
+                px-4 py-2.5 min-h-[44px] rounded-lg
+                text-[10.5px] uppercase tracking-[0.15em] font-medium
+                transition-colors
+                ${
+                  isActive
+                    ? 'text-dark'
+                    : 'bg-dark-lighter border border-gold-500/20 text-gray-300 hover:border-gold-500/40 hover:text-white'
+                }
+              `}
+              animate={isActive ? 'active' : 'inactive'}
+              variants={filterVariants}
+              aria-pressed={isActive}
+            >
+              {filter.label}
+            </motion.button>
+          );
+        })}
+      </div>
+    </>
   );
 }
 

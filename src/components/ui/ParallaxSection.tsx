@@ -51,6 +51,16 @@ export interface ParallaxSectionProps {
    * If provided, tracks time this element is visible in viewport (>1s)
    */
   trackingId?: string;
+
+  /**
+   * Accessible label for this parallax section.
+   *
+   * - Omit (or leave undefined) for purely **decorative** backgrounds — the
+   *   component will set role="presentation" so screen readers skip it.
+   * - Provide a string when the section carries **meaningful content** that
+   *   screen readers should announce.
+   */
+  ariaLabel?: string;
 }
 
 /**
@@ -92,6 +102,7 @@ export function ParallaxSection({
   disableOnMobile = true,
   range = [0, 1],
   trackingId,
+  ariaLabel,
 }: ParallaxSectionProps) {
   const { ref, transform, shouldAnimate } = useParallax({
     speed,
@@ -107,6 +118,12 @@ export function ParallaxSection({
     MotionProps & { ref: React.RefObject<HTMLElement>; className?: string }
   >;
 
+  // Decorative parallax elements get role="presentation" so screen readers
+  // skip them. Meaningful sections receive an aria-label instead.
+  const ariaProps = ariaLabel
+    ? { 'aria-label': ariaLabel }
+    : { role: 'presentation' as const, 'aria-hidden': true as const };
+
   return (
     <MotionComponent
       ref={ref}
@@ -117,6 +134,7 @@ export function ParallaxSection({
       }}
       // Prevent layout shift during initial render
       initial={false}
+      {...ariaProps}
     >
       {children}
     </MotionComponent>
