@@ -2,7 +2,8 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { useSearchParams } from 'next/navigation';
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import { trackFilterChange } from '@/lib/analytics/product-engagement';
 import { SearchBar } from '@/components/search';
 import { PageHero } from '@/components/ui/Section';
 import { ProductCard } from '@/components/ui/ProductCard';
@@ -29,12 +30,31 @@ export default function ShopContent({ products, categories }: ShopContentProps) 
   const [selectedType, setSelectedType] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState(urlSearchQuery);
 
+  // Prevents tracking on initial URL param load — only track user-initiated changes
+  const isInitializedRef = useRef(false);
+  useEffect(() => {
+    isInitializedRef.current = true;
+  }, []);
+
   useEffect(() => {
     setSearchQuery(urlSearchQuery);
   }, [urlSearchQuery]);
 
   const handleSearch = useCallback((query: string) => {
     setSearchQuery(query);
+  }, []);
+
+  const handleCategoryChange = useCallback((category: string | null) => {
+    setSelectedCategory(category);
+    if (!isInitializedRef.current || category === null) return;
+    // Deferred to next tick so filteredProducts reflects the new filter value
+    // We'll track via useEffect on filteredProducts instead
+  }, []);
+
+  const handleTypeChange = useCallback((type: string | null) => {
+    setSelectedType(type);
+    if (!isInitializedRef.current || type === null) return;
+    // Tracked via useEffect on filteredProducts after state update
   }, []);
 
   const clearFilters = useCallback(() => {
@@ -62,6 +82,25 @@ export default function ShopContent({ products, categories }: ShopContentProps) 
       return true;
     });
   }, [products, searchQuery, selectedCategory, selectedType]);
+
+  // Track filter changes after state updates — guards against initial URL param load
+  useEffect(() => {
+    if (!isInitializedRef.current || selectedCategory === null) return;
+    trackFilterChange('category', selectedCategory, filteredProducts.length);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedCategory]);
+
+  useEffect(() => {
+    if (!isInitializedRef.current || selectedType === null) return;
+    trackFilterChange('type', selectedType, filteredProducts.length);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedType]);
+
+  useEffect(() => {
+    if (!isInitializedRef.current || searchQuery.trim().length < 2) return;
+    trackFilterChange('search', searchQuery, filteredProducts.length);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchQuery]);
 
   const hasActiveFilters = selectedCategory || selectedType || searchQuery.length >= 2;
 
@@ -104,7 +143,7 @@ export default function ShopContent({ products, categories }: ShopContentProps) 
               label: cat.name.replace("'s Collection", ''),
             }))}
             activeFilter={selectedCategory}
-            onFilterChange={setSelectedCategory}
+            onFilterChange={handleCategoryChange}
           />
 
           {/* Type filters */}
@@ -116,7 +155,7 @@ export default function ShopContent({ products, categories }: ShopContentProps) 
               { id: 'body-lotion', label: 'Body Lotion' },
             ]}
             activeType={selectedType}
-            onTypeChange={setSelectedType}
+            onTypeChange={handleTypeChange}
           />
         </motion.div>
 

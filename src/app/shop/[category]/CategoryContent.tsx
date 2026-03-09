@@ -3,7 +3,8 @@
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import { trackCategoryTransition, trackFilterChange } from '@/lib/analytics/product-engagement';
 import { SearchBar } from '@/components/search';
 import { PageHero } from '@/components/ui/Section';
 import { CategoryTransition } from '@/components/shop/CategoryTransition';
@@ -23,6 +24,20 @@ interface CategoryContentProps {
 
 export default function CategoryContent({ category, products }: CategoryContentProps) {
   const [searchQuery, setSearchQuery] = useState('');
+
+  // Prevents tracking on SSR initial hydration — only fires on client-side navigation
+  const isInitializedRef = useRef(false);
+
+  // Track when user arrives at a category page via navigation (not initial SSR load)
+  useEffect(() => {
+    if (!isInitializedRef.current) {
+      // Skip the very first mount — could be direct URL navigation or SSR hydration
+      isInitializedRef.current = true;
+      return;
+    }
+    // This fires when categorySlug changes after hydration (user navigated between categories)
+    trackCategoryTransition('shop', category.slug, 'click');
+  }, [category.slug]);
 
   const handleSearch = useCallback((query: string) => {
     setSearchQuery(query);
@@ -46,6 +61,13 @@ export default function CategoryContent({ category, products }: CategoryContentP
         product.brand?.toLowerCase().includes(lowercaseQuery)
     );
   }, [products, searchQuery]);
+
+  // Track search filter changes within the category (not on initial load)
+  useEffect(() => {
+    if (!isInitializedRef.current || searchQuery.trim().length < 2) return;
+    trackFilterChange('search', searchQuery, filteredProducts.length);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchQuery]);
 
   const isEmpty = products.length === 0;
 
