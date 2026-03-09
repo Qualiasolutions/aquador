@@ -9,6 +9,7 @@
  */
 
 import type { Variants, Transition } from 'framer-motion';
+import { trackCinematicEngagement } from '@/lib/analytics/performance-monitor';
 
 /**
  * Configuration constants for cinematic effects
@@ -306,3 +307,57 @@ export const mobileVariants: Record<string, Variants> = {
     },
   },
 };
+
+// ---------------------------------------------------------------------------
+// Tracked variant helper
+// ---------------------------------------------------------------------------
+
+/**
+ * Wrap a Framer Motion Variants object with engagement tracking callbacks.
+ *
+ * The returned object is identical to the source variants but includes an
+ * `onAnimationStart` / `onAnimationComplete` pair wired to Vercel Analytics
+ * via trackCinematicEngagement. Components can spread this onto a motion
+ * element alongside the base variants.
+ *
+ * @param name - Human-readable name used as the elementType in analytics
+ * @param variants - Existing Framer Motion Variants to wrap
+ * @returns Object with the original variants plus tracking callback props
+ *
+ * @example
+ * ```tsx
+ * const tracked = createTrackedCinematicVariant('parallax_section', cinematicVariants.sectionFade);
+ *
+ * <motion.section
+ *   variants={tracked.variants}
+ *   initial="initial"
+ *   animate="animate"
+ *   onAnimationStart={tracked.onAnimationStart}
+ *   onAnimationComplete={tracked.onAnimationComplete}
+ * />
+ * ```
+ */
+export function createTrackedCinematicVariant(
+  name: Parameters<typeof trackCinematicEngagement>[0],
+  variants: Variants
+): {
+  variants: Variants;
+  onAnimationStart: () => void;
+  onAnimationComplete: () => void;
+} {
+  let startTime = 0;
+
+  return {
+    variants,
+    onAnimationStart: () => {
+      startTime = typeof performance !== 'undefined' ? performance.now() : 0;
+      trackCinematicEngagement(name, 'view', 0);
+    },
+    onAnimationComplete: () => {
+      const duration = typeof performance !== 'undefined'
+        ? performance.now() - startTime
+        : 0;
+      trackCinematicEngagement(name, 'complete', duration);
+    },
+  };
+}

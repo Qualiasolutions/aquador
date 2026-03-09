@@ -1,12 +1,13 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { usePathname } from 'next/navigation'
 import {
   pageTransitionVariants,
   pageTransitionReducedMotion
 } from '@/lib/animations/page-transitions'
+import { trackCinematicEngagement } from '@/lib/analytics/performance-monitor'
 
 /**
  * PageTransition Provider
@@ -30,6 +31,7 @@ import {
 export function PageTransition({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
+  const transitionStartRef = useRef<number>(0)
 
   // Detect reduced motion preference
   useEffect(() => {
@@ -46,6 +48,16 @@ export function PageTransition({ children }: { children: React.ReactNode }) {
     ? pageTransitionReducedMotion
     : pageTransitionVariants
 
+  const handleAnimationStart = () => {
+    transitionStartRef.current = performance.now()
+    trackCinematicEngagement('page_transition', 'view', 0)
+  }
+
+  const handleAnimationComplete = () => {
+    const duration = performance.now() - transitionStartRef.current
+    trackCinematicEngagement('page_transition', 'complete', duration)
+  }
+
   return (
     <AnimatePresence mode="wait" initial={false}>
       <motion.div
@@ -54,6 +66,8 @@ export function PageTransition({ children }: { children: React.ReactNode }) {
         initial="initial"
         animate="animate"
         exit="exit"
+        onAnimationStart={handleAnimationStart}
+        onAnimationComplete={handleAnimationComplete}
       >
         {children}
       </motion.div>
