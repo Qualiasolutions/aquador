@@ -6,16 +6,16 @@ See: .planning/PROJECT.md (updated 2026-03-09)
 
 **Core value:** A customer completes a purchase and knows it worked — they see their order details on screen, receive a confirmation email, and the store is notified. No silent failures, no misleading messages, no security holes.
 
-**Current focus:** v2.0 Immersive Luxury Experience - Phase 16 complete (all 3 plans done)
+**Current focus:** v2.0 Immersive Luxury Experience - Phase 17 in progress (Plan 1/3 done)
 
 ## Current Position
 
-Phase: 16 of 17 (Analytics & Engagement Tracking) — COMPLETE
-Plan: 3 of 3 complete
-Status: Phase 16 done
-Last activity: 2026-03-09 — Completed 16-02 (Product Engagement Tracking)
+Phase: 17 of 17 (Accessibility & Polish) — In progress
+Plan: 1 of 3 complete
+Status: In progress
+Last activity: 2026-03-09 — Completed 17-01 (Accessibility Foundations)
 
-Progress: [█████████████████░░░] 87% (41/47 total plans complete)
+Progress: [█████████████████░░░] 89% (42/47 total plans complete)
 
 ## Milestones
 
@@ -70,6 +70,9 @@ All v1.0 + v1.1 + v1.2 decisions logged in PROJECT.md Key Decisions table.
 - **Phase 16-03:** animation_budget_exceeded uses existing POOR threshold (45fps) to keep thresholds DRY
 - **Phase 16-03:** createTrackedCinematicVariant returns plain props object (not HOC) for composability
 - **Phase 16-03:** transitionStartRef over useState for timing — no re-render needed
+- **Phase 17-01:** 33% speed reduction for reduced-motion parallax (WCAG 2.3.3) — not full disable, retains visual depth
+- **Phase 17-01:** useKeyboardControls fires callbacks, Scene.tsx owns OrbitControls mutation — decoupled hook design
+- **Phase 17-01:** localStorage for hints dismissal — dismissed once, gone forever across sessions
 
 ### Pending Checkpoints
 
@@ -94,10 +97,10 @@ All v1.0 + v1.1 + v1.2 decisions logged in PROJECT.md Key Decisions table.
 ## Session Continuity
 
 Last session: 2026-03-09
-Completed: Phase 16-02 — Product Engagement Tracking (all 3 tasks)
-Commits: 8200140 (task 1), 2003ee4 (task 2), 32a4cd4 (task 3)
-Phase 16 Status: COMPLETE (all 3 plans done)
-Resume: Phase 17 (Accessibility Polish) — .planning/phases/17-accessibility-polish/
+Completed: Phase 17-01 — Accessibility Foundations (3 tasks)
+Commits: 37712bb (task 1 vestibular parallax), 6919afb (task 2 keyboard controls), f42c15b (task 3 keyboard hints)
+Phase 17 Status: In progress — Plan 1/3 done
+Resume: Phase 17 Plan 2 — .planning/phases/17-accessibility-polish/17-02-PLAN.md
 
 ---
-*Last updated: 2026-03-09 after Phase 16-02 completion*
+*Last updated: 2026-03-09 after Phase 17-01 completion*
