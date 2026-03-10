@@ -53,6 +53,10 @@ export default function Navbar() {
     setIsSearchOpen(false);
   }, [pathname]);
 
+  const isHome = pathname === '/';
+  // White text only on homepage with dark hero behind transparent header
+  const useLightText = isHome && !isScrolled;
+
   const checkActive = (href: string) =>
     pathname === href || (href !== '/' && pathname.startsWith(href));
 
@@ -65,7 +69,7 @@ export default function Navbar() {
         className={`fixed left-0 right-0 z-50 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] top-0 ${
           isScrolled
             ? 'bg-white/95 backdrop-blur-2xl shadow-[0_4px_30px_rgba(212,175,55,0.04)]'
-            : 'bg-transparent'
+            : isHome ? 'bg-transparent' : 'bg-white/95 backdrop-blur-2xl'
         }`}
       >
         <nav className="container-wide">
@@ -75,7 +79,7 @@ export default function Navbar() {
             <div className="flex items-center h-full">
               <button
                 onClick={() => setIsMobileOpen(!isMobileOpen)}
-                className={`xl:hidden min-h-[44px] min-w-[44px] flex items-center justify-center hover:text-gold transition-colors duration-300 -ml-3 ${isScrolled ? 'text-black/80' : 'text-white'}`}
+                className={`xl:hidden min-h-[44px] min-w-[44px] flex items-center justify-center hover:text-gold transition-colors duration-300 -ml-3 ${useLightText ? 'text-white' : 'text-black/80'}`}
                 aria-label={isMobileOpen ? 'Close menu' : 'Open menu'}
               >
                 <div className="w-[18px] h-3 flex flex-col justify-between">
@@ -93,7 +97,7 @@ export default function Navbar() {
 
               <div className="hidden xl:flex items-center h-full">
                 {leftLinks.map((link) => (
-                  <NavLink key={link.href} {...link} active={checkActive(link.href)} scrolled={isScrolled} />
+                  <NavLink key={link.href} {...link} active={checkActive(link.href)} lightText={useLightText} />
                 ))}
               </div>
             </div>
@@ -117,17 +121,17 @@ export default function Navbar() {
             <div className="flex items-center h-full">
               <div className="hidden xl:flex items-center h-full">
                 {rightLinks.map((link) => (
-                  <NavLink key={link.href} {...link} active={checkActive(link.href)} scrolled={isScrolled} />
+                  <NavLink key={link.href} {...link} active={checkActive(link.href)} lightText={useLightText} />
                 ))}
               </div>
 
               {/* Separator — desktop only */}
-              <div className={`hidden xl:block w-px h-4 mx-3 ${isScrolled ? 'bg-black/[0.08]' : 'bg-white/20'}`} />
+              <div className={`hidden xl:block w-px h-4 mx-3 ${useLightText ? 'bg-white/20' : 'bg-black/[0.08]'}`} />
 
               {/* Search toggle */}
               <button
                 onClick={() => setIsSearchOpen(prev => !prev)}
-                className={`min-h-[44px] min-w-[44px] flex items-center justify-center hover:text-gold transition-colors duration-300 ${isScrolled ? 'text-black/80' : 'text-white'}`}
+                className={`min-h-[44px] min-w-[44px] flex items-center justify-center hover:text-gold transition-colors duration-300 ${useLightText ? 'text-white' : 'text-black/80'}`}
                 aria-label={isSearchOpen ? 'Close search' : 'Open search'}
               >
                 <AnimatePresence mode="wait">
@@ -143,7 +147,7 @@ export default function Navbar() {
                 </AnimatePresence>
               </button>
 
-              <CartIcon className={isScrolled ? 'text-black/80' : 'text-white'} />
+              <CartIcon className={useLightText ? 'text-white' : 'text-black/80'} />
             </div>
           </div>
         </nav>
@@ -239,11 +243,11 @@ export default function Navbar() {
   );
 }
 
-function NavLink({ label, href, active, scrolled }: { label: string; href: string; active: boolean; scrolled: boolean }) {
+function NavLink({ label, href, active, lightText }: { label: string; href: string; active: boolean; lightText: boolean }) {
   return (
     <Link href={href} className="relative h-full flex items-center justify-center px-4 xl:px-5 group">
       <span className={`text-[10.5px] xl:text-[11px] uppercase tracking-[0.18em] font-light transition-colors duration-300 whitespace-nowrap leading-none ${
-        active ? 'text-gold' : scrolled ? 'text-black/80 group-hover:text-gold' : 'text-white group-hover:text-gold'
+        active ? 'text-gold' : lightText ? 'text-white group-hover:text-gold' : 'text-black/80 group-hover:text-gold'
       }`}>
         {label}
       </span>
