@@ -6,18 +6,18 @@ import ShopContent from './ShopContent';
 export const revalidate = 1800;
 
 export const metadata: Metadata = {
-  title: "Shop Luxury Perfumes | Aquad'or Cyprus Collection",
-  description: "Browse our curated collection of luxury perfumes, niche fragrances, essence oils, and body lotions. Free shipping on orders over €100 in Cyprus.",
+  title: "Dubai Shop | Aquad'or Cyprus — Luxury Fragrances",
+  description: "Browse our curated Dubai collection of luxury perfumes, niche fragrances, and exclusive scents. Free shipping on orders over €100 in Cyprus.",
   openGraph: {
-    title: "Shop Luxury Perfumes | Aquad'or Cyprus",
-    description: "Browse our curated collection of luxury perfumes, niche fragrances, and essence oils.",
+    title: "Dubai Shop | Aquad'or Cyprus",
+    description: "Browse our curated Dubai collection of luxury perfumes and niche fragrances.",
     url: 'https://aquadorcy.com/shop',
     images: [{ url: '/aquador.webp', width: 800, height: 600, alt: "Aquad'or Perfume Collection" }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: "Shop Luxury Perfumes | Aquad'or Cyprus",
-    description: "Browse our curated collection of luxury perfumes and niche fragrances.",
+    title: "Dubai Shop | Aquad'or Cyprus",
+    description: "Browse our curated Dubai collection of luxury perfumes and niche fragrances.",
     images: ['/aquador.webp'],
   },
   alternates: {

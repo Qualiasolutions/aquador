@@ -10,7 +10,7 @@ import { CartIcon } from '@/components/cart';
 import { SearchBar } from '@/components/search';
 
 const navLinks = [
-  { label: 'Shop', href: '/shop' },
+  { label: 'Dubai Shop', href: '/shop' },
   { label: 'Lattafa Originals', href: '/shop/lattafa' },
   { label: 'Create Your Own', href: '/create-perfume' },
   { label: 'Re-Order', href: '/reorder' },

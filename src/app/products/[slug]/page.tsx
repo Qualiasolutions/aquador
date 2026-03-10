@@ -150,7 +150,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
       {
         '@type': 'ListItem',
         position: 2,
-        name: 'Shop',
+        name: 'Dubai Shop',
         item: 'https://aquadorcy.com/shop',
       },
       {
@@ -186,7 +186,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
               className="inline-flex items-center gap-2 text-sm text-gold/70 tracking-normal hover:text-gold-500 transition-colors duration-200"
             >
               <ArrowLeft className="w-4 h-4" />
-              Back to Shop
+              Back to Dubai Shop
             </Link>
           </nav>
 

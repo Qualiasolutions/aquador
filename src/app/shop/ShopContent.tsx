@@ -7,7 +7,7 @@ import { trackFilterChange } from '@/lib/analytics/product-engagement';
 import { SearchBar } from '@/components/search';
 import { PageHero } from '@/components/ui/Section';
 import { ProductCard } from '@/components/ui/ProductCard';
-import { AnimatedFilterBar, AnimatedTypeFilter } from '@/components/shop/AnimatedFilterBar';
+import { AnimatedFilterBar } from '@/components/shop/AnimatedFilterBar';
 import {
   gridLayoutTransition,
   gridItemVariants,
@@ -27,7 +27,6 @@ export default function ShopContent({ products, categories }: ShopContentProps) 
   const urlSearchQuery = searchParams.get('search') || '';
 
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [selectedType, setSelectedType] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState(urlSearchQuery);
 
   // Prevents tracking on initial URL param load — only track user-initiated changes
@@ -51,15 +50,8 @@ export default function ShopContent({ products, categories }: ShopContentProps) 
     // We'll track via useEffect on filteredProducts instead
   }, []);
 
-  const handleTypeChange = useCallback((type: string | null) => {
-    setSelectedType(type);
-    if (!isInitializedRef.current || type === null) return;
-    // Tracked via useEffect on filteredProducts after state update
-  }, []);
-
   const clearFilters = useCallback(() => {
     setSelectedCategory(null);
-    setSelectedType(null);
     setSearchQuery('');
   }, []);
 
@@ -78,10 +70,9 @@ export default function ShopContent({ products, categories }: ShopContentProps) 
 
     return result.filter((product) => {
       if (selectedCategory && product.category !== selectedCategory) return false;
-      if (selectedType && product.product_type !== selectedType) return false;
       return true;
     });
-  }, [products, searchQuery, selectedCategory, selectedType]);
+  }, [products, searchQuery, selectedCategory]);
 
   // Track filter changes after state updates — guards against initial URL param load
   useEffect(() => {
@@ -91,25 +82,19 @@ export default function ShopContent({ products, categories }: ShopContentProps) 
   }, [selectedCategory]);
 
   useEffect(() => {
-    if (!isInitializedRef.current || selectedType === null) return;
-    trackFilterChange('type', selectedType, filteredProducts.length);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedType]);
-
-  useEffect(() => {
     if (!isInitializedRef.current || searchQuery.trim().length < 2) return;
     trackFilterChange('search', searchQuery, filteredProducts.length);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchQuery]);
 
-  const hasActiveFilters = selectedCategory || selectedType || searchQuery.length >= 2;
+  const hasActiveFilters = selectedCategory || searchQuery.length >= 2;
 
   return (
     <div className="min-h-screen bg-gold-ambient">
       {/* Hero */}
       <PageHero
-        title="Our Collections"
-        subtitle="Discover our curated selection of premium fragrances"
+        title="Dubai Shop"
+        subtitle="Curated luxury fragrances from Dubai's finest houses"
         titleVariant="white"
       />
 
@@ -146,17 +131,6 @@ export default function ShopContent({ products, categories }: ShopContentProps) 
             onFilterChange={handleCategoryChange}
           />
 
-          {/* Type filters */}
-          <AnimatedTypeFilter
-            types={[
-              { id: null, label: 'All Types' },
-              { id: 'perfume', label: 'Perfume' },
-              { id: 'essence-oil', label: 'Essence Oil' },
-              { id: 'body-lotion', label: 'Body Lotion' },
-            ]}
-            activeType={selectedType}
-            onTypeChange={handleTypeChange}
-          />
         </motion.div>
 
         {/* Results count */}
@@ -185,7 +159,7 @@ export default function ShopContent({ products, categories }: ShopContentProps) 
         {hasActiveFilters ? (
           <AnimatePresence mode="popLayout">
             <motion.div
-              key={`${selectedCategory}-${selectedType}-${searchQuery}`}
+              key={`${selectedCategory}-${searchQuery}`}
               initial="hidden"
               animate="visible"
               exit="exit"
