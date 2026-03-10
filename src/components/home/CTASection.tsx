@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Sparkles, Shield, Award } from 'lucide-react';
 import Button from '@/components/ui/Button';
 
@@ -27,13 +28,16 @@ export default function CTASection() {
   return (
     <section className="relative section-lg overflow-hidden">
       {/* Background — perfume bottle with charcoal and smoke */}
-      <div
-        className="absolute inset-0 bg-cover bg-center"
-        style={{
-          backgroundImage: `url('/images/aquadour1.jpg')`,
-          filter: 'brightness(0.4) saturate(0.7)',
-        }}
-      />
+      <div className="absolute inset-0">
+        <Image
+          src="/images/aquadour1.jpg"
+          alt=""
+          fill
+          className="object-cover brightness-[0.4] saturate-[0.7]"
+          sizes="100vw"
+          loading="lazy"
+        />
+      </div>
 
       {/* Gradient overlays for depth */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/70" />
