@@ -62,10 +62,10 @@ export default function Navbar() {
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-        className={`fixed left-0 right-0 z-50 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+        className={`fixed left-0 right-0 z-50 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] top-0 ${
           isScrolled
-            ? 'top-0 bg-white/95 backdrop-blur-2xl shadow-[0_4px_30px_rgba(212,175,55,0.04)]'
-            : 'top-5 md:top-7 bg-transparent'
+            ? 'bg-white/95 backdrop-blur-2xl shadow-[0_4px_30px_rgba(212,175,55,0.04)]'
+            : 'bg-transparent'
         }`}
       >
         <nav className="container-wide">
@@ -75,7 +75,7 @@ export default function Navbar() {
             <div className="flex items-center h-full">
               <button
                 onClick={() => setIsMobileOpen(!isMobileOpen)}
-                className="xl:hidden min-h-[44px] min-w-[44px] flex items-center justify-center text-black/80 hover:text-gold transition-colors duration-300 -ml-3"
+                className={`xl:hidden min-h-[44px] min-w-[44px] flex items-center justify-center hover:text-gold transition-colors duration-300 -ml-3 ${isScrolled ? 'text-black/80' : 'text-white'}`}
                 aria-label={isMobileOpen ? 'Close menu' : 'Open menu'}
               >
                 <div className="w-[18px] h-3 flex flex-col justify-between">
@@ -93,7 +93,7 @@ export default function Navbar() {
 
               <div className="hidden xl:flex items-center h-full">
                 {leftLinks.map((link) => (
-                  <NavLink key={link.href} {...link} active={checkActive(link.href)} />
+                  <NavLink key={link.href} {...link} active={checkActive(link.href)} scrolled={isScrolled} />
                 ))}
               </div>
             </div>
@@ -117,17 +117,17 @@ export default function Navbar() {
             <div className="flex items-center h-full">
               <div className="hidden xl:flex items-center h-full">
                 {rightLinks.map((link) => (
-                  <NavLink key={link.href} {...link} active={checkActive(link.href)} />
+                  <NavLink key={link.href} {...link} active={checkActive(link.href)} scrolled={isScrolled} />
                 ))}
               </div>
 
               {/* Separator — desktop only */}
-              <div className="hidden xl:block w-px h-4 bg-black/[0.08] mx-3" />
+              <div className={`hidden xl:block w-px h-4 mx-3 ${isScrolled ? 'bg-black/[0.08]' : 'bg-white/20'}`} />
 
               {/* Search toggle */}
               <button
                 onClick={() => setIsSearchOpen(prev => !prev)}
-                className="min-h-[44px] min-w-[44px] flex items-center justify-center text-black/80 hover:text-gold transition-colors duration-300"
+                className={`min-h-[44px] min-w-[44px] flex items-center justify-center hover:text-gold transition-colors duration-300 ${isScrolled ? 'text-black/80' : 'text-white'}`}
                 aria-label={isSearchOpen ? 'Close search' : 'Open search'}
               >
                 <AnimatePresence mode="wait">
@@ -143,7 +143,7 @@ export default function Navbar() {
                 </AnimatePresence>
               </button>
 
-              <CartIcon />
+              <CartIcon className={isScrolled ? 'text-black/80' : 'text-white'} />
             </div>
           </div>
         </nav>
@@ -239,11 +239,11 @@ export default function Navbar() {
   );
 }
 
-function NavLink({ label, href, active }: { label: string; href: string; active: boolean }) {
+function NavLink({ label, href, active, scrolled }: { label: string; href: string; active: boolean; scrolled: boolean }) {
   return (
     <Link href={href} className="relative h-full flex items-center justify-center px-4 xl:px-5 group">
       <span className={`text-[10.5px] xl:text-[11px] uppercase tracking-[0.18em] font-light transition-colors duration-300 whitespace-nowrap leading-none ${
-        active ? 'text-gold' : 'text-black/80 group-hover:text-gold'
+        active ? 'text-gold' : scrolled ? 'text-black/80 group-hover:text-gold' : 'text-white group-hover:text-gold'
       }`}>
         {label}
       </span>
