@@ -1,3 +1,4 @@
+import { cache } from 'react';
 import * as Sentry from '@sentry/nextjs';
 import { createPublicClient } from './public';
 import type { Product, ProductCategory } from './types';
@@ -67,10 +68,10 @@ export async function getProductsByIds(ids: string[]): Promise<Product[]> {
   return data || [];
 }
 
-// Get product by slug (same as ID in our case)
-export async function getProductBySlug(slug: string): Promise<Product | null> {
+// Get product by slug — cached per request to dedup generateMetadata + page component calls
+export const getProductBySlug = cache(async (slug: string): Promise<Product | null> => {
   return getProductById(slug);
-}
+});
 
 // Get products by category (filters inactive)
 export async function getProductsByCategory(category: string): Promise<Product[]> {

@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
-import { getProductBySlug, getRelatedProducts } from '@/lib/supabase/product-service';
+import { getProductBySlug, getRelatedProducts, getAllProductSlugs } from '@/lib/supabase/product-service';
 import ProductInfo from '@/components/products/ProductInfo';
 import AddToCartButton from '@/components/products/AddToCartButton';
 import RelatedProducts from '@/components/products/RelatedProducts';
@@ -16,12 +16,9 @@ interface ProductPageProps {
   params: Promise<{ slug: string }>;
 }
 
-// Dynamic rendering - skip static generation since we use dynamic data
-// Products are fetched at request time from Supabase
 export async function generateStaticParams() {
-  // Return empty array to disable static generation
-  // All product pages will be rendered on-demand
-  return [];
+  const slugs = await getAllProductSlugs();
+  return slugs.map((slug) => ({ slug }));
 }
 
 // Generate metadata for SEO
