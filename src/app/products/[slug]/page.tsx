@@ -3,8 +3,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 import { getProductBySlug, getRelatedProducts, getAllProductSlugs } from '@/lib/supabase/product-service';
-import ProductInfo from '@/components/products/ProductInfo';
-import AddToCartButton from '@/components/products/AddToCartButton';
+import ProductDetails from '@/components/products/ProductDetails';
 import RelatedProducts from '@/components/products/RelatedProducts';
 import ProductGallery from '@/components/products/ProductGallery';
 import ParallaxWrapper from './ParallaxWrapper';
@@ -177,10 +176,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema).replace(/</g, '\\u003c') }}
       />
 
-      <main className="min-h-screen bg-gold-ambient pt-32 md:pt-40 lg:pt-44 pb-20">
+      <main className="min-h-screen bg-gold-ambient pt-24 md:pt-28 lg:pt-32 pb-20">
         <div className="content-container">
           {/* Breadcrumb */}
-          <nav className="mb-8">
+          <nav className="mb-6">
             <Link
               href="/shop"
               className="inline-flex items-center gap-2 text-sm text-gold/70 tracking-normal hover:text-gold-500 transition-colors duration-200"
@@ -190,8 +189,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
             </Link>
           </nav>
 
-          {/* Product Content */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-20">
+          {/* Product Content — compact layout so CTA is above the fold */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12 items-start">
             {/* Product Images - Subtle parallax for depth */}
             <ParallaxWrapper>
               <ProductGallery
@@ -202,32 +201,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
               />
             </ParallaxWrapper>
 
-            {/* Product Details */}
-            <div className="space-y-8">
-              <ProductInfo product={transformedProduct} />
-              <AddToCartButton product={transformedProduct} />
-
-              {/* Additional Info */}
-              <div className="pt-6 border-t border-gold-500/10 space-y-5">
-                <div className="flex items-center gap-3 text-sm text-gray-700/90">
-                  <svg className="w-5 h-5 text-gold-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
-                  </svg>
-                  <span>Free shipping on orders over &euro;100</span>
-                </div>
-                <div className="flex items-center gap-3 text-sm text-gray-700/90">
-                  <svg className="w-5 h-5 text-gold-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                  </svg>
-                  <span>Secure checkout powered by Stripe</span>
-                </div>
-                <div className="flex items-center gap-3 text-sm text-gray-700/90">
-                  <svg className="w-5 h-5 text-gold-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                  <span>Delivery within 3-7 business days</span>
-                </div>
-              </div>
+            {/* Product Details with variant selector + add to cart */}
+            <div className="lg:sticky lg:top-28">
+              <ProductDetails product={transformedProduct} />
             </div>
           </div>
 
