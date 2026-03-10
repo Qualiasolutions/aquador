@@ -73,17 +73,14 @@ export default function MaintenanceClient() {
 
   return (
     <div className="fixed inset-0 z-[9999] bg-[#FAFAF8] flex flex-col items-center justify-center px-6 text-center overflow-y-auto">
-      {/* Background bottle image */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
-        <Image
-          src="/images/aquadour1.jpg"
-          alt=""
-          width={900}
-          height={900}
-          className="w-[70vw] max-w-[600px] h-auto opacity-[0.06] scale-110 blur-[1px] select-none"
-          priority
-        />
-      </div>
+      {/* Background bottle image — full cover */}
+      <Image
+        src="/images/aquadour1.jpg"
+        alt=""
+        fill
+        className="object-cover opacity-[0.07] pointer-events-none select-none"
+        priority
+      />
 
       {/* Content */}
       <div className="relative z-10 flex flex-col items-center">
