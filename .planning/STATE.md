@@ -13,7 +13,7 @@ See: .planning/PROJECT.md (updated 2026-03-09)
 Phase: 17 of 17 (Accessibility & Polish) — Complete
 Plan: 3 of 3 complete
 Status: Phase complete — v2.0 all phases done
-Last activity: 2026-03-10 - Completed quick task 5: Scroll animations, parallax polish, loading states
+Last activity: 2026-03-10 - Completed quick task 6: Dubai Shop rebrand + product variant selector
 
 Progress: [████████████████████] 100% (47/47 total plans complete)
 
@@ -104,12 +104,13 @@ All v1.0 + v1.1 + v1.2 decisions logged in PROJECT.md Key Decisions table.
 | 3 | White luxury theme with gold accents and black borders | 2026-03-09 | 0551265 |
 | 4 | Review quick wins — font trim, cache TTL, CTASection, generateStaticParams, a11y | 2026-03-10 | 7f43e94 |
 | 5 | Scroll animations, parallax polish, loading states | 2026-03-10 | 3a27377 |
+| 6 | Dubai Shop rebrand + product variant selector | 2026-03-10 | fff0d69 |
 
 ## Session Continuity
 
 Last session: 2026-03-10
-Completed: Quick task 5 — Scroll animations, parallax polish, loading states (3 tasks)
-Commits: d0d7dd3 (task 1 homepage animations + parallax), 85c785d (task 2 about + contact scroll), 3a27377 (task 3 loading states)
+Completed: Quick task 6 — Dubai Shop rebrand + product variant selector
+Commits: 2ec171e (task 1 rename + remove type filters), fff0d69 (task 2+3 variant selector + product page redesign)
 Phase 17 Status: COMPLETE — all 3 plans done
 v2.0 Status: COMPLETE — all 17 phases done
 Next: Deploy to production, Lighthouse audit, real-device mobile testing
