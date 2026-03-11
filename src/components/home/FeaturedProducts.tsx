@@ -1,13 +1,15 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useRef } from 'react';
 import { formatPrice } from '@/lib/utils';
 import { ArrowRight } from 'lucide-react';
 import { SectionHeader } from '@/components/ui/Section';
 import { AnimatedSection } from '@/components/ui/AnimatedSection';
 import { fadeInUp } from '@/lib/animations/scroll-animations';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
 import type { LegacyProduct } from '@/types';
 
 const FALLBACK_IMAGE = '/placeholder-product.svg';
@@ -17,14 +19,24 @@ interface FeaturedProductsProps {
 }
 
 export default function FeaturedProducts({ products }: FeaturedProductsProps) {
+  const sectionRef = useRef(null);
+  const reducedMotion = useReducedMotion();
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start end', 'end start'],
+  });
+  const headerY = useTransform(scrollYProgress, [0, 1], ['20px', '-20px']);
+
   return (
-    <section className="section-lg bg-gold-ambient">
+    <section ref={sectionRef} className="section-lg bg-gold-ambient">
       <div className="container-wide">
-        <SectionHeader
-          title="Featured Collections"
-          subtitle="Discover our most beloved fragrances, crafted with the finest ingredients from around the world."
-          eyebrow="Our Selection"
-        />
+        <motion.div style={{ y: reducedMotion ? 0 : headerY }}>
+          <SectionHeader
+            title="Featured Collections"
+            subtitle="Discover our most beloved fragrances, crafted with the finest ingredients from around the world."
+            eyebrow="Our Selection"
+          />
+        </motion.div>
 
         {/* Products grid — wider spacing, more breathing room */}
         <AnimatedSection variant="stagger" staggerDelay={0.08}>

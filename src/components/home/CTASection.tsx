@@ -1,12 +1,14 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useRef } from 'react';
 import { Sparkles, Shield, Award } from 'lucide-react';
 import Button from '@/components/ui/Button';
 import { AnimatedSection, AnimatedSectionItem } from '@/components/ui/AnimatedSection';
 import { ParallaxSection } from '@/components/ui/ParallaxSection';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
 
 const features = [
   {
@@ -37,8 +39,16 @@ const particles = [
 ];
 
 export default function CTASection() {
+  const sectionRef = useRef(null);
+  const reducedMotion = useReducedMotion();
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start end', 'end start'],
+  });
+  const contentY = useTransform(scrollYProgress, [0, 1], ['30px', '-30px']);
+
   return (
-    <section className="relative overflow-hidden" style={{ minHeight: '600px' }}>
+    <section ref={sectionRef} className="relative overflow-hidden" style={{ minHeight: '600px' }}>
       {/* Background — parallax perfume bottle */}
       <ParallaxSection speed={0.25} className="absolute inset-0">
         <Image
@@ -100,8 +110,11 @@ export default function CTASection() {
       <div className="absolute top-0 left-[5%] right-[5%] h-px bg-gradient-to-r from-transparent via-gold/25 to-transparent" />
       <div className="absolute bottom-0 left-[5%] right-[5%] h-px bg-gradient-to-r from-transparent via-gold/25 to-transparent" />
 
-      {/* Content — generous vertical padding */}
-      <div className="relative z-10 container-wide py-24 md:py-32 lg:py-40">
+      {/* Content — generous vertical padding with parallax */}
+      <motion.div
+        className="relative z-10 container-wide py-24 md:py-32 lg:py-40"
+        style={{ y: reducedMotion ? 0 : contentY }}
+      >
         <div className="max-w-3xl mx-auto text-center">
           <AnimatedSection variant="fadeInUp">
             <p className="eyebrow text-gold/50 mb-6">Our Boutique</p>
@@ -149,7 +162,7 @@ export default function CTASection() {
             </Link>
           </AnimatedSection>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }

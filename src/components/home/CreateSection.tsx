@@ -1,10 +1,12 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useRef } from 'react';
 import Button from '@/components/ui/Button';
 import { AnimatedSection, AnimatedSectionItem } from '@/components/ui/AnimatedSection';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
 
 const stages = [
   {
@@ -31,8 +33,16 @@ const stages = [
 ];
 
 export default function CreateSection() {
+  const sectionRef = useRef(null);
+  const reducedMotion = useReducedMotion();
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start end', 'end start'],
+  });
+  const bgY = useTransform(scrollYProgress, [0, 1], ['0%', '15%']);
+
   return (
-    <section className="relative section-lg overflow-hidden bg-[#0a0a0a]">
+    <section ref={sectionRef} className="relative section-lg overflow-hidden bg-[#0a0a0a]">
       {/* Subtle gold ambient background */}
       <div
         className="absolute inset-0 pointer-events-none"
@@ -85,15 +95,20 @@ export default function CreateSection() {
             {stages.map((stage) => (
               <AnimatedSectionItem key={stage.title}>
                 <div className="group relative overflow-hidden bg-[#111] border border-white/5 hover:border-gold/25 transition-all duration-700 cursor-default">
-                  {/* Full image background */}
+                  {/* Full image background with parallax */}
                   <div className="relative aspect-[3/4] md:aspect-[4/5] overflow-hidden">
-                    <Image
-                      src={stage.image}
-                      alt={stage.title}
-                      fill
-                      className="object-cover transition-transform duration-1000 group-hover:scale-106 filter brightness-[0.5] group-hover:brightness-[0.6]"
-                      sizes="(max-width: 768px) 100vw, 33vw"
-                    />
+                    <motion.div
+                      className="absolute inset-0"
+                      style={{ y: reducedMotion ? 0 : bgY, scale: 1.15 }}
+                    >
+                      <Image
+                        src={stage.image}
+                        alt={stage.title}
+                        fill
+                        className="object-cover transition-transform duration-1000 group-hover:scale-106 filter brightness-[0.5] group-hover:brightness-[0.6]"
+                        sizes="(max-width: 768px) 100vw, 33vw"
+                      />
+                    </motion.div>
                     {/* Gradient from bottom */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
 
