@@ -22,6 +22,7 @@ export async function getAllProducts(): Promise<Product[]> {
     .from('products')
     .select(PRODUCT_COLUMNS)
     .eq('is_active', true)
+    .order('in_stock', { ascending: false })
     .order('created_at', { ascending: false });
 
   if (error) {
@@ -81,6 +82,7 @@ export async function getProductsByCategory(category: string): Promise<Product[]
     .select(PRODUCT_COLUMNS)
     .eq('category', category as ProductCategory)
     .eq('is_active', true)
+    .order('in_stock', { ascending: false })
     .order('created_at', { ascending: false });
 
   if (error) {
