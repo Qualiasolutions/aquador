@@ -23,8 +23,8 @@ export default function Hero() {
     >
       {/* Main Hero Content */}
       <div ref={sectionRef} className="relative flex-1 flex items-center justify-center pt-24">
-        {/* Video Background - Slow parallax for depth */}
-        <ParallaxSection speed={0.3} className="absolute inset-0 z-0">
+        {/* Video Background */}
+        <ParallaxSection speed={0.25} className="absolute inset-0 z-0">
           {!videoError ? (
             <video
               autoPlay
@@ -32,8 +32,8 @@ export default function Hero() {
               loop
               playsInline
               poster="/images/aquadour1.jpg"
-              className="absolute w-full h-full object-cover opacity-30"
-              style={{ filter: 'brightness(0.4) saturate(0.8)' }}
+              className="absolute w-full h-full object-cover"
+              style={{ filter: 'brightness(0.25) saturate(0.7) contrast(1.1)' }}
               onError={() => setVideoError(true)}
             >
               <source
@@ -42,60 +42,87 @@ export default function Hero() {
               />
             </video>
           ) : (
-            <div className="absolute inset-0 bg-gradient-to-br from-black via-dark-light to-black" />
+            <div className="absolute inset-0 bg-gradient-to-br from-black via-[#0d0d0d] to-black" />
           )}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black" />
+
+          {/* Multi-layer gradient for cinematic depth */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black" />
+          <div
+            className="absolute inset-0"
+            style={{
+              background: 'radial-gradient(ellipse 80% 60% at 50% 50%, transparent 40%, rgba(0,0,0,0.5) 100%)',
+            }}
+          />
         </ParallaxSection>
 
-        {/* Subtle ambient glow - Medium parallax layer */}
-        <ParallaxSection speed={0.5} className="absolute inset-0 z-0 pointer-events-none gpu-accelerated">
+        {/* Ambient gold glow — slow-breathing center light */}
+        <ParallaxSection speed={0.45} className="absolute inset-0 z-0 pointer-events-none gpu-accelerated">
           <motion.div
-            className="absolute top-1/3 left-1/4 w-[500px] h-[500px] bg-gold/[0.03] rounded-full blur-[100px]"
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] rounded-full"
+            style={{
+              background: 'radial-gradient(ellipse at center, rgba(212,175,55,0.04) 0%, transparent 70%)',
+              filter: 'blur(40px)',
+            }}
             animate={isInView ? {
-              scale: [1, 1.1, 1],
-              opacity: [0.5, 0.7, 0.5],
-            } : { scale: 1, opacity: 0.5 }}
+              scale: [1, 1.08, 1],
+              opacity: [0.6, 1, 0.6],
+            } : { scale: 1, opacity: 0.6 }}
             transition={isInView ? {
-              duration: 10,
+              duration: 8,
               repeat: Infinity,
               ease: 'easeInOut',
             } : { duration: 0 }}
           />
         </ParallaxSection>
 
-        {/* Content */}
+        {/* Content — centered with generous vertical breathing room */}
         <motion.div
-          className="relative z-10 text-center container-wide py-16 md:py-24"
+          className="relative z-10 text-center container-wide py-20 md:py-32 lg:py-40"
           variants={revealVariants.fadeInSequence}
           initial="initial"
           animate="animate"
         >
-          {/* Brand name */}
+          {/* Eyebrow label */}
+          <motion.p
+            className="text-[9px] sm:text-[10px] uppercase tracking-[0.35em] text-gold/50 mb-8 font-light"
+            variants={revealVariants.fadeInSequence}
+          >
+            Cyprus &nbsp;&bull;&nbsp; Since 2024
+          </motion.p>
+
+          {/* Brand name — cinematic scale */}
           <motion.h1
-            className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-playfair font-normal tracking-[0.15em] sm:tracking-[0.2em] mb-8"
+            className="font-playfair font-normal mb-0 tracking-[0.18em] sm:tracking-[0.22em] leading-none"
             aria-label="Aquad'or"
             style={{
-              background: 'linear-gradient(90deg, #FFD700, #FFF8DC, #FFD700, #D4AF37, #FFD700)',
-              backgroundSize: '200% auto',
+              fontSize: 'clamp(3.5rem, 12vw, 9rem)',
+              background: 'linear-gradient(180deg, #FFF8DC 0%, #FFD700 35%, #D4AF37 65%, #B8960C 100%)',
+              backgroundSize: '100% 100%',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
-              filter: 'drop-shadow(0 0 40px rgba(255, 215, 0, 0.2))',
+              backgroundClip: 'text',
+              filter: 'drop-shadow(0 2px 60px rgba(212, 175, 55, 0.25))',
             }}
+            variants={revealVariants.fadeInSequence}
           >
             AQUAD&apos;OR
           </motion.h1>
 
-          {/* Separator line */}
+          {/* Refined separator */}
           <motion.div
-            className="relative w-24 h-px mx-auto mb-8"
+            className="relative flex items-center justify-center gap-3 my-8 md:my-10"
             variants={revealVariants.fadeInSequence}
           >
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-gold/60 to-transparent" />
+            <div className="w-12 h-px bg-gradient-to-r from-transparent to-gold/40" />
+            <div className="w-1 h-1 rounded-full bg-gold/60" />
+            <div className="w-24 h-px bg-gradient-to-r from-gold/40 via-gold/70 to-gold/40" />
+            <div className="w-1 h-1 rounded-full bg-gold/60" />
+            <div className="w-12 h-px bg-gradient-to-l from-transparent to-gold/40" />
           </motion.div>
 
-          {/* Tagline */}
+          {/* Tagline — refined hierarchy */}
           <motion.p
-            className="text-sm sm:text-base md:text-lg text-white tracking-[0.2em] sm:tracking-[0.25em] uppercase font-light mb-14"
+            className="text-[11px] sm:text-xs md:text-sm text-white/50 tracking-[0.28em] uppercase font-light mb-14 md:mb-18"
             variants={revealVariants.fadeInSequence}
           >
             Where Luxury Meets Distinction
@@ -118,24 +145,29 @@ export default function Hero() {
             </Link>
           </motion.div>
         </motion.div>
-
       </div>
 
-      {/* Scroll indicator */}
+      {/* Refined scroll indicator */}
       <motion.div
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2"
+        className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-3"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1.5, duration: 0.6 }}
+        transition={{ delay: 1.8, duration: 0.7 }}
         aria-hidden="true"
       >
-        <span className="text-white/40 text-[9px] uppercase tracking-[0.25em]">Scroll</span>
-        <motion.div
-          className="w-px h-10 bg-gradient-to-b from-gold/60 to-transparent"
-          animate={{ scaleY: [0, 1, 0], originY: 0 }}
-          transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
-        />
+        <span className="text-white/30 text-[8px] uppercase tracking-[0.3em] font-light">Scroll</span>
+        {/* Animated mouse icon */}
+        <div className="w-5 h-8 rounded-full border border-white/20 flex justify-center pt-1.5">
+          <motion.div
+            className="w-0.5 h-1.5 rounded-full bg-gold/60"
+            animate={{ y: [0, 8, 0], opacity: [1, 0, 1] }}
+            transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+          />
+        </div>
       </motion.div>
+
+      {/* Bottom vignette edge */}
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#FAFAF8] to-transparent z-[1]" />
     </motion.section>
   );
 }

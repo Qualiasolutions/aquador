@@ -18,85 +18,104 @@ interface FeaturedProductsProps {
 
 export default function FeaturedProducts({ products }: FeaturedProductsProps) {
   return (
-    <section className="section bg-gold-ambient">
+    <section className="section-lg bg-gold-ambient">
       <div className="container-wide">
         <SectionHeader
           title="Featured Collections"
-          subtitle="Discover our most beloved fragrances, crafted with the finest ingredients."
+          subtitle="Discover our most beloved fragrances, crafted with the finest ingredients from around the world."
+          eyebrow="Our Selection"
         />
 
-        {/* Products grid */}
-        <AnimatedSection variant="stagger" staggerDelay={0.1}>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-5">
+        {/* Products grid — wider spacing, more breathing room */}
+        <AnimatedSection variant="stagger" staggerDelay={0.08}>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-7 lg:gap-8">
             {products.map((product) => (
               <motion.div
                 key={product.id}
                 variants={fadeInUp}
               >
-                <Link href={`/products/${product.id}`} className="group block product-card">
-                {/* Image */}
-                <div className="relative aspect-[3/4] overflow-hidden">
-                  <Image
-                    src={product.image || FALLBACK_IMAGE}
-                    alt={product.name}
-                    fill
-                    className="object-cover transition-transform duration-700 group-hover:scale-105"
-                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 33vw"
-                    onError={(e) => { (e.target as HTMLImageElement).src = FALLBACK_IMAGE; }}
-                  />
-                </div>
+                <Link href={`/products/${product.id}`} className="group block">
+                  {/* Image — generous proportions */}
+                  <div className="relative aspect-[3/4] overflow-hidden bg-[#f0ede8] mb-4">
+                    <Image
+                      src={product.image || FALLBACK_IMAGE}
+                      alt={product.name}
+                      fill
+                      className="object-cover transition-transform duration-700 group-hover:scale-105"
+                      sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 33vw"
+                      onError={(e) => { (e.target as HTMLImageElement).src = FALLBACK_IMAGE; }}
+                    />
 
-                {/* Content */}
-                <div className="p-4 bg-[#FAFAF8]">
-                  {product.brand && (
-                    <p className="label-micro mb-1.5 truncate">{product.brand}</p>
-                  )}
-                  <h3 className="text-sm font-playfair text-gray-900 group-hover:text-gold-dark transition-colors mb-2 line-clamp-1">
-                    {product.name}
-                  </h3>
+                    {/* Sale badge */}
+                    {product.salePrice && (
+                      <div className="absolute top-3 left-3 bg-gold text-black text-[9px] uppercase tracking-[0.12em] px-2.5 py-1 font-medium">
+                        Sale
+                      </div>
+                    )}
 
-                  {/* Price section */}
-                  <div className="pt-2 border-t border-gray-100">
-                    <div className="flex items-baseline justify-between">
+                    {/* Hover reveal overlay */}
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-500" />
+
+                    {/* Subtle bottom gradient */}
+                    <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  </div>
+
+                  {/* Content — clean typographic hierarchy */}
+                  <div className="space-y-1.5">
+                    {product.brand && (
+                      <p className="eyebrow text-gold/60 text-[9px]">{product.brand}</p>
+                    )}
+                    <h3 className="font-playfair text-sm md:text-[15px] text-gray-900 group-hover:text-gold-dark transition-colors duration-300 line-clamp-1 leading-snug">
+                      {product.name}
+                    </h3>
+
+                    {/* Price + size in one clean row */}
+                    <div className="flex items-center justify-between pt-1">
                       <div className="flex items-baseline gap-2">
-                        <span className={`text-base font-playfair ${product.salePrice ? 'text-gold-dark' : 'text-gray-900'}`}>
+                        <span className={`font-playfair text-sm md:text-base ${product.salePrice ? 'text-gold-dark' : 'text-gray-800'}`}>
                           {formatPrice(product.salePrice ?? product.price)}
                         </span>
                         {product.salePrice && (
-                          <span className="text-xs text-gray-400 line-through">
+                          <span className="text-[11px] text-gray-400 line-through">
                             {formatPrice(product.price)}
                           </span>
                         )}
                       </div>
                       {product.size && (
-                        <span className="text-xs text-gray-400 uppercase">
+                        <span className="text-[10px] text-gray-400 uppercase tracking-wide">
                           {product.size}
                         </span>
                       )}
                     </div>
+
+                    {/* Animated gold underline on hover */}
+                    <div className="h-px bg-gold/20 relative overflow-hidden">
+                      <div className="absolute inset-0 bg-gold/60 -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]" />
+                    </div>
                   </div>
-                </div>
-              </Link>
+                </Link>
               </motion.div>
             ))}
           </div>
         </AnimatedSection>
 
-        {/* View all link */}
+        {/* View all — more editorial link style */}
         <motion.div
-          className="text-center mt-12 md:mt-16"
+          className="mt-16 md:mt-20 flex flex-col sm:flex-row items-center justify-between gap-6"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ delay: 0.4 }}
+          transition={{ delay: 0.3 }}
         >
+          <div className="flex-1 h-px bg-gradient-to-r from-transparent via-gold/20 to-transparent hidden sm:block" />
           <Link
             href="/shop"
-            className="inline-flex items-center gap-3 text-gold hover:text-gold-light transition-colors text-xs uppercase tracking-[0.2em] group"
+            className="inline-flex items-center gap-3 text-black hover:text-gold transition-colors duration-300 text-[11px] uppercase tracking-[0.22em] group flex-shrink-0"
           >
             View All Products
-            <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+            <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1.5" />
           </Link>
+          <div className="flex-1 h-px bg-gradient-to-l from-transparent via-gold/20 to-transparent hidden sm:block" />
         </motion.div>
       </div>
     </section>

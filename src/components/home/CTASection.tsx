@@ -1,5 +1,6 @@
 'use client';
 
+import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Sparkles, Shield, Award } from 'lucide-react';
@@ -25,57 +26,114 @@ const features = [
   },
 ];
 
+// Decorative floating gold dots
+const particles = [
+  { x: '15%', y: '20%', size: 3, duration: 5, delay: 0 },
+  { x: '80%', y: '15%', size: 2, duration: 7, delay: 1 },
+  { x: '70%', y: '70%', size: 2, duration: 6, delay: 2 },
+  { x: '25%', y: '75%', size: 3, duration: 8, delay: 0.5 },
+  { x: '90%', y: '45%', size: 1.5, duration: 5.5, delay: 1.5 },
+  { x: '10%', y: '55%', size: 2, duration: 7.5, delay: 3 },
+];
+
 export default function CTASection() {
   return (
-    <section className="relative section-lg overflow-hidden">
-      {/* Background — parallax perfume bottle with charcoal and smoke */}
-      <ParallaxSection speed={0.3} className="absolute inset-0">
+    <section className="relative overflow-hidden" style={{ minHeight: '600px' }}>
+      {/* Background — parallax perfume bottle */}
+      <ParallaxSection speed={0.25} className="absolute inset-0">
         <Image
           src="/images/aquadour1.jpg"
           alt=""
           fill
-          className="object-cover brightness-[0.4] saturate-[0.7]"
+          className="object-cover"
+          style={{ filter: 'brightness(0.3) saturate(0.6) contrast(1.1)' }}
           sizes="100vw"
           loading="lazy"
         />
       </ParallaxSection>
 
-      {/* Gradient overlays for depth */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/70" />
+      {/* Layered gradient overlays for cinematic depth */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/20 to-black/70" />
       <div
         className="absolute inset-0"
         style={{
-          background: 'radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.6) 100%)',
+          background: 'radial-gradient(ellipse 70% 80% at 50% 50%, transparent 30%, rgba(0,0,0,0.65) 100%)',
         }}
       />
 
-      {/* Gold accent lines */}
-      <div className="absolute top-0 left-[10%] right-[10%] h-px bg-gradient-to-r from-transparent via-gold/20 to-transparent" />
-      <div className="absolute bottom-0 left-[10%] right-[10%] h-px bg-gradient-to-r from-transparent via-gold/20 to-transparent" />
+      {/* Subtle gold vignette center */}
+      <div
+        className="absolute inset-0"
+        style={{
+          background: 'radial-gradient(ellipse 50% 50% at 50% 50%, rgba(212,175,55,0.04) 0%, transparent 60%)',
+        }}
+      />
 
-      {/* Content */}
-      <div className="relative z-10 container-wide">
+      {/* Floating gold particles */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        {particles.map((p, i) => (
+          <motion.div
+            key={i}
+            className="absolute rounded-full bg-gold"
+            style={{
+              left: p.x,
+              top: p.y,
+              width: p.size,
+              height: p.size,
+              opacity: 0.2,
+            }}
+            animate={{
+              y: [-10, 10, -10],
+              opacity: [0.15, 0.35, 0.15],
+            }}
+            transition={{
+              duration: p.duration,
+              delay: p.delay,
+              repeat: Infinity,
+              ease: 'easeInOut',
+            }}
+          />
+        ))}
+      </div>
+
+      {/* Gold accent lines — top/bottom */}
+      <div className="absolute top-0 left-[5%] right-[5%] h-px bg-gradient-to-r from-transparent via-gold/25 to-transparent" />
+      <div className="absolute bottom-0 left-[5%] right-[5%] h-px bg-gradient-to-r from-transparent via-gold/25 to-transparent" />
+
+      {/* Content — generous vertical padding */}
+      <div className="relative z-10 container-wide py-24 md:py-32 lg:py-40">
         <div className="max-w-3xl mx-auto text-center">
           <AnimatedSection variant="fadeInUp">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-playfair text-gradient-gold mb-5">
+            <p className="eyebrow text-gold/50 mb-6">Our Boutique</p>
+            <h2 className="font-playfair text-3xl md:text-4xl lg:text-5xl xl:text-6xl text-gradient-gold mb-6 leading-tight">
               Experience Aquad&apos;or
             </h2>
-            <p className="text-base md:text-lg text-gray-400 mb-10 max-w-xl mx-auto">
+
+            {/* Refined separator */}
+            <div className="flex items-center justify-center gap-3 mb-7">
+              <div className="w-8 h-px bg-gold/30" />
+              <div className="w-1 h-1 rounded-full bg-gold/60" />
+              <div className="w-16 h-px bg-gold/50" />
+              <div className="w-1 h-1 rounded-full bg-gold/60" />
+              <div className="w-8 h-px bg-gold/30" />
+            </div>
+
+            <p className="text-gray-400 text-base md:text-lg mb-14 max-w-xl mx-auto leading-relaxed">
               Book a personal consultation and discover your perfect scent with our fragrance experts.
             </p>
           </AnimatedSection>
 
-          {/* Features */}
-          <AnimatedSection variant="stagger" staggerDelay={0.1} className="mb-10">
-            <div className="flex flex-wrap justify-center gap-6 md:gap-10">
+          {/* Features — refined icon treatment */}
+          <AnimatedSection variant="stagger" staggerDelay={0.12} className="mb-14">
+            <div className="flex flex-wrap justify-center gap-8 md:gap-14">
               {features.map((feature) => (
                 <AnimatedSectionItem key={feature.title}>
-                  <div className="flex flex-col items-center">
-                    <div className="w-12 h-12 rounded-full border border-gold/30 bg-gold/5 flex items-center justify-center mb-3">
+                  <div className="flex flex-col items-center group">
+                    <div className="w-14 h-14 rounded-full border border-gold/20 bg-gold/5 flex items-center justify-center mb-3 transition-all duration-300 group-hover:border-gold/50 group-hover:bg-gold/10">
                       <feature.icon className="w-5 h-5 text-gold" />
                     </div>
-                    <h3 className="text-white text-sm font-medium mb-0.5">{feature.title}</h3>
-                    <p className="text-gray-300 text-xs">{feature.description}</p>
+                    <h3 className="text-white text-xs font-medium mb-1 tracking-wide">{feature.title}</h3>
+                    <p className="text-gray-500 text-[11px] tracking-wide">{feature.description}</p>
                   </div>
                 </AnimatedSectionItem>
               ))}
@@ -85,7 +143,7 @@ export default function CTASection() {
           {/* CTA Button */}
           <AnimatedSection variant="fadeInUp" delay={0.3}>
             <Link href="/contact">
-              <Button size="lg" className="min-w-[200px]">
+              <Button size="lg" className="min-w-[220px]">
                 Book Your Experience
               </Button>
             </Link>
