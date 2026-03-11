@@ -26,14 +26,18 @@ export default function Navbar() {
   const pathname = usePathname();
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
+  const [scrollY, setScrollY] = useState(0);
   const ticking = useRef(false);
+
+  const isScrolled = scrollY > 60;
+  // Transition zone: 0–120px — gradual blur/background transition
+  const blurIntensity = Math.min(1, scrollY / 120);
 
   useEffect(() => {
     const handleScroll = () => {
       if (!ticking.current) {
         requestAnimationFrame(() => {
-          setIsScrolled(window.scrollY > 80);
+          setScrollY(window.scrollY);
           ticking.current = false;
         });
         ticking.current = true;
@@ -54,7 +58,6 @@ export default function Navbar() {
   }, [pathname]);
 
   const isHome = pathname === '/';
-  // White text only on homepage with dark hero behind transparent header
   const useLightText = isHome && !isScrolled;
 
   const checkActive = (href: string) => {
@@ -67,15 +70,21 @@ export default function Navbar() {
       <motion.header
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-        className={`fixed left-0 right-0 z-50 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] top-0 ${
-          isScrolled
-            ? 'bg-white/95 backdrop-blur-2xl shadow-[0_4px_30px_rgba(212,175,55,0.04)]'
-            : isHome ? 'bg-transparent' : 'bg-white/95 backdrop-blur-2xl'
-        }`}
+        transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+        className="fixed left-0 right-0 z-50 top-0"
+        style={{
+          background: isHome && !isScrolled
+            ? `rgba(0, 0, 0, ${blurIntensity * 0.3})`
+            : 'rgba(250, 250, 248, 0.96)',
+          backdropFilter: isScrolled || !isHome ? `blur(${20 + blurIntensity * 4}px) saturate(180%)` : `blur(${blurIntensity * 8}px)`,
+          WebkitBackdropFilter: isScrolled || !isHome ? `blur(${20 + blurIntensity * 4}px) saturate(180%)` : `blur(${blurIntensity * 8}px)`,
+          boxShadow: isScrolled ? '0 1px 0 rgba(212,175,55,0.08), 0 4px 24px rgba(0,0,0,0.04)' : 'none',
+          transition: 'background 0.5s ease, box-shadow 0.5s ease',
+        }}
       >
         <nav className="container-wide">
-          <div className="relative flex items-center justify-between h-[56px] md:h-[62px]">
+          {/* Taller nav for more spacious feel */}
+          <div className="relative flex items-center justify-between h-[60px] md:h-[70px]">
 
             {/* Left: Hamburger (mobile) + Left nav links (desktop) */}
             <div className="flex items-center h-full">
@@ -85,15 +94,15 @@ export default function Navbar() {
                 aria-label={isMobileOpen ? 'Close menu' : 'Open menu'}
                 aria-expanded={isMobileOpen}
               >
-                <div className="w-[18px] h-3 flex flex-col justify-between">
+                <div className="w-[20px] h-3.5 flex flex-col justify-between">
                   <span className={`block h-px bg-current transition-all duration-500 origin-center ${
-                    isMobileOpen ? 'rotate-45 translate-y-[5.5px]' : ''
+                    isMobileOpen ? 'rotate-45 translate-y-[6px]' : ''
                   }`} />
                   <span className={`block h-px bg-current transition-all duration-300 ${
                     isMobileOpen ? 'opacity-0 scale-x-0' : ''
                   }`} />
                   <span className={`block h-px bg-current transition-all duration-500 origin-center ${
-                    isMobileOpen ? '-rotate-45 -translate-y-[5.5px]' : ''
+                    isMobileOpen ? '-rotate-45 -translate-y-[6px]' : ''
                   }`} />
                 </div>
               </button>
@@ -105,7 +114,7 @@ export default function Navbar() {
               </div>
             </div>
 
-            {/* Center: Logo — absolutely centered, overflows the bar */}
+            {/* Center: Logo */}
             <Link
               href="/"
               className="absolute left-1/2 -translate-x-1/2 z-10"
@@ -115,7 +124,7 @@ export default function Navbar() {
                 alt="Aquad'or"
                 width={400}
                 height={120}
-                className="h-20 sm:h-24 xl:h-20 2xl:h-24 w-auto object-contain"
+                className="h-20 sm:h-24 xl:h-22 2xl:h-26 w-auto object-contain transition-opacity duration-300"
                 priority
               />
             </Link>
@@ -129,28 +138,28 @@ export default function Navbar() {
               </div>
 
               {/* Separator — desktop only */}
-              <div className={`hidden xl:block w-px h-4 mx-3 ${useLightText ? 'bg-white/20' : 'bg-black/[0.08]'}`} />
+              <div className={`hidden xl:block w-px h-5 mx-4 ${useLightText ? 'bg-white/15' : 'bg-black/[0.07]'}`} />
 
               {/* Search toggle */}
               <button
                 onClick={() => setIsSearchOpen(prev => !prev)}
-                className={`min-h-[44px] min-w-[44px] flex items-center justify-center hover:text-gold transition-colors duration-300 ${useLightText ? 'text-white' : 'text-black/80'}`}
+                className={`min-h-[44px] min-w-[44px] flex items-center justify-center hover:text-gold transition-colors duration-300 ${useLightText ? 'text-white/80' : 'text-black/70'}`}
                 aria-label={isSearchOpen ? 'Close search' : 'Open search'}
               >
                 <AnimatePresence mode="wait">
                   {isSearchOpen ? (
                     <motion.div key="x" initial={{ opacity: 0, rotate: -90 }} animate={{ opacity: 1, rotate: 0 }} exit={{ opacity: 0, rotate: 90 }} transition={{ duration: 0.15 }}>
-                      <X className="w-[18px] h-[18px]" />
+                      <X className="w-[17px] h-[17px]" />
                     </motion.div>
                   ) : (
                     <motion.div key="s" initial={{ opacity: 0, rotate: 90 }} animate={{ opacity: 1, rotate: 0 }} exit={{ opacity: 0, rotate: -90 }} transition={{ duration: 0.15 }}>
-                      <Search className="w-[18px] h-[18px]" />
+                      <Search className="w-[17px] h-[17px]" />
                     </motion.div>
                   )}
                 </AnimatePresence>
               </button>
 
-              <CartIcon className={useLightText ? 'text-white' : 'text-black/80'} />
+              <CartIcon className={useLightText ? 'text-white/80' : 'text-black/70'} />
             </div>
           </div>
         </nav>
@@ -163,7 +172,8 @@ export default function Navbar() {
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-              className="overflow-hidden border-t border-gold/10 bg-white/95 backdrop-blur-2xl"
+              className="overflow-hidden border-t border-gold/10"
+              style={{ background: 'rgba(250, 250, 248, 0.97)', backdropFilter: 'blur(24px)' }}
             >
               <div className="container-wide py-5">
                 <div className="max-w-lg mx-auto">
@@ -174,8 +184,14 @@ export default function Navbar() {
           )}
         </AnimatePresence>
 
-        {/* Gold bottom border — always visible, behind logo (z-0 vs logo z-10) */}
-        <div className="absolute bottom-0 left-0 right-0 h-px bg-gold/20 z-0" />
+        {/* Gold bottom border */}
+        <div
+          className="absolute bottom-0 left-0 right-0 h-px z-0 transition-opacity duration-500"
+          style={{
+            background: 'linear-gradient(90deg, transparent 0%, rgba(212,175,55,0.25) 50%, transparent 100%)',
+            opacity: isScrolled ? 1 : isHome ? blurIntensity * 0.6 : 1,
+          }}
+        />
       </motion.header>
 
       {/* Mobile full-screen overlay */}
@@ -185,43 +201,45 @@ export default function Navbar() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.35 }}
+            transition={{ duration: 0.3 }}
             className="fixed inset-0 z-40 xl:hidden"
           >
-            <div className="absolute inset-0 bg-white/[0.98]">
-              <div className="absolute inset-0 bg-[radial-gradient(ellipse_50%_30%_at_50%_0%,rgba(212,175,55,0.02)_0%,transparent_70%)]" />
+            <div className="absolute inset-0 bg-[#FAFAF8]/[0.99]">
+              <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_40%_at_50%_0%,rgba(212,175,55,0.025)_0%,transparent_60%)]" />
             </div>
 
-            <div className="relative h-full flex flex-col pt-[72px] pb-8 px-8 sm:px-12 overflow-y-auto">
+            <div className="relative h-full flex flex-col pt-[80px] pb-8 px-8 sm:px-12 overflow-y-auto">
               <motion.div
-                initial={{ opacity: 0, y: 10 }}
+                initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.06, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                className="mb-8"
+                className="mb-10"
               >
                 <SearchBar variant="shop" placeholder="Search fragrances..." />
               </motion.div>
 
               <nav className="flex-1">
-                <ul className="space-y-0.5">
+                <ul className="space-y-0">
                   {navLinks.map((link, i) => (
                     <motion.li
                       key={link.label}
-                      initial={{ opacity: 0, x: -20 }}
+                      initial={{ opacity: 0, x: -16 }}
                       animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.1 + i * 0.045, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                      transition={{ delay: 0.1 + i * 0.04, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
                     >
                       <Link
                         href={link.href}
                         onClick={() => setIsMobileOpen(false)}
-                        className={`flex items-center gap-3 py-3 transition-colors duration-300 ${
-                          checkActive(link.href) ? 'text-gold' : 'text-black/70 active:text-gold'
+                        className={`flex items-center gap-4 py-3.5 border-b border-black/[0.04] transition-colors duration-300 ${
+                          checkActive(link.href) ? 'text-gold' : 'text-black/60 active:text-gold'
                         }`}
                       >
-                        {checkActive(link.href) && (
-                          <span className="w-5 h-px bg-gold flex-shrink-0" />
+                        {checkActive(link.href) ? (
+                          <span className="w-6 h-px bg-gold flex-shrink-0" />
+                        ) : (
+                          <span className="w-6 h-px flex-shrink-0" />
                         )}
-                        <span className="font-playfair text-[22px] sm:text-2xl tracking-wide">
+                        <span className="font-playfair text-[21px] sm:text-2xl tracking-wide">
                           {link.label}
                         </span>
                       </Link>
@@ -234,7 +252,7 @@ export default function Navbar() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.55, duration: 0.4 }}
-                className="mt-auto pt-6 border-t border-black/[0.06] text-[9px] uppercase tracking-[0.3em] text-gray-600 font-light"
+                className="mt-auto pt-7 text-[8px] uppercase tracking-[0.35em] text-gray-400 font-light"
               >
                 Where Luxury Meets Distinction
               </motion.p>
@@ -249,8 +267,8 @@ export default function Navbar() {
 function NavLink({ label, href, active, lightText }: { label: string; href: string; active: boolean; lightText: boolean }) {
   return (
     <Link href={href} className="relative h-full flex items-center justify-center px-4 xl:px-5 group">
-      <span className={`text-[10.5px] xl:text-[11px] uppercase tracking-[0.18em] font-light transition-colors duration-300 whitespace-nowrap leading-none ${
-        active ? 'text-gold' : lightText ? 'text-white group-hover:text-gold' : 'text-black/80 group-hover:text-gold'
+      <span className={`text-[10.5px] xl:text-[11px] uppercase tracking-[0.16em] font-light transition-colors duration-300 whitespace-nowrap leading-none ${
+        active ? 'text-gold' : lightText ? 'text-white/75 group-hover:text-white' : 'text-black/65 group-hover:text-black'
       }`}>
         {label}
       </span>
@@ -258,10 +276,10 @@ function NavLink({ label, href, active, lightText }: { label: string; href: stri
         <motion.span
           layoutId="navActive"
           className="absolute bottom-0 left-4 right-4 xl:left-5 xl:right-5 h-px bg-gold"
-          transition={{ type: 'spring', stiffness: 400, damping: 28 }}
+          transition={{ type: 'spring', stiffness: 350, damping: 28 }}
         />
       ) : (
-        <span className="absolute bottom-0 left-4 right-4 xl:left-5 xl:right-5 h-px bg-gold/50 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
+        <span className="absolute bottom-0 left-4 right-4 xl:left-5 xl:right-5 h-px bg-gold/40 scale-x-0 group-hover:scale-x-100 transition-transform duration-400 origin-left" />
       )}
     </Link>
   );

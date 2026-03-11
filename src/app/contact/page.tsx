@@ -24,24 +24,24 @@ type ContactFormData = z.infer<typeof contactSchema>;
 
 const contactInfo = [
   {
-    icon: <MapPin className="w-5 h-5 text-gold" />,
+    icon: <MapPin className="w-4 h-4 text-gold" />,
     title: 'Visit Us',
     details: ['Ledra 145, 1011', 'Nicosia, Cyprus'],
   },
   {
-    icon: <Phone className="w-5 h-5 text-gold" />,
+    icon: <Phone className="w-4 h-4 text-gold" />,
     title: 'Call Us',
     details: ['+357 99 980809'],
   },
   {
-    icon: <Mail className="w-5 h-5 text-gold" />,
+    icon: <Mail className="w-4 h-4 text-gold" />,
     title: 'Email Us',
     details: ['info@aquadorcy.com'],
   },
   {
-    icon: <Clock className="w-5 h-5 text-gold" />,
+    icon: <Clock className="w-4 h-4 text-gold" />,
     title: 'Hours',
-    details: ['Mon-Sat: 10-20', 'Sun: 12-18'],
+    details: ['Mon–Sat: 10:00–20:00', 'Sun: 12:00–18:00'],
   },
 ];
 
@@ -89,38 +89,43 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gold-ambient">
+    <div className="min-h-screen bg-[#FAFAF8]">
       <PageHero
         title="Contact Us"
-        subtitle="We'd love to hear from you. Get in touch with our team."
+        subtitle="We'd love to hear from you. Get in touch with our team for consultations, orders, or any inquiries."
+        eyebrow="Get In Touch"
       />
 
-      <section className="section-sm">
+      <section className="section-lg">
         <div className="container-wide">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
-            {/* Contact Form */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 xl:gap-20">
+            {/* Contact Form — takes 7 cols */}
             <motion.div
+              className="lg:col-span-7"
               initial="initial"
               whileInView="animate"
               viewport={{ once: true, margin: '-50px' }}
               variants={fadeInLeft}
             >
-              <div className="glass-card p-8">
-                <h2 className="text-2xl font-playfair text-black mb-6">Send us a Message</h2>
+              <div className="bg-white border border-gold/10 p-8 md:p-10 lg:p-12">
+                <p className="eyebrow text-gold/60 mb-3">Send a Message</p>
+                <h2 className="font-playfair text-2xl md:text-3xl text-black mb-8">How Can We Help?</h2>
 
                 {isSubmitted ? (
                   <motion.div
-                    initial={{ opacity: 0, scale: 0.9 }}
+                    initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    className="text-center py-12"
+                    className="text-center py-16"
                   >
-                    <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
-                    <h3 className="text-xl font-semibold text-black mb-2">Message Sent!</h3>
-                    <p className="text-gray-600">We&apos;ll get back to you as soon as possible.</p>
+                    <div className="w-16 h-16 bg-gold/10 border border-gold/30 flex items-center justify-center mx-auto mb-5">
+                      <CheckCircle className="w-8 h-8 text-gold" />
+                    </div>
+                    <h3 className="font-playfair text-2xl text-black mb-3">Message Sent</h3>
+                    <p className="text-gray-500 text-sm leading-relaxed">We&apos;ll get back to you as soon as possible.</p>
                   </motion.div>
                 ) : (
-                  <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-                    {/* Honeypot field for spam protection */}
+                  <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                    {/* Honeypot field */}
                     <input
                       {...register('honeypot')}
                       type="text"
@@ -131,81 +136,81 @@ export default function ContactPage() {
                     />
 
                     {submitError && (
-                      <div className="p-4 bg-red-500/10 border border-red-500/30 rounded-lg">
-                        <p className="text-red-400 text-sm">{submitError}</p>
+                      <div className="p-4 bg-red-50 border border-red-200">
+                        <p className="text-red-600 text-sm">{submitError}</p>
                       </div>
                     )}
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                       <div>
-                        <label htmlFor="contact-name" className="label-micro mb-2 block">Name *</label>
+                        <label htmlFor="contact-name" className="label-micro mb-2.5 block">Name *</label>
                         <input
                           {...register('name')}
                           id="contact-name"
                           type="text"
                           autoComplete="name"
-                          className={`input-base ${errors.name ? 'border-red-500' : ''}`}
+                          className={`input-base py-3.5 ${errors.name ? 'border-red-400' : ''}`}
                           placeholder="Your name"
                         />
                         {errors.name && (
-                          <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>
+                          <p className="text-red-500 text-xs mt-1.5">{errors.name.message}</p>
                         )}
                       </div>
                       <div>
-                        <label htmlFor="contact-email" className="label-micro mb-2 block">Email *</label>
+                        <label htmlFor="contact-email" className="label-micro mb-2.5 block">Email *</label>
                         <input
                           {...register('email')}
                           id="contact-email"
                           type="email"
                           autoComplete="email"
                           inputMode="email"
-                          className={`input-base ${errors.email ? 'border-red-500' : ''}`}
+                          className={`input-base py-3.5 ${errors.email ? 'border-red-400' : ''}`}
                           placeholder="your@email.com"
                         />
                         {errors.email && (
-                          <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>
+                          <p className="text-red-500 text-xs mt-1.5">{errors.email.message}</p>
                         )}
                       </div>
                     </div>
 
                     <div>
-                      <label htmlFor="contact-phone" className="label-micro mb-2 block">Phone (Optional)</label>
+                      <label htmlFor="contact-phone" className="label-micro mb-2.5 block">Phone (Optional)</label>
                       <input
                         {...register('phone')}
                         id="contact-phone"
                         type="tel"
                         autoComplete="tel"
                         inputMode="tel"
-                        className="input-base"
+                        className="input-base py-3.5"
                         placeholder="+357 99 000000"
                       />
                     </div>
 
                     <div>
-                      <label htmlFor="contact-subject" className="label-micro mb-2 block">Subject *</label>
+                      <label htmlFor="contact-subject" className="label-micro mb-2.5 block">Subject *</label>
                       <input
                         {...register('subject')}
                         id="contact-subject"
                         type="text"
-                        className={`input-base ${errors.subject ? 'border-red-500' : ''}`}
+                        className={`input-base py-3.5 ${errors.subject ? 'border-red-400' : ''}`}
                         placeholder="How can we help?"
                       />
                       {errors.subject && (
-                        <p className="text-red-500 text-xs mt-1">{errors.subject.message}</p>
+                        <p className="text-red-500 text-xs mt-1.5">{errors.subject.message}</p>
                       )}
                     </div>
 
                     <div>
-                      <label htmlFor="contact-message" className="label-micro mb-2 block">Message *</label>
+                      <label htmlFor="contact-message" className="label-micro mb-2.5 block">Message *</label>
                       <textarea
                         {...register('message')}
                         id="contact-message"
-                        rows={5}
-                        className={`input-base resize-none ${errors.message ? 'border-red-500' : ''}`}
-                        placeholder="Tell us more..."
+                        rows={6}
+                        className={`input-base resize-none py-3.5 ${errors.message ? 'border-red-400' : ''}`}
+                        placeholder="Tell us more about what you're looking for..."
                       />
                       {errors.message && (
-                        <p className="text-red-500 text-xs mt-1">{errors.message.message}</p>
+                        <p className="text-red-500 text-xs mt-1.5">{errors.message.message}</p>
                       )}
                     </div>
 
@@ -218,17 +223,19 @@ export default function ContactPage() {
               </div>
             </motion.div>
 
-            {/* Contact Info */}
+            {/* Contact Info — takes 5 cols */}
             <motion.div
+              className="lg:col-span-5 space-y-10"
               initial="initial"
               whileInView="animate"
               viewport={{ once: true, margin: '-50px' }}
               variants={fadeInRight}
-              className="space-y-8"
             >
               <div>
-                <h2 className="text-2xl font-playfair text-black mb-6">Get in Touch</h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <p className="eyebrow text-gold/60 mb-3">Details</p>
+                <h2 className="font-playfair text-2xl md:text-3xl text-black mb-7">Get in Touch</h2>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-3">
                   {contactInfo.map((item, index) => (
                     <motion.div
                       key={item.title}
@@ -236,18 +243,20 @@ export default function ContactPage() {
                       whileInView="animate"
                       viewport={{ once: true, margin: '-30px' }}
                       variants={fadeInUp}
-                      transition={{ delay: index * 0.1 }}
-                      className="glass-card p-5"
+                      transition={{ delay: index * 0.08 }}
+                      className="flex items-start gap-4 p-5 bg-white border border-gold/10 hover:border-gold/25 transition-colors duration-300 group"
                     >
-                      <div className="w-10 h-10 rounded-full bg-gold/10 border border-gold/30 flex items-center justify-center mb-3">
+                      <div className="w-9 h-9 flex-shrink-0 bg-gold/8 border border-gold/20 flex items-center justify-center group-hover:border-gold/40 transition-colors duration-300">
                         {item.icon}
                       </div>
-                      <h3 className="text-black font-medium text-sm mb-1">{item.title}</h3>
-                      {item.details.map((detail, i) => (
-                        <p key={i} className="text-gray-600 text-xs">
-                          {detail}
-                        </p>
-                      ))}
+                      <div>
+                        <h3 className="text-black font-medium text-sm mb-1">{item.title}</h3>
+                        {item.details.map((detail, i) => (
+                          <p key={i} className="text-gray-500 text-xs leading-relaxed">
+                            {detail}
+                          </p>
+                        ))}
+                      </div>
                     </motion.div>
                   ))}
                 </div>
@@ -259,8 +268,8 @@ export default function ContactPage() {
                 whileInView="animate"
                 viewport={{ once: true, margin: '-30px' }}
                 variants={fadeInUp}
-                transition={{ delay: 0.4 }}
-                className="glass-card overflow-hidden h-64"
+                transition={{ delay: 0.35 }}
+                className="overflow-hidden border border-gold/10 h-52 lg:h-64"
               >
                 <iframe
                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3260.9!2d33.3619!3d35.1753!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14de19749d5d7c4b%3A0x2d8c4f5f8c6d7c4e!2sLedra%20Street%2C%20Nicosia!5e0!3m2!1sen!2scy!4v1620000000000!5m2!1sen!2scy"
@@ -270,7 +279,7 @@ export default function ContactPage() {
                   allowFullScreen
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
-                  className="grayscale opacity-80 hover:grayscale-0 hover:opacity-100 transition-all duration-500"
+                  className="grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition-all duration-700"
                 />
               </motion.div>
             </motion.div>
