@@ -670,6 +670,219 @@ body {
 .stagger-5 { animation-delay: 0.5s; }
 
 /* ==========================================================================
+   MODERN EDITORIAL LAYOUT UTILITIES
+   ========================================================================== */
+
+/* Editorial asymmetric grid patterns */
+.editorial-grid-feature {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+}
+
+@media (min-width: 768px) {
+  .editorial-grid-feature {
+    grid-template-columns: 3fr 2fr;
+  }
+}
+
+@media (min-width: 1024px) {
+  .editorial-grid-feature {
+    grid-template-columns: 7fr 5fr;
+  }
+}
+
+/* Diagonal section divider — gold accent lines */
+.section-divider-diagonal {
+  position: relative;
+}
+
+.section-divider-diagonal::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(212, 175, 55, 0.3) 30%, rgba(212, 175, 55, 0.15) 70%, transparent 100%);
+}
+
+/* Frosted glass panel — refined */
+.glass-panel {
+  background: rgba(250, 250, 248, 0.85);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(212, 175, 55, 0.12);
+}
+
+.glass-panel-dark {
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  border: 1px solid rgba(212, 175, 55, 0.15);
+}
+
+/* Editorial spacing — generous whitespace for luxury feel */
+.space-editorial {
+  padding-top: clamp(5rem, 12vw, 10rem);
+  padding-bottom: clamp(5rem, 12vw, 10rem);
+}
+
+/* Oversized heading — hero-scale display text */
+.display-text {
+  font-size: clamp(3.5rem, 8vw, 7rem);
+  font-family: var(--font-playfair), 'Playfair Display', serif;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 0.95;
+  font-feature-settings: 'liga' 1, 'kern' 1, 'dlig' 1;
+}
+
+/* Eyebrow label — small uppercase above headings */
+.eyebrow {
+  font-size: clamp(0.625rem, 0.5rem + 0.25vw, 0.75rem);
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  font-weight: 400;
+  font-family: var(--font-poppins), 'Poppins', sans-serif;
+}
+
+/* Pull quote — editorial typographic accent */
+.pull-quote {
+  font-family: var(--font-playfair), 'Playfair Display', serif;
+  font-style: italic;
+  font-size: clamp(1.25rem, 3vw, 2rem);
+  line-height: 1.4;
+  color: transparent;
+  background: linear-gradient(135deg, oklch(75% 0.12 85), oklch(65% 0.13 80));
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+/* Ruled line with gold center — editorial divider */
+.ruled-gold {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.ruled-gold::before,
+.ruled-gold::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(212, 175, 55, 0.3));
+}
+
+.ruled-gold::after {
+  background: linear-gradient(to left, transparent, rgba(212, 175, 55, 0.3));
+}
+
+/* Clip-path diagonal edge */
+.clip-diagonal-bottom {
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 3vw), 0 100%);
+}
+
+.clip-diagonal-top {
+  clip-path: polygon(0 3vw, 100% 0, 100% 100%, 0 100%);
+}
+
+/* Subtle noise texture for depth */
+.noise-overlay {
+  position: relative;
+}
+
+.noise-overlay::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Gold shimmer text animation — used on hero brand names */
+@keyframes gold-shimmer-text {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animate-gold-shimmer-text {
+  background: linear-gradient(
+    90deg,
+    #D4AF37 0%,
+    #FFD700 25%,
+    #FFF8DC 50%,
+    #FFD700 75%,
+    #D4AF37 100%
+  );
+  background-size: 300% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gold-shimmer-text 6s ease infinite;
+}
+
+/* Gold particle glow effect */
+@keyframes gold-particle {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+    opacity: 0.3;
+  }
+  50% {
+    transform: translateY(-20px) scale(1.2);
+    opacity: 0.6;
+  }
+}
+
+.gold-particle {
+  animation: gold-particle var(--duration, 4s) ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+}
+
+/* Modern blur-up scroll indicator */
+@keyframes scroll-indicator {
+  0% { transform: translateY(0); opacity: 0.8; }
+  100% { transform: translateY(8px); opacity: 0; }
+}
+
+.animate-scroll-indicator {
+  animation: scroll-indicator 1.5s ease-in-out infinite;
+}
+
+/* Reveal from below — editorial stagger */
+@keyframes revealUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+.animate-reveal-up {
+  animation: revealUp 0.8s var(--ease-out-expo) forwards;
+  opacity: 0;
+}
+
+/* Line draw — animated border */
+@keyframes line-draw {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+.animate-line-draw {
+  animation: line-draw 0.8s var(--ease-out-expo) forwards;
+  transform-origin: left;
+}
+
+/* ==========================================================================
    ACCESSIBILITY
    ========================================================================== */
 

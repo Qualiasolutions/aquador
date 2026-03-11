@@ -77,6 +77,7 @@ interface SectionHeaderProps {
   titleVariant?: 'white' | 'gold';
   align?: 'center' | 'left';
   className?: string;
+  eyebrow?: string;
 }
 
 export function SectionHeader({
@@ -85,32 +86,51 @@ export function SectionHeader({
   titleVariant = 'white',
   align = 'center',
   className,
+  eyebrow,
 }: SectionHeaderProps) {
   return (
     <motion.div
       className={cn(
-        'mb-12 md:mb-16',
+        'mb-14 md:mb-20',
         align === 'center' && 'text-center',
         className
       )}
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ duration: 0.6 }}
+      transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
     >
+      {eyebrow && (
+        <p className={cn(
+          'eyebrow text-gold/70 mb-4',
+          align === 'center' && 'mx-auto'
+        )}>
+          {eyebrow}
+        </p>
+      )}
       <h2
         className={cn(
-          'text-3xl md:text-4xl lg:text-5xl font-playfair mb-4 tracking-wide',
+          'font-playfair mb-5 tracking-wide leading-tight',
+          'text-3xl md:text-4xl lg:text-[2.75rem]',
           titleVariant === 'white' ? 'text-black' : 'text-gradient-gold'
         )}
       >
         {title}
       </h2>
-      {align === 'center' && <div className="w-16 h-px bg-gold mx-auto mb-5" />}
+      {align === 'center' && (
+        <div className="flex items-center justify-center gap-3 mb-6">
+          <div className="w-8 h-px bg-gold/30" />
+          <div className="w-16 h-px bg-gold" />
+          <div className="w-8 h-px bg-gold/30" />
+        </div>
+      )}
+      {align === 'left' && (
+        <div className="w-12 h-px bg-gold mb-5" />
+      )}
       {subtitle && (
         <p className={cn(
-          'text-gray-500 text-base md:text-lg tracking-wide',
-          align === 'center' && 'max-w-xl mx-auto'
+          'text-gray-500 text-base md:text-lg leading-relaxed',
+          align === 'center' && 'max-w-2xl mx-auto'
         )}>
           {subtitle}
         </p>
@@ -125,6 +145,7 @@ interface PageHeroProps {
   titleVariant?: 'white' | 'gold';
   backgroundImage?: string;
   className?: string;
+  eyebrow?: string;
 }
 
 export function PageHero({
@@ -133,43 +154,91 @@ export function PageHero({
   titleVariant = 'gold',
   backgroundImage,
   className,
+  eyebrow,
 }: PageHeroProps) {
   return (
-    <section className={cn('relative pt-32 md:pt-40 lg:pt-44 pb-16 overflow-hidden', className)}>
+    <section className={cn('relative pt-36 md:pt-48 lg:pt-52 pb-20 md:pb-28 overflow-hidden', className)}>
       {backgroundImage && (
         <>
           <div
-            className="absolute inset-0 bg-cover bg-center opacity-20"
+            className="absolute inset-0 bg-cover bg-center opacity-25 scale-105"
             style={{ backgroundImage: `url('${backgroundImage}')` }}
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-dark via-dark/90 to-dark" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/80" />
         </>
       )}
       {!backgroundImage && (
-        <div className="absolute inset-0 bg-gradient-to-b from-gold/5 to-transparent" />
+        <>
+          <div className="absolute inset-0 bg-gradient-to-b from-gold/[0.06] via-gold/[0.02] to-transparent" />
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background: 'radial-gradient(ellipse 80% 60% at 50% 0%, rgba(212,175,55,0.07) 0%, transparent 70%)',
+            }}
+          />
+        </>
       )}
+
+      {/* Decorative gold line — top accent */}
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold/30 to-transparent" />
+
       <div className="container-wide relative z-10">
         <motion.div
           className="max-w-4xl mx-auto text-center"
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
         >
+          {eyebrow && (
+            <motion.p
+              className="eyebrow text-gold/60 mb-6"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.2, duration: 0.6 }}
+            >
+              {eyebrow}
+            </motion.p>
+          )}
           <h1
             className={cn(
-              'text-4xl sm:text-5xl md:text-6xl font-playfair mb-6',
+              'font-playfair mb-7 leading-tight',
+              'text-4xl sm:text-5xl md:text-6xl lg:text-7xl',
               titleVariant === 'gold' ? 'text-gradient-gold' : 'text-black'
             )}
           >
             {title}
           </h1>
+
+          {/* Refined separator */}
+          <motion.div
+            className="flex items-center justify-center gap-3 mb-7"
+            initial={{ opacity: 0, scaleX: 0.5 }}
+            animate={{ opacity: 1, scaleX: 1 }}
+            transition={{ delay: 0.3, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <div className={cn('w-8 h-px', backgroundImage ? 'bg-gold/30' : 'bg-gold/20')} />
+            <div className={cn('w-16 h-px', backgroundImage ? 'bg-gold/80' : 'bg-gold')} />
+            <div className={cn('w-8 h-px', backgroundImage ? 'bg-gold/30' : 'bg-gold/20')} />
+          </motion.div>
+
           {subtitle && (
-            <p className="text-lg md:text-xl text-gray-500 max-w-2xl mx-auto">
+            <motion.p
+              className={cn(
+                'text-base md:text-lg lg:text-xl max-w-2xl mx-auto leading-relaxed',
+                backgroundImage ? 'text-white/70' : 'text-gray-500'
+              )}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4, duration: 0.8 }}
+            >
               {subtitle}
-            </p>
+            </motion.p>
           )}
         </motion.div>
       </div>
+
+      {/* Bottom decorative gold line */}
+      <div className="absolute bottom-0 left-[10%] right-[10%] h-px bg-gradient-to-r from-transparent via-gold/20 to-transparent" />
     </section>
   );
 }
