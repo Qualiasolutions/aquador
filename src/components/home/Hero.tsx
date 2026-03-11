@@ -95,7 +95,7 @@ export default function Hero() {
             className="font-playfair font-normal mb-0 tracking-[0.18em] sm:tracking-[0.22em] leading-none"
             aria-label="Aquad'or"
             style={{
-              fontSize: 'clamp(3.5rem, 12vw, 9rem)',
+              fontSize: 'clamp(3.5rem, 10vw, 7rem)',
               background: 'linear-gradient(180deg, #FFF8DC 0%, #FFD700 35%, #D4AF37 65%, #B8960C 100%)',
               backgroundSize: '100% 100%',
               WebkitBackgroundClip: 'text',
