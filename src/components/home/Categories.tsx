@@ -82,7 +82,7 @@ export default function Categories() {
             </AnimatedSectionItem>
 
             {/* Smaller tiles — right columns */}
-            {rest.map((category, index) => (
+            {rest.map((category) => (
               <AnimatedSectionItem key={category.id}>
                 <motion.div whileHover={cardHover} whileTap={cardTap}>
                   <Link

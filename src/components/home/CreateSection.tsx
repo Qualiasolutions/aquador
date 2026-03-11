@@ -82,7 +82,7 @@ export default function CreateSection() {
         {/* Stages — overlapping editorial layout */}
         <AnimatedSection variant="stagger" staggerDelay={0.1} className="mb-14 md:mb-20">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-0.5 md:gap-0">
-            {stages.map((stage, index) => (
+            {stages.map((stage) => (
               <AnimatedSectionItem key={stage.title}>
                 <div className="group relative overflow-hidden bg-[#111] border border-white/5 hover:border-gold/25 transition-all duration-700 cursor-default">
                   {/* Full image background */}
