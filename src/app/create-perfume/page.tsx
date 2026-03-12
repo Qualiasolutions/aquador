@@ -1,235 +1,295 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import dynamic from 'next/dynamic'
 import { fragranceDatabase, fragranceCategories } from '@/lib/perfume/notes'
 import { PerfumeComposition, FragranceNote, PerfumeVolume, FragranceCategory } from '@/lib/perfume/types'
 import { isCompositionComplete } from '@/lib/perfume/composition'
 import { validatePerfumeForm } from '@/lib/perfume/validation'
 import { calculatePrice } from '@/lib/perfume/pricing'
-import { useDeviceCapabilities } from '@/hooks/useDeviceCapabilities'
 import { ChevronLeft, Sparkles, Check, Loader2, ArrowRight, RotateCcw } from 'lucide-react'
 
-const CustomPerfumeBottle = dynamic(
-  () => import('@/components/3d/CustomPerfumeBottle').then(mod => ({ default: mod.CustomPerfumeBottle })),
-  {
-    ssr: false,
-    loading: () => (
-      <div className="flex items-center justify-center h-[400px] bg-white/50 backdrop-blur-sm rounded-lg">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gold-500" />
-      </div>
-    )
-  }
-)
-
-const Scene = dynamic(
-  () => import('@/components/3d/Scene').then(mod => ({ default: mod.Scene })),
-  { ssr: false }
-)
-
-const Lighting = dynamic(
-  () => import('@/components/3d/Lighting').then(mod => ({ default: mod.Lighting })),
-  { ssr: false }
-)
-
 type NoteLayer = 'top' | 'heart' | 'base'
+type Step = 'intro' | 'base' | 'heart' | 'top' | 'checkout'
 
-const categoryThemes: Record<FragranceCategory, { primary: string; glow: string; accent: string }> = {
-  floral: { primary: '#E8A0BF', glow: 'rgba(232,160,191,0.15)', accent: '#C77DA3' },
-  fruity: { primary: '#F0C75E', glow: 'rgba(240,199,94,0.15)', accent: '#D4A843' },
-  woody: { primary: '#A89078', glow: 'rgba(168,144,120,0.15)', accent: '#8B7355' },
-  oriental: { primary: '#D4AF37', glow: 'rgba(212,175,55,0.15)', accent: '#B8960F' },
-  gourmand: { primary: '#C08B5C', glow: 'rgba(192,139,92,0.15)', accent: '#A06B3C' },
+const LAYER_ORDER: NoteLayer[] = ['base', 'heart', 'top']
+const STEP_ORDER: Step[] = ['intro', 'base', 'heart', 'top', 'checkout']
+
+const layerMeta: Record<NoteLayer, { title: string; subtitle: string; description: string; number: number; suggest: FragranceCategory }> = {
+  base: { title: 'Base Notes', subtitle: 'The Foundation', description: 'Deep, lasting notes that anchor your fragrance for hours. They form the soul of your scent.', number: 1, suggest: 'woody' },
+  heart: { title: 'Heart Notes', subtitle: 'The Character', description: 'The emotional core. These notes emerge as the fragrance develops and define its true personality.', number: 2, suggest: 'floral' },
+  top: { title: 'Top Notes', subtitle: 'First Impression', description: 'The opening spark. Light, vibrant notes that captivate from the very first moment.', number: 3, suggest: 'fruity' },
 }
 
-const categoryIcons: Record<FragranceCategory, React.ReactNode> = {
-  floral: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-3.5 h-3.5"><path d="M12 3c-1.5 2-4 3.5-4 6a4 4 0 008 0c0-2.5-2.5-4-4-6z"/><path d="M12 15v6m-3-3h6"/></svg>,
-  fruity: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-3.5 h-3.5"><circle cx="12" cy="14" r="7"/><path d="M12 7V3m-2 4c1-1 3-1 4 0"/></svg>,
-  woody: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-3.5 h-3.5"><path d="M12 3l-7 10h5v8l7-10h-5V3z"/></svg>,
-  oriental: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-3.5 h-3.5"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8l-6.2 4.5 2.4-7.4L2 9.4h7.6z"/></svg>,
-  gourmand: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-3.5 h-3.5"><path d="M18 8a6 6 0 00-12 0c0 7 6 13 6 13s6-6 6-13z"/><circle cx="12" cy="8" r="2"/></svg>,
+const categoryThemes: Record<FragranceCategory, { primary: string; glow: string }> = {
+  floral: { primary: '#E8A0BF', glow: 'rgba(232,160,191,0.2)' },
+  fruity: { primary: '#F0C75E', glow: 'rgba(240,199,94,0.2)' },
+  woody: { primary: '#A89078', glow: 'rgba(168,144,120,0.2)' },
+  oriental: { primary: '#D4AF37', glow: 'rgba(212,175,55,0.2)' },
+  gourmand: { primary: '#C08B5C', glow: 'rgba(192,139,92,0.2)' },
 }
 
-const layerConfig: Record<NoteLayer, { title: string; subtitle: string; description: string; order: number }> = {
-  base: { title: 'Base', subtitle: 'The Foundation', description: 'Rich, lasting depth that anchors your fragrance', order: 1 },
-  heart: { title: 'Heart', subtitle: 'The Soul', description: 'The emotional core that defines character', order: 2 },
-  top: { title: 'Top', subtitle: 'First Impression', description: 'The opening spark that captivates instantly', order: 3 },
-}
-
-function useReducedMotion(): boolean {
-  const [reducedMotion, setReducedMotion] = useState(false)
-  useEffect(() => {
-    const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
-    setReducedMotion(mq.matches)
-    const handler = (e: MediaQueryListEvent) => setReducedMotion(e.matches)
-    mq.addEventListener('change', handler)
-    return () => mq.removeEventListener('change', handler)
-  }, [])
-  return reducedMotion
-}
-
-// Elegant note color swatch
-function ColorSwatch({ color, size = 32 }: { color: string; size?: number }) {
+// Ambient floating particles
+function AmbientParticles({ color = '#D4AF37' }: { color?: string }) {
   return (
-    <div
-      className="rounded-full border border-white/20 shadow-sm"
-      style={{
-        width: size,
-        height: size,
-        background: `radial-gradient(circle at 30% 30%, ${color}dd, ${color}88)`,
-        boxShadow: `0 2px 8px ${color}40`,
-      }}
-    />
+    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      {Array.from({ length: 20 }).map((_, i) => (
+        <motion.div
+          key={i}
+          className="absolute rounded-full"
+          style={{
+            width: Math.random() * 3 + 1,
+            height: Math.random() * 3 + 1,
+            left: `${Math.random() * 100}%`,
+            top: `${Math.random() * 100}%`,
+            background: color,
+            opacity: 0,
+          }}
+          animate={{
+            y: [0, -60 - Math.random() * 80],
+            opacity: [0, 0.4, 0],
+          }}
+          transition={{
+            duration: 4 + Math.random() * 4,
+            repeat: Infinity,
+            delay: Math.random() * 5,
+            ease: 'easeOut',
+          }}
+        />
+      ))}
+    </div>
   )
 }
 
-// Premium SVG Bottle
-function PremiumBottle({ composition, activeLayer }: { composition: PerfumeComposition; activeLayer: NoteLayer }) {
-  const getLayerColor = (layer: NoteLayer) => composition[layer]?.color || 'transparent'
-  const hasLayer = (layer: NoteLayer) => composition[layer] !== null
+// Cinematic bottle with liquid fill animation
+function CinematicBottle({ composition, activeLayer, className = '' }: { composition: PerfumeComposition; activeLayer: NoteLayer; className?: string }) {
+  const getColor = (layer: NoteLayer) => composition[layer]?.color || 'transparent'
+  const has = (layer: NoteLayer) => composition[layer] !== null
 
   return (
-    <div className="relative">
-      <svg viewBox="0 -30 120 175" className="w-full h-auto max-w-[200px] mx-auto drop-shadow-lg">
+    <div className={`relative ${className}`}>
+      {/* Glow behind bottle */}
+      <motion.div
+        className="absolute inset-0 -z-10"
+        style={{ filter: 'blur(60px)' }}
+        animate={{
+          background: has('base')
+            ? `radial-gradient(ellipse at center, ${getColor('base')}30 0%, transparent 70%)`
+            : 'none'
+        }}
+        transition={{ duration: 1.5 }}
+      />
+
+      <svg viewBox="0 -35 120 190" className="w-full h-auto drop-shadow-2xl">
         <defs>
-          <linearGradient id="capGradPremium" x1="0%" y1="0%" x2="100%" y2="100%">
+          <linearGradient id="capGold" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stopColor="#E8D5A3" />
             <stop offset="30%" stopColor="#D4AF37" />
             <stop offset="60%" stopColor="#FFD700" />
             <stop offset="100%" stopColor="#B8960F" />
           </linearGradient>
-          <linearGradient id="glassGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="rgba(255,255,255,0.12)" />
+          <linearGradient id="glassShine" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="rgba(255,255,255,0.15)" />
             <stop offset="50%" stopColor="rgba(255,255,255,0)" />
-            <stop offset="100%" stopColor="rgba(255,255,255,0.06)" />
+            <stop offset="100%" stopColor="rgba(255,255,255,0.08)" />
           </linearGradient>
-          <clipPath id="liquidClipPremium">
+          <clipPath id="liquidClip">
             <rect x="22" y="10" width="76" height="105" rx="6" />
           </clipPath>
-          <filter id="liquidGlow">
-            <feGaussianBlur stdDeviation="2" result="blur" />
+          <filter id="glow">
+            <feGaussianBlur stdDeviation="3" result="blur" />
             <feComposite in="SourceGraphic" in2="blur" operator="over" />
           </filter>
         </defs>
 
-        {/* Cap - ornate */}
-        <rect x="44" y="-26" width="32" height="8" rx="2" fill="url(#capGradPremium)" />
-        <rect x="48" y="-18" width="24" height="16" rx="3" fill="url(#capGradPremium)" />
-        <rect x="42" y="-3" width="36" height="5" rx="1.5" fill="#B8960F" />
-        <line x1="48" y1="-14" x2="48" y2="-6" stroke="rgba(255,255,255,0.3)" strokeWidth="0.5" />
+        {/* Cap */}
+        <rect x="44" y="-30" width="32" height="8" rx="2" fill="url(#capGold)" />
+        <rect x="48" y="-22" width="24" height="16" rx="3" fill="url(#capGold)" />
+        <rect x="42" y="-7" width="36" height="5" rx="1.5" fill="#B8960F" />
 
         {/* Bottle body */}
-        <rect x="20" y="8" width="80" height="110" rx="8" fill="rgba(250,248,242,0.6)" stroke="rgba(212,175,55,0.25)" strokeWidth="1" />
+        <rect x="20" y="8" width="80" height="110" rx="8" fill="rgba(255,255,255,0.08)" stroke="rgba(212,175,55,0.2)" strokeWidth="1" />
 
-        {/* Liquid layers */}
-        <g clipPath="url(#liquidClipPremium)" filter="url(#liquidGlow)">
-          {/* Base */}
+        {/* Liquid layers with glow */}
+        <g clipPath="url(#liquidClip)" filter="url(#glow)">
           <motion.rect
             x="22" y="78" width="76" height="37"
-            fill={getLayerColor('base')}
-            initial={{ scaleY: 0 }}
-            animate={{ scaleY: hasLayer('base') ? 1 : 0, opacity: hasLayer('base') ? 0.85 : 0 }}
+            fill={getColor('base')}
+            animate={{ scaleY: has('base') ? 1 : 0, opacity: has('base') ? 0.9 : 0 }}
             style={{ transformOrigin: 'center bottom' }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
           />
-          {/* Heart */}
           <motion.rect
             x="22" y="43" width="76" height="35"
-            fill={getLayerColor('heart')}
-            initial={{ scaleY: 0 }}
-            animate={{ scaleY: hasLayer('heart') ? 1 : 0, opacity: hasLayer('heart') ? 0.8 : 0 }}
+            fill={getColor('heart')}
+            animate={{ scaleY: has('heart') ? 1 : 0, opacity: has('heart') ? 0.85 : 0 }}
             style={{ transformOrigin: 'center bottom' }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
           />
-          {/* Top */}
           <motion.rect
             x="22" y="10" width="76" height="33"
-            fill={getLayerColor('top')}
-            initial={{ scaleY: 0 }}
-            animate={{ scaleY: hasLayer('top') ? 1 : 0, opacity: hasLayer('top') ? 0.75 : 0 }}
+            fill={getColor('top')}
+            animate={{ scaleY: has('top') ? 1 : 0, opacity: has('top') ? 0.8 : 0 }}
             style={{ transformOrigin: 'center bottom' }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
           />
         </g>
 
-        {/* Layer dividers */}
-        <line x1="22" y1="43" x2="98" y2="43" stroke="rgba(212,175,55,0.12)" strokeWidth="0.5" />
-        <line x1="22" y1="78" x2="98" y2="78" stroke="rgba(212,175,55,0.12)" strokeWidth="0.5" />
-
-        {/* Active layer indicator */}
+        {/* Active layer pulse */}
         <motion.rect
           x="18"
           width="84"
           height={activeLayer === 'base' ? 37 : activeLayer === 'heart' ? 35 : 33}
           rx="8"
           fill="none"
-          stroke="rgba(212,175,55,0.5)"
+          stroke="rgba(212,175,55,0.4)"
           strokeWidth="1.5"
           strokeDasharray="4,4"
           animate={{
             y: activeLayer === 'top' ? 10 : activeLayer === 'heart' ? 43 : 78,
-            opacity: [0.3, 0.7, 0.3],
+            opacity: [0.2, 0.6, 0.2],
           }}
           transition={{
-            y: { duration: 0.4, ease: [0.22, 1, 0.36, 1] },
-            opacity: { duration: 2.5, repeat: Infinity },
+            y: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
+            opacity: { duration: 3, repeat: Infinity },
           }}
         />
 
-        {/* Glass reflections */}
-        <rect x="20" y="8" width="80" height="110" rx="8" fill="url(#glassGrad)" />
-        <line x1="28" y1="16" x2="28" y2="108" stroke="white" strokeWidth="1" opacity="0.08" />
-        <line x1="32" y1="20" x2="32" y2="100" stroke="white" strokeWidth="0.5" opacity="0.04" />
+        {/* Glass highlights */}
+        <rect x="20" y="8" width="80" height="110" rx="8" fill="url(#glassShine)" />
+        <line x1="28" y1="16" x2="28" y2="108" stroke="white" strokeWidth="1" opacity="0.06" />
 
         {/* Layer labels */}
-        <text x="60" y="28" textAnchor="middle" fill="rgba(0,0,0,0.25)" fontSize="6" fontFamily="sans-serif" letterSpacing="0.1em">TOP</text>
-        <text x="60" y="63" textAnchor="middle" fill="rgba(0,0,0,0.25)" fontSize="6" fontFamily="sans-serif" letterSpacing="0.1em">HEART</text>
-        <text x="60" y="100" textAnchor="middle" fill="rgba(0,0,0,0.25)" fontSize="6" fontFamily="sans-serif" letterSpacing="0.1em">BASE</text>
+        <text x="60" y="28" textAnchor="middle" fill="rgba(255,255,255,0.2)" fontSize="5.5" fontFamily="sans-serif" letterSpacing="0.15em">TOP</text>
+        <text x="60" y="63" textAnchor="middle" fill="rgba(255,255,255,0.2)" fontSize="5.5" fontFamily="sans-serif" letterSpacing="0.15em">HEART</text>
+        <text x="60" y="100" textAnchor="middle" fill="rgba(255,255,255,0.2)" fontSize="5.5" fontFamily="sans-serif" letterSpacing="0.15em">BASE</text>
       </svg>
     </div>
   )
 }
 
+// Note selection card with hover glow
+function NoteCard({
+  note,
+  isSelected,
+  isUsed,
+  onClick,
+  index,
+  theme,
+}: {
+  note: FragranceNote
+  isSelected: boolean
+  isUsed: boolean
+  onClick: () => void
+  index: number
+  theme: { primary: string; glow: string }
+}) {
+  return (
+    <motion.button
+      onClick={() => !isUsed && onClick()}
+      disabled={isUsed}
+      initial={{ opacity: 0, y: 20, scale: 0.95 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ delay: index * 0.05, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+      whileHover={!isUsed ? { y: -4, scale: 1.02 } : undefined}
+      whileTap={!isUsed ? { scale: 0.97 } : undefined}
+      className={`group relative flex flex-col items-center gap-3 p-5 sm:p-6 rounded-2xl border transition-all duration-500 ${
+        isSelected
+          ? 'border-transparent bg-white/[0.12] backdrop-blur-md'
+          : isUsed
+          ? 'border-white/[0.03] bg-white/[0.02] opacity-30 cursor-not-allowed'
+          : 'border-white/[0.06] bg-white/[0.04] hover:bg-white/[0.08] hover:border-white/[0.12] backdrop-blur-sm'
+      }`}
+      style={isSelected ? {
+        boxShadow: `0 0 40px ${theme.glow}, 0 0 0 1px ${theme.primary}80`,
+      } : undefined}
+    >
+      {/* Color orb */}
+      <div className="relative">
+        <div
+          className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-white/10"
+          style={{
+            background: `radial-gradient(circle at 30% 30%, ${note.color}dd, ${note.color}88)`,
+            boxShadow: isSelected ? `0 0 24px ${note.color}60` : `0 4px 12px ${note.color}30`,
+          }}
+        />
+        {isSelected && (
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            className="absolute -top-1 -right-1 w-5 h-5 rounded-full flex items-center justify-center bg-gold"
+          >
+            <Check className="w-3 h-3 text-black" />
+          </motion.div>
+        )}
+      </div>
+
+      <div className="text-center">
+        <span className={`block text-sm font-medium ${isSelected ? 'text-white' : 'text-white/80'}`}>
+          {note.name}
+        </span>
+        <span className="block text-[11px] text-white/40 mt-1">{note.description}</span>
+      </div>
+
+      {isUsed && (
+        <span className="absolute top-2.5 right-2.5 text-[9px] uppercase tracking-wider text-white/30 bg-white/5 px-2 py-0.5 rounded-full">
+          Used
+        </span>
+      )}
+    </motion.button>
+  )
+}
+
 export default function CreatePerfumePage() {
+  const [step, setStep] = useState<Step>('intro')
   const [composition, setComposition] = useState<PerfumeComposition>({ top: null, heart: null, base: null })
-  const [activeLayer, setActiveLayer] = useState<NoteLayer>('base')
   const [activeCategory, setActiveCategory] = useState<FragranceCategory>('woody')
   const [perfumeName, setPerfumeName] = useState('')
   const [selectedVolume, setSelectedVolume] = useState<PerfumeVolume | null>(null)
   const [specialRequests, setSpecialRequests] = useState('')
   const [isProcessing, setIsProcessing] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [showForm, setShowForm] = useState(false)
-  const [show3DPreview, setShow3DPreview] = useState(false)
-  const { isMobile } = useDeviceCapabilities()
-  const reducedMotion = useReducedMotion()
+  const [selectionFlash, setSelectionFlash] = useState(false)
 
-  const handleSelectNote = useCallback((note: FragranceNote) => {
-    setComposition(prev => ({ ...prev, [activeLayer]: note }))
-    if (activeLayer === 'base') {
-      setActiveLayer('heart')
-      setActiveCategory('floral')
-    } else if (activeLayer === 'heart') {
-      setActiveLayer('top')
-      setActiveCategory('fruity')
-    }
-  }, [activeLayer])
-
-  const handleReset = useCallback(() => {
-    setComposition({ top: null, heart: null, base: null })
-    setActiveLayer('base')
-    setActiveCategory('woody')
-  }, [])
-
+  const activeLayer: NoteLayer = step === 'base' || step === 'heart' || step === 'top' ? step : 'base'
   const isComplete = isCompositionComplete(composition)
   const notes = fragranceDatabase[activeCategory] || []
   const theme = categoryThemes[activeCategory]
   const completedCount = [composition.top, composition.heart, composition.base].filter(Boolean).length
 
-  const topNoteColor = composition.top?.color || '#D4AF37'
-  const heartNoteColor = composition.heart?.color || '#D4AF37'
-  const baseNoteColor = composition.base?.color || '#D4AF37'
+  // When entering a layer step, suggest a category
+  useEffect(() => {
+    if (step === 'base' || step === 'heart' || step === 'top') {
+      setActiveCategory(layerMeta[step].suggest)
+    }
+  }, [step])
+
+  const handleSelectNote = useCallback((note: FragranceNote) => {
+    if (step !== 'base' && step !== 'heart' && step !== 'top') return
+    setComposition(prev => ({ ...prev, [step]: note }))
+    setSelectionFlash(true)
+    setTimeout(() => setSelectionFlash(false), 600)
+    // Auto-advance after a beat
+    setTimeout(() => {
+      if (step === 'base') setStep('heart')
+      else if (step === 'heart') setStep('top')
+      else if (step === 'top') setStep('checkout')
+    }, 800)
+  }, [step])
+
+  const handleReset = useCallback(() => {
+    setComposition({ top: null, heart: null, base: null })
+    setStep('base')
+    setActiveCategory('woody')
+  }, [])
+
+  const goBack = useCallback(() => {
+    const idx = STEP_ORDER.indexOf(step)
+    if (idx > 0) {
+      const prevStep = STEP_ORDER[idx - 1]
+      setStep(prevStep)
+    }
+  }, [step])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -262,178 +322,241 @@ export default function CreatePerfumePage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#FAFAF8] text-black pt-28 md:pt-36 lg:pt-40 pb-20">
-      {/* Background atmosphere */}
+    <div className="min-h-screen bg-[#080808] text-white overflow-x-hidden">
+      {/* Global ambient background */}
       <div className="fixed inset-0 -z-10 pointer-events-none">
-        <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-gradient-radial from-amber-500/[0.04] to-transparent rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-gradient-radial from-gold/[0.03] to-transparent rounded-full blur-3xl" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(212,175,55,0.06),transparent_60%)]" />
+        <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-[radial-gradient(ellipse_60%_50%_at_50%_100%,rgba(212,175,55,0.03),transparent_60%)]" />
       </div>
 
       <AnimatePresence mode="wait">
-        {!showForm ? (
-          <motion.div key="composer" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.4 }}>
-            {/* Header */}
-            <div className="text-center mb-10 md:mb-14 px-4">
-              <motion.span
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
-                className="eyebrow text-gold/50 block mb-3"
-              >
-                Bespoke Fragrance Atelier
-              </motion.span>
-              <motion.h1
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-                className="font-playfair text-3xl md:text-4xl lg:text-5xl text-black"
-              >
-                Compose Your <span className="text-gradient-gold">Signature</span>
-              </motion.h1>
+        {/* =================== INTRO =================== */}
+        {step === 'intro' && (
+          <motion.div
+            key="intro"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0, scale: 0.98 }}
+            transition={{ duration: 0.6 }}
+            className="min-h-screen flex flex-col items-center justify-center relative px-4"
+          >
+            <AmbientParticles />
+
+            {/* Decorative rings */}
+            <motion.div
+              className="absolute w-[500px] h-[500px] md:w-[700px] md:h-[700px] rounded-full border border-gold/[0.06]"
+              animate={{ rotate: 360 }}
+              transition={{ duration: 120, repeat: Infinity, ease: 'linear' }}
+            />
+            <motion.div
+              className="absolute w-[350px] h-[350px] md:w-[500px] md:h-[500px] rounded-full border border-gold/[0.04]"
+              animate={{ rotate: -360 }}
+              transition={{ duration: 90, repeat: Infinity, ease: 'linear' }}
+            />
+
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+              className="text-center relative z-10"
+            >
               <motion.p
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ delay: 0.35 }}
-                className="text-gray-400 text-sm md:text-base mt-3 max-w-md mx-auto"
+                transition={{ delay: 0.4 }}
+                className="text-[9px] sm:text-[10px] uppercase tracking-[0.35em] text-gold/40 mb-6"
               >
-                Select one note for each layer to craft a fragrance uniquely yours
+                Bespoke Fragrance Atelier
               </motion.p>
-            </div>
 
-            {/* Main Content */}
-            <div className="container-wide">
-              {/* Step Progress - Horizontal on all sizes */}
+              <motion.h1
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5, duration: 0.8 }}
+                className="font-playfair text-4xl sm:text-5xl md:text-6xl lg:text-7xl mb-6"
+                style={{
+                  background: 'linear-gradient(180deg, #FFF8DC 0%, #FFD700 35%, #D4AF37 65%, #B8960C 100%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                  filter: 'drop-shadow(0 2px 40px rgba(212,175,55,0.2))',
+                }}
+              >
+                Create Your<br />Signature Scent
+              </motion.h1>
+
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.7 }}
+                className="text-white/40 text-sm sm:text-base max-w-md mx-auto mb-4 leading-relaxed"
+              >
+                Three layers. Infinite possibilities. Craft a fragrance
+                that&apos;s uniquely, unmistakably yours.
+              </motion.p>
+
               <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.85 }}
+                className="flex items-center justify-center gap-6 text-[10px] uppercase tracking-[0.2em] text-white/25 mb-12"
+              >
+                <span>Base</span>
+                <div className="w-8 h-px bg-gold/20" />
+                <span>Heart</span>
+                <div className="w-8 h-px bg-gold/20" />
+                <span>Top</span>
+              </motion.div>
+
+              <motion.button
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
-                className="mb-10"
+                transition={{ delay: 1 }}
+                onClick={() => setStep('base')}
+                className="group relative px-10 py-4 rounded-full text-sm tracking-[0.2em] uppercase font-medium overflow-hidden"
               >
-                <div className="flex items-center justify-center gap-0 max-w-lg mx-auto">
-                  {(['base', 'heart', 'top'] as NoteLayer[]).map((layer, i) => {
-                    const isActive = activeLayer === layer
-                    const isDone = composition[layer] !== null
-                    const note = composition[layer]
+                <div className="absolute inset-0 bg-gradient-to-r from-[#D4AF37] via-[#FFD700] to-[#D4AF37] transition-transform duration-500 group-hover:scale-105" />
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
+                <span className="relative text-black flex items-center gap-2">
+                  Begin Your Journey
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </span>
+              </motion.button>
+            </motion.div>
+          </motion.div>
+        )}
 
+        {/* =================== LAYER STEPS =================== */}
+        {(step === 'base' || step === 'heart' || step === 'top') && (
+          <motion.div
+            key={step}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
+            className="min-h-screen pt-24 md:pt-28 pb-20"
+          >
+            {/* Selection flash overlay */}
+            <AnimatePresence>
+              {selectionFlash && (
+                <motion.div
+                  initial={{ opacity: 0.3 }}
+                  animate={{ opacity: 0 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.6 }}
+                  className="fixed inset-0 z-50 pointer-events-none"
+                  style={{ background: `radial-gradient(circle at center, ${theme.glow} 0%, transparent 60%)` }}
+                />
+              )}
+            </AnimatePresence>
+
+            <div className="container-wide">
+              {/* Header row: Back + Step indicator + Reset */}
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 }}
+                className="flex items-center justify-between mb-8 md:mb-12"
+              >
+                <button onClick={goBack} className="flex items-center gap-2 text-white/40 hover:text-white/70 transition-colors text-sm group">
+                  <ChevronLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" />
+                  Back
+                </button>
+
+                {/* Step dots */}
+                <div className="flex items-center gap-3">
+                  {LAYER_ORDER.map((layer, i) => {
+                    const isCurrent = layer === step
+                    const isDone = composition[layer] !== null
                     return (
-                      <div key={layer} className="flex items-center">
-                        <button
-                          onClick={() => setActiveLayer(layer)}
-                          aria-label={`Select ${layer} notes layer`}
-                          className={`group flex items-center gap-2.5 px-4 py-2.5 rounded-full transition-all duration-300 ${
-                            isActive
-                              ? 'bg-gold/10 border border-gold/25'
-                              : isDone
-                              ? 'bg-emerald-50 border border-emerald-200/50 hover:border-emerald-300/70'
-                              : 'border border-transparent hover:bg-black/[0.02]'
-                          }`}
-                        >
-                          <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-medium transition-all duration-300 ${
-                            isActive
-                              ? 'bg-gold text-white shadow-sm'
-                              : isDone
-                              ? 'bg-emerald-500 text-white shadow-sm'
-                              : 'bg-black/[0.06] text-gray-400'
-                          }`}>
-                            {isDone && !isActive ? <Check className="w-3.5 h-3.5" /> : layerConfig[layer].order}
-                          </div>
-                          <div className="text-left hidden sm:block">
-                            <span className={`block text-xs font-medium leading-none ${isActive ? 'text-gold' : isDone ? 'text-emerald-600' : 'text-gray-500'}`}>
-                              {layerConfig[layer].title}
-                            </span>
-                            <span className="block text-[10px] text-gray-400 mt-0.5 leading-none">
-                              {note ? note.name : layerConfig[layer].subtitle}
-                            </span>
-                          </div>
-                        </button>
-                        {i < 2 && (
-                          <div className={`w-8 h-px mx-1 transition-colors duration-300 ${
-                            isDone ? 'bg-emerald-300' : 'bg-black/[0.08]'
-                          }`} />
-                        )}
-                      </div>
+                      <button
+                        key={layer}
+                        onClick={() => setStep(layer)}
+                        className="flex items-center gap-2"
+                      >
+                        <div className={`relative w-8 h-8 rounded-full flex items-center justify-center text-xs font-medium transition-all duration-500 ${
+                          isCurrent
+                            ? 'bg-gold/20 text-gold border border-gold/40'
+                            : isDone
+                            ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
+                            : 'bg-white/5 text-white/30 border border-white/10'
+                        }`}>
+                          {isDone && !isCurrent ? <Check className="w-3.5 h-3.5" /> : i + 1}
+                          {isCurrent && (
+                            <motion.div
+                              className="absolute inset-0 rounded-full border border-gold/30"
+                              animate={{ scale: [1, 1.3, 1], opacity: [0.5, 0, 0.5] }}
+                              transition={{ duration: 2, repeat: Infinity }}
+                            />
+                          )}
+                        </div>
+                        {i < 2 && <div className={`w-6 h-px ${isDone ? 'bg-emerald-500/30' : 'bg-white/10'}`} />}
+                      </button>
                     )
                   })}
                 </div>
+
+                {completedCount > 0 ? (
+                  <button onClick={handleReset} className="flex items-center gap-1.5 text-white/30 hover:text-red-400 transition-colors text-xs uppercase tracking-wider">
+                    <RotateCcw className="w-3.5 h-3.5" />
+                    Reset
+                  </button>
+                ) : <div className="w-16" />}
               </motion.div>
 
-              {/* Two-column layout: Bottle + Notes */}
-              <div className="grid lg:grid-cols-[300px_1fr] gap-8 lg:gap-12 items-start">
+              {/* Main: Bottle + Notes */}
+              <div className="grid lg:grid-cols-[280px_1fr] xl:grid-cols-[320px_1fr] gap-10 lg:gap-16 items-start">
 
-                {/* Left Column: Bottle + Info */}
+                {/* Left: Bottle + Layer info */}
                 <motion.div
-                  initial={{ opacity: 0, x: -20 }}
+                  initial={{ opacity: 0, x: -30 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.4 }}
-                  className="flex flex-col items-center lg:sticky lg:top-36"
+                  transition={{ delay: 0.2, duration: 0.6 }}
+                  className="flex flex-col items-center lg:sticky lg:top-28"
                 >
-                  {!show3DPreview ? (
-                    <PremiumBottle composition={composition} activeLayer={activeLayer} />
-                  ) : (
-                    <div className="w-full max-w-[260px]">
-                      <div className="bg-gradient-to-b from-gray-50 to-gray-100/60 backdrop-blur-sm rounded-xl border border-gold/15 overflow-hidden">
-                        <Scene className="w-full h-[350px]">
-                          <Lighting simplified={isMobile} />
-                          <CustomPerfumeBottle
-                            _topNoteColor={topNoteColor}
-                            heartNoteColor={heartNoteColor}
-                            _baseNoteColor={baseNoteColor}
-                            autoRotate={true}
-                          />
-                        </Scene>
-                      </div>
+                  <CinematicBottle
+                    composition={composition}
+                    activeLayer={activeLayer}
+                    className="w-full max-w-[200px] lg:max-w-[240px] mb-8"
+                  />
+
+                  {/* Current layer info */}
+                  <motion.div
+                    key={step}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="text-center"
+                  >
+                    <div className="text-[9px] uppercase tracking-[0.3em] text-gold/40 mb-2">
+                      Layer {layerMeta[activeLayer].number} of 3
                     </div>
-                  )}
+                    <h2 className="font-playfair text-2xl md:text-3xl text-white mb-2">
+                      {layerMeta[activeLayer].title}
+                    </h2>
+                    <p className="text-white/35 text-sm max-w-[260px] leading-relaxed">
+                      {layerMeta[activeLayer].description}
+                    </p>
+                  </motion.div>
 
-                  {/* Current layer description */}
-                  <div className="text-center mt-6 max-w-[220px]">
-                    <p className="text-xs text-gray-400 leading-relaxed">{layerConfig[activeLayer].description}</p>
-                  </div>
-
-                  {/* Actions */}
-                  <div className="flex items-center gap-3 mt-5">
-                    <button
-                      onClick={() => setShow3DPreview(!show3DPreview)}
-                      aria-pressed={show3DPreview}
-                      aria-label="Toggle 3D preview"
-                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] tracking-wide uppercase transition-all ${
-                        show3DPreview
-                          ? 'bg-gold/10 text-gold border border-gold/25'
-                          : 'bg-black/[0.03] text-gray-500 border border-black/[0.06] hover:text-gold hover:border-gold/20'
-                      }`}
-                    >
-                      <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-                      </svg>
-                      3D
-                    </button>
-                    {completedCount > 0 && (
-                      <button
-                        onClick={handleReset}
-                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] tracking-wide uppercase bg-black/[0.03] text-gray-500 border border-black/[0.06] hover:text-red-500 hover:border-red-200 transition-all"
-                      >
-                        <RotateCcw className="w-3 h-3" />
-                        Reset
-                      </button>
-                    )}
-                  </div>
-
-                  {/* Composition Summary */}
+                  {/* Composition summary */}
                   {completedCount > 0 && (
                     <motion.div
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="mt-6 w-full max-w-[260px] space-y-2"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      className="mt-8 w-full max-w-[260px] space-y-2"
                     >
-                      {(['base', 'heart', 'top'] as NoteLayer[]).map(layer => {
+                      {LAYER_ORDER.map(layer => {
                         const note = composition[layer]
                         if (!note) return null
                         return (
-                          <div key={layer} className="flex items-center gap-3 px-3 py-2 rounded-lg bg-black/[0.02] border border-black/[0.04]">
-                            <ColorSwatch color={note.color} size={20} />
+                          <div key={layer} className="flex items-center gap-3 px-4 py-2.5 rounded-xl bg-white/[0.04] border border-white/[0.06]">
+                            <div
+                              className="w-5 h-5 rounded-full flex-shrink-0"
+                              style={{ background: `radial-gradient(circle at 30% 30%, ${note.color}dd, ${note.color}88)` }}
+                            />
                             <div className="flex-1 min-w-0">
-                              <span className="text-[10px] uppercase tracking-wider text-gray-400">{layer}</span>
-                              <span className="block text-xs text-black font-medium truncate">{note.name}</span>
+                              <span className="text-[9px] uppercase tracking-wider text-white/30">{layer}</span>
+                              <span className="block text-xs text-white/80 font-medium truncate">{note.name}</span>
                             </div>
                           </div>
                         )
@@ -442,19 +565,18 @@ export default function CreatePerfumePage() {
                   )}
                 </motion.div>
 
-                {/* Right Column: Category Tabs + Notes Grid */}
+                {/* Right: Categories + Notes */}
                 <motion.div
-                  initial={{ opacity: 0, x: 20 }}
+                  initial={{ opacity: 0, x: 30 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.5 }}
-                  className="space-y-6"
+                  transition={{ delay: 0.3, duration: 0.6 }}
                 >
-                  {/* Category Tabs */}
-                  <div>
+                  {/* Category tabs */}
+                  <div className="mb-8">
                     <div className="flex items-center justify-between mb-4">
-                      <span className="eyebrow text-gold/50">Fragrance Family</span>
-                      <span className="text-xs text-gray-400">
-                        Selecting <span className="text-gold font-medium">{layerConfig[activeLayer].title}</span> Note
+                      <span className="text-[10px] uppercase tracking-[0.2em] text-white/25">Fragrance Family</span>
+                      <span className="text-xs text-white/30">
+                        Selecting <span className="text-gold">{layerMeta[activeLayer].title.split(' ')[0]}</span>
                       </span>
                     </div>
                     <div className="flex flex-wrap gap-2">
@@ -465,20 +587,17 @@ export default function CreatePerfumePage() {
                           <button
                             key={cat.key}
                             onClick={() => setActiveCategory(cat.key)}
-                            aria-pressed={isActive}
-                            aria-label={`Select ${cat.label} fragrance category`}
-                            className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-medium transition-all duration-300 ${
+                            className={`px-5 py-2.5 rounded-full text-xs font-medium transition-all duration-400 border ${
                               isActive
-                                ? 'text-black shadow-sm'
-                                : 'bg-white text-gray-500 border border-black/[0.06] hover:border-black/[0.12] hover:text-black'
+                                ? 'text-white border-transparent'
+                                : 'text-white/50 border-white/[0.08] hover:border-white/[0.15] hover:text-white/70 bg-white/[0.02]'
                             }`}
                             style={isActive ? {
-                              background: `linear-gradient(135deg, ${catTheme.primary}30, ${catTheme.primary}15)`,
+                              background: `linear-gradient(135deg, ${catTheme.primary}35, ${catTheme.primary}15)`,
                               borderColor: `${catTheme.primary}50`,
-                              border: `1px solid ${catTheme.primary}50`,
+                              boxShadow: `0 0 20px ${catTheme.glow}`,
                             } : undefined}
                           >
-                            {categoryIcons[cat.key]}
                             {cat.label}
                           </button>
                         )
@@ -486,247 +605,257 @@ export default function CreatePerfumePage() {
                     </div>
                   </div>
 
-                  {/* Notes Grid */}
+                  {/* Notes grid */}
                   <AnimatePresence mode="wait">
                     <motion.div
                       key={activeCategory}
-                      initial={{ opacity: 0, y: 8 }}
+                      initial={{ opacity: 0, y: 12 }}
                       animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -8 }}
-                      transition={{ duration: 0.25 }}
-                      className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3"
+                      exit={{ opacity: 0, y: -12 }}
+                      transition={{ duration: 0.3 }}
+                      className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4"
                     >
                       {notes.map((note, i) => {
                         const isSelected = composition[activeLayer]?.name === note.name
                         const isUsed = Object.entries(composition).some(([k, n]) => n?.name === note.name && k !== activeLayer)
                         return (
-                          <motion.button
+                          <NoteCard
                             key={note.name}
-                            onClick={() => !isUsed && handleSelectNote(note)}
-                            disabled={isUsed}
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: i * 0.04, duration: 0.3 }}
-                            aria-label={`Select ${note.name} note for ${activeLayer} layer`}
-                            aria-pressed={isSelected}
-                            whileHover={!reducedMotion && !isUsed ? { y: -2 } : undefined}
-                            whileTap={!reducedMotion && !isUsed ? { scale: 0.97 } : undefined}
-                            className={`group relative flex flex-col items-center gap-3 p-5 rounded-2xl transition-all duration-300 ${
-                              isSelected
-                                ? 'bg-white shadow-md'
-                                : isUsed
-                                ? 'bg-gray-50 opacity-35 cursor-not-allowed'
-                                : 'bg-white border border-black/[0.06] hover:border-black/[0.12] hover:shadow-sm'
-                            }`}
-                            style={isSelected ? {
-                              boxShadow: `0 4px 20px ${theme.glow}, 0 0 0 2px ${theme.primary}`,
-                              borderColor: 'transparent',
-                            } : undefined}
-                          >
-                            <ColorSwatch color={note.color} size={36} />
-                            <div className="text-center">
-                              <span className={`block text-xs font-medium ${isSelected ? 'text-black' : 'text-gray-700'}`}>
-                                {note.name}
-                              </span>
-                              <span className="block text-[10px] text-gray-400 mt-0.5">{note.description}</span>
-                            </div>
-                            {isSelected && (
-                              <motion.div
-                                initial={{ scale: 0 }}
-                                animate={{ scale: 1 }}
-                                className="absolute top-2 right-2 w-5 h-5 rounded-full flex items-center justify-center"
-                                style={{ background: theme.primary }}
-                              >
-                                <Check className="w-3 h-3 text-white" />
-                              </motion.div>
-                            )}
-                            {isUsed && (
-                              <span className="absolute top-2 right-2 text-[9px] uppercase tracking-wider text-gray-400 bg-gray-100 px-1.5 py-0.5 rounded">
-                                Used
-                              </span>
-                            )}
-                          </motion.button>
+                            note={note}
+                            isSelected={isSelected}
+                            isUsed={isUsed}
+                            onClick={() => handleSelectNote(note)}
+                            index={i}
+                            theme={theme}
+                          />
                         )
                       })}
                     </motion.div>
                   </AnimatePresence>
 
-                  {/* Continue Button */}
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.6 }}
-                    className="pt-4"
-                  >
-                    <button
-                      onClick={() => isComplete && setShowForm(true)}
-                      disabled={!isComplete}
-                      className={`w-full rounded-full py-4 text-sm tracking-wider uppercase font-medium transition-all duration-500 flex items-center justify-center gap-2 ${
-                        isComplete
-                          ? 'bg-gradient-to-r from-[#D4AF37] via-[#FFD700] to-[#D4AF37] text-black shadow-lg hover:shadow-xl hover:scale-[1.01]'
-                          : 'bg-black/[0.04] text-gray-400 cursor-not-allowed border border-black/[0.06]'
-                      }`}
+                  {/* Skip ahead if already complete */}
+                  {isComplete && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="mt-8"
                     >
-                      {isComplete ? (
-                        <>
-                          Continue to Checkout
-                          <ArrowRight className="w-4 h-4" />
-                        </>
-                      ) : (
-                        `Select ${3 - completedCount} More Note${3 - completedCount !== 1 ? 's' : ''}`
-                      )}
-                    </button>
-                  </motion.div>
+                      <button
+                        onClick={() => setStep('checkout')}
+                        className="w-full rounded-full py-4 text-sm tracking-[0.15em] uppercase font-medium bg-gradient-to-r from-[#D4AF37] via-[#FFD700] to-[#D4AF37] text-black shadow-lg hover:shadow-xl hover:scale-[1.01] transition-all duration-300 flex items-center justify-center gap-2"
+                      >
+                        Continue to Checkout
+                        <ArrowRight className="w-4 h-4" />
+                      </button>
+                    </motion.div>
+                  )}
                 </motion.div>
               </div>
             </div>
+
+            <AmbientParticles color={theme.primary} />
           </motion.div>
-        ) : (
-          /* Checkout Form */
+        )}
+
+        {/* =================== CHECKOUT =================== */}
+        {step === 'checkout' && (
           <motion.div
             key="checkout"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.4 }}
-            className="max-w-xl mx-auto px-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
+            className="min-h-screen pt-24 md:pt-28 pb-20"
           >
-            <button onClick={() => setShowForm(false)} aria-label="Go back to perfume composer" className="mb-8 flex items-center gap-2 text-gray-500 hover:text-black transition-colors group">
-              <ChevronLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" />
-              <span className="text-sm">Back to Composer</span>
-            </button>
+            <div className="max-w-2xl mx-auto px-4">
+              <motion.button
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.1 }}
+                onClick={goBack}
+                className="mb-10 flex items-center gap-2 text-white/40 hover:text-white/70 transition-colors group"
+              >
+                <ChevronLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" />
+                <span className="text-sm">Back to Top Notes</span>
+              </motion.button>
 
-            {/* Composition Preview Card */}
-            <div className="bg-white rounded-2xl p-6 md:p-8 border border-black/[0.06] shadow-sm mb-6">
-              <div className="text-center mb-6">
-                <span className="eyebrow text-gold/50 block mb-2">Your Composition</span>
-                <h2 className="font-playfair text-2xl md:text-3xl">Finalize Your Creation</h2>
-              </div>
-
-              {/* Visual pyramid summary */}
-              <div className="flex items-center justify-center gap-8 mb-8 py-4">
-                <div className="w-28">
-                  <PremiumBottle composition={composition} activeLayer="base" />
-                </div>
-                <div className="space-y-3">
-                  {(['top', 'heart', 'base'] as NoteLayer[]).map(layer => {
-                    const note = composition[layer]!
-                    return (
-                      <div key={layer} className="flex items-center gap-3">
-                        <ColorSwatch color={note.color} size={24} />
-                        <div>
-                          <span className="text-[10px] uppercase tracking-wider text-gray-400 block">{layer}</span>
-                          <span className="text-sm text-black font-medium">{note.name}</span>
-                        </div>
-                      </div>
-                    )
-                  })}
-                </div>
-              </div>
-
-              <div className="h-px bg-gradient-to-r from-transparent via-gold/20 to-transparent mb-8" />
-
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div>
-                  <label htmlFor="perfume-name" className="label-micro-gold block mb-2">Name Your Creation *</label>
-                  <input
-                    id="perfume-name"
-                    type="text"
-                    value={perfumeName}
-                    onChange={(e) => setPerfumeName(e.target.value)}
-                    placeholder="e.g., Midnight Bloom"
-                    maxLength={30}
-                    className="input-base"
-                  />
-                </div>
-
-                <div>
-                  <fieldset>
-                    <legend className="label-micro-gold block mb-3">Select Volume *</legend>
-                    <div className="grid grid-cols-2 gap-3">
-                      {(['50ml', '100ml'] as PerfumeVolume[]).map((vol) => (
-                        <button
-                          key={vol}
-                          type="button"
-                          onClick={() => setSelectedVolume(vol)}
-                          aria-pressed={selectedVolume === vol}
-                          className={`relative p-5 rounded-xl border text-center transition-all duration-300 ${
-                            selectedVolume === vol
-                              ? 'border-gold/40 bg-gradient-to-b from-gold/10 to-gold/5 shadow-sm'
-                              : 'border-black/[0.08] bg-white hover:border-gold/20 hover:bg-gold/[0.02]'
-                          }`}
-                        >
-                          {selectedVolume === vol && (
-                            <div className="absolute top-2 right-2 w-5 h-5 rounded-full bg-gold flex items-center justify-center">
-                              <Check className="w-3 h-3 text-white" />
-                            </div>
-                          )}
-                          <div className={`text-2xl font-playfair ${selectedVolume === vol ? 'text-gold' : 'text-black'}`}>{vol}</div>
-                          <div className={`text-sm mt-1 ${selectedVolume === vol ? 'text-gold/80' : 'text-gray-500'}`}>
-                            EUR {calculatePrice(vol).toFixed(2)}
-                          </div>
-                        </button>
-                      ))}
-                    </div>
-                  </fieldset>
-                </div>
-
-                <div>
-                  <label htmlFor="special-requests" className="label-micro-gold block mb-2">Special Requests <span className="text-gray-400">(Optional)</span></label>
-                  <textarea
-                    id="special-requests"
-                    value={specialRequests}
-                    onChange={(e) => setSpecialRequests(e.target.value)}
-                    placeholder="Any preferences for intensity, longevity, or special occasions..."
-                    rows={3}
-                    className="input-base resize-none"
-                  />
-                </div>
-
-                <AnimatePresence>
-                  {error && (
-                    <motion.div
-                      initial={{ opacity: 0, y: -5 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -5 }}
-                      className="bg-red-50 border border-red-200 rounded-xl px-4 py-3 text-red-600 text-sm"
-                    >
-                      {error}
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-
-                <div className="flex items-center justify-between pt-4 border-t border-black/[0.06]">
-                  <div>
-                    <div className="text-[10px] uppercase tracking-wider text-gray-400">Total</div>
-                    <div className="text-3xl font-playfair text-black">
-                      EUR {selectedVolume ? calculatePrice(selectedVolume).toFixed(2) : '0.00'}
-                    </div>
-                  </div>
-                  <button
-                    type="submit"
-                    disabled={isProcessing || !perfumeName || !selectedVolume}
-                    className={`flex items-center gap-2 px-8 py-3.5 rounded-full text-sm font-medium tracking-wider uppercase transition-all duration-300 ${
-                      isProcessing || !perfumeName || !selectedVolume
-                        ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                        : 'bg-gradient-to-r from-[#D4AF37] via-[#FFD700] to-[#D4AF37] text-black shadow-md hover:shadow-lg hover:scale-[1.02]'
-                    }`}
+              {/* Composition review */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.15 }}
+                className="rounded-3xl p-8 md:p-10 border border-white/[0.08] bg-white/[0.03] backdrop-blur-xl mb-8"
+              >
+                <div className="text-center mb-8">
+                  <p className="text-[9px] uppercase tracking-[0.3em] text-gold/40 mb-3">Your Creation</p>
+                  <h2 className="font-playfair text-3xl md:text-4xl"
+                    style={{
+                      background: 'linear-gradient(180deg, #FFF8DC 0%, #D4AF37 100%)',
+                      WebkitBackgroundClip: 'text',
+                      WebkitTextFillColor: 'transparent',
+                      backgroundClip: 'text',
+                    }}
                   >
-                    {isProcessing ? (
-                      <>
-                        <Loader2 className="w-4 h-4 animate-spin" />
-                        Processing
-                      </>
-                    ) : (
-                      <>
-                        <Sparkles className="w-4 h-4" />
-                        Pay with Stripe
-                      </>
-                    )}
-                  </button>
+                    Finalize Your Masterpiece
+                  </h2>
                 </div>
-              </form>
+
+                {/* Bottle + notes side by side */}
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-8 mb-10">
+                  <CinematicBottle composition={composition} activeLayer="base" className="w-28 sm:w-32" />
+                  <div className="space-y-4">
+                    {(['top', 'heart', 'base'] as NoteLayer[]).map((layer, i) => {
+                      const note = composition[layer]!
+                      return (
+                        <motion.div
+                          key={layer}
+                          initial={{ opacity: 0, x: 20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: 0.3 + i * 0.1 }}
+                          className="flex items-center gap-4"
+                        >
+                          <div
+                            className="w-8 h-8 rounded-full flex-shrink-0"
+                            style={{
+                              background: `radial-gradient(circle at 30% 30%, ${note.color}dd, ${note.color}88)`,
+                              boxShadow: `0 0 16px ${note.color}40`,
+                            }}
+                          />
+                          <div>
+                            <span className="text-[9px] uppercase tracking-[0.2em] text-white/30 block">{layer} note</span>
+                            <span className="text-white/90 font-medium">{note.name}</span>
+                          </div>
+                        </motion.div>
+                      )
+                    })}
+                  </div>
+                </div>
+
+                <div className="h-px bg-gradient-to-r from-transparent via-gold/15 to-transparent mb-8" />
+
+                {/* Form */}
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  <div>
+                    <label htmlFor="perfume-name" className="block text-[10px] uppercase tracking-[0.2em] text-gold/50 mb-2">Name Your Creation *</label>
+                    <input
+                      id="perfume-name"
+                      type="text"
+                      value={perfumeName}
+                      onChange={(e) => setPerfumeName(e.target.value)}
+                      placeholder="e.g., Midnight Bloom"
+                      maxLength={30}
+                      className="w-full bg-white/[0.05] border border-white/[0.1] rounded-xl px-5 py-3.5 text-white placeholder-white/20 focus:outline-none focus:border-gold/40 focus:ring-1 focus:ring-gold/20 transition-all"
+                    />
+                  </div>
+
+                  <div>
+                    <fieldset>
+                      <legend className="block text-[10px] uppercase tracking-[0.2em] text-gold/50 mb-3">Select Volume *</legend>
+                      <div className="grid grid-cols-2 gap-4">
+                        {(['50ml', '100ml'] as PerfumeVolume[]).map((vol) => (
+                          <button
+                            key={vol}
+                            type="button"
+                            onClick={() => setSelectedVolume(vol)}
+                            className={`relative p-6 rounded-2xl border text-center transition-all duration-500 ${
+                              selectedVolume === vol
+                                ? 'border-gold/40 bg-gold/[0.08]'
+                                : 'border-white/[0.08] bg-white/[0.03] hover:border-white/[0.15] hover:bg-white/[0.05]'
+                            }`}
+                            style={selectedVolume === vol ? {
+                              boxShadow: '0 0 30px rgba(212,175,55,0.1)',
+                            } : undefined}
+                          >
+                            {selectedVolume === vol && (
+                              <motion.div
+                                initial={{ scale: 0 }}
+                                animate={{ scale: 1 }}
+                                className="absolute top-3 right-3 w-5 h-5 rounded-full bg-gold flex items-center justify-center"
+                              >
+                                <Check className="w-3 h-3 text-black" />
+                              </motion.div>
+                            )}
+                            <div className={`text-3xl font-playfair ${selectedVolume === vol ? 'text-gold' : 'text-white/70'}`}>{vol}</div>
+                            <div className={`text-sm mt-2 ${selectedVolume === vol ? 'text-gold/70' : 'text-white/30'}`}>
+                              EUR {calculatePrice(vol).toFixed(2)}
+                            </div>
+                          </button>
+                        ))}
+                      </div>
+                    </fieldset>
+                  </div>
+
+                  <div>
+                    <label htmlFor="special-requests" className="block text-[10px] uppercase tracking-[0.2em] text-gold/50 mb-2">
+                      Special Requests <span className="text-white/20">(Optional)</span>
+                    </label>
+                    <textarea
+                      id="special-requests"
+                      value={specialRequests}
+                      onChange={(e) => setSpecialRequests(e.target.value)}
+                      placeholder="Any preferences for intensity, longevity, or special occasions..."
+                      rows={3}
+                      className="w-full bg-white/[0.05] border border-white/[0.1] rounded-xl px-5 py-3.5 text-white placeholder-white/20 focus:outline-none focus:border-gold/40 focus:ring-1 focus:ring-gold/20 transition-all resize-none"
+                    />
+                  </div>
+
+                  <AnimatePresence>
+                    {error && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -5 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -5 }}
+                        className="bg-red-500/10 border border-red-500/20 rounded-xl px-5 py-3 text-red-400 text-sm"
+                      >
+                        {error}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+
+                  <div className="flex items-center justify-between pt-6 border-t border-white/[0.06]">
+                    <div>
+                      <div className="text-[9px] uppercase tracking-[0.2em] text-white/25">Total</div>
+                      <div className="text-3xl font-playfair text-gold">
+                        EUR {selectedVolume ? calculatePrice(selectedVolume).toFixed(2) : '0.00'}
+                      </div>
+                    </div>
+                    <button
+                      type="submit"
+                      disabled={isProcessing || !perfumeName || !selectedVolume}
+                      className={`flex items-center gap-2 px-8 py-4 rounded-full text-sm font-medium tracking-[0.15em] uppercase transition-all duration-300 ${
+                        isProcessing || !perfumeName || !selectedVolume
+                          ? 'bg-white/[0.05] text-white/20 cursor-not-allowed'
+                          : 'bg-gradient-to-r from-[#D4AF37] via-[#FFD700] to-[#D4AF37] text-black shadow-lg hover:shadow-xl hover:scale-[1.02]'
+                      }`}
+                    >
+                      {isProcessing ? (
+                        <>
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                          Processing
+                        </>
+                      ) : (
+                        <>
+                          <Sparkles className="w-4 h-4" />
+                          Pay with Stripe
+                        </>
+                      )}
+                    </button>
+                  </div>
+                </form>
+              </motion.div>
+
+              {/* Edit composition link */}
+              <div className="text-center">
+                <button
+                  onClick={handleReset}
+                  className="text-xs text-white/25 hover:text-white/50 transition-colors uppercase tracking-wider"
+                >
+                  Start Over
+                </button>
+              </div>
             </div>
+
+            <AmbientParticles />
           </motion.div>
         )}
       </AnimatePresence>
