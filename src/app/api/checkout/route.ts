@@ -34,17 +34,20 @@ export async function POST(request: NextRequest) {
     }
     const { items } = result.data;
 
-    // SECURITY: Validate prices against server-side catalog
+    // SECURITY: Validate items against server-side catalog and get catalog prices
     const priceValidation = await validateCartPrices(items);
     if (!priceValidation.valid) {
       return NextResponse.json(
-        { error: 'Price mismatch detected', details: priceValidation.errors },
+        { error: 'Invalid cart items', details: priceValidation.errors },
         { status: 400 }
       );
     }
 
+    // Always use server-side catalog prices (never trust client prices)
+    const verifiedItems = priceValidation.correctedItems!;
+
     // Create line items for Stripe
-    const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = items.map((item) => {
+    const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = verifiedItems.map((item) => {
       const description = `${getProductTypeLabel(item.productType || 'perfume')} - ${item.size || ''}`;
 
       return {
@@ -96,8 +99,8 @@ export async function POST(request: NextRequest) {
       // pid=productId, vid=variantId, qty=quantity
       // Webhook reconstructs full data from these identifiers
       metadata: {
-        itemCount: items.length.toString(),
-        items: JSON.stringify(items.map(i => ({
+        itemCount: verifiedItems.length.toString(),
+        items: JSON.stringify(verifiedItems.map(i => ({
           pid: i.productId,
           vid: i.variantId,
           qty: i.quantity,

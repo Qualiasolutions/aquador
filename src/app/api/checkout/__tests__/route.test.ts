@@ -310,7 +310,7 @@ describe('POST /api/checkout', () => {
       const data = await response.json();
 
       expect(response.status).toBe(400);
-      expect(data.error).toBe('Price mismatch detected');
+      expect(data.error).toBe('Invalid cart items');
       expect(data.details).toHaveLength(1);
     });
   });

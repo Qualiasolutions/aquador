@@ -35,14 +35,15 @@ export const cartItemSchema = z.object({
 });
 
 /**
- * Validates cart item prices against the server-side product catalog.
+ * Validates cart items against the server-side product catalog and returns
+ * corrected prices from the catalog.
  *
- * Security: Prevents client-side price manipulation by verifying each item's
- * price matches the catalog price (or sale price if available).
+ * Security: Always uses catalog prices for checkout, never trusting client prices.
  * Uses batch query to avoid N+1 database calls.
  */
 export async function validateCartPrices(items: CartItem[]): Promise<{
   valid: boolean;
+  correctedItems?: CartItem[];
   errors?: Array<{ productId: string; reason: string }>;
 }> {
   const errors: Array<{ productId: string; reason: string }> = [];
@@ -52,6 +53,8 @@ export async function validateCartPrices(items: CartItem[]): Promise<{
   const products = await getProductsByIds(productIds);
   const productMap = new Map(products.map(p => [p.id, p]));
 
+  const correctedItems: CartItem[] = [];
+
   for (const item of items) {
     const product = productMap.get(item.productId);
 
@@ -59,19 +62,6 @@ export async function validateCartPrices(items: CartItem[]): Promise<{
       errors.push({
         productId: item.productId,
         reason: `Product not found in catalog`,
-      });
-      continue;
-    }
-
-    // Get the expected catalog price (sale price takes precedence)
-    const catalogPrice = product.sale_price ?? product.price;
-
-    // Allow 1-cent tolerance for floating-point rounding errors
-    const priceDifference = Math.abs(item.price - catalogPrice);
-    if (priceDifference > 0.01) {
-      errors.push({
-        productId: item.productId,
-        reason: `Price mismatch: client sent ${item.price.toFixed(2)}, catalog price is ${catalogPrice.toFixed(2)}`,
       });
       continue;
     }
@@ -93,11 +83,18 @@ export async function validateCartPrices(items: CartItem[]): Promise<{
       });
       continue;
     }
+
+    // Always use catalog price (sale price takes precedence)
+    const catalogPrice = product.sale_price ?? product.price;
+    correctedItems.push({
+      ...item,
+      price: catalogPrice,
+    });
   }
 
   if (errors.length > 0) {
     return { valid: false, errors };
   }
 
-  return { valid: true };
+  return { valid: true, correctedItems };
 }
