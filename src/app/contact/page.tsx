@@ -8,6 +8,7 @@ import { z } from 'zod';
 import { track } from '@vercel/analytics';
 import { MapPin, Phone, Mail, Clock, Send, CheckCircle } from 'lucide-react';
 import Button from '@/components/ui/Button';
+import { LocationMap } from '@/components/ui/location-map';
 import { PageHero } from '@/components/ui/Section';
 import { fadeInLeft, fadeInRight, fadeInUp } from '@/lib/animations/scroll-animations';
 
@@ -269,17 +270,11 @@ export default function ContactPage() {
                 viewport={{ once: true, margin: '-30px' }}
                 variants={fadeInUp}
                 transition={{ delay: 0.35 }}
-                className="overflow-hidden border border-gold/10 h-52 lg:h-64"
+                className="flex items-center justify-center py-6"
               >
-                <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3260.9!2d33.3619!3d35.1753!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14de19749d5d7c4b%3A0x2d8c4f5f8c6d7c4e!2sLedra%20Street%2C%20Nicosia!5e0!3m2!1sen!2scy!4v1620000000000!5m2!1sen!2scy"
-                  width="100%"
-                  height="100%"
-                  style={{ border: 0 }}
-                  allowFullScreen
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                  className="grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition-all duration-700"
+                <LocationMap
+                  location="Nicosia, Cyprus"
+                  coordinates="35.1753° N, 33.3619° E"
                 />
               </motion.div>
             </motion.div>

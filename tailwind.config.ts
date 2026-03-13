@@ -11,6 +11,11 @@ const config: Config = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        muted: {
+          DEFAULT: "var(--gray-100)",
+          foreground: "var(--gray-400)",
+        },
+        border: "var(--gray-200)",
         gold: {
           DEFAULT: "#D4AF37", // Backward compatibility
           light: "#FFD700",   // Backward compatibility
