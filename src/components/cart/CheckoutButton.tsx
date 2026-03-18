@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Lock, Loader2 } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import { track } from '@vercel/analytics';
 import * as Sentry from '@sentry/nextjs';
 import { useCart } from './CartProvider';
@@ -97,7 +97,6 @@ export default function CheckoutButton() {
           </>
         ) : (
           <>
-            <Lock className="w-4 h-4" />
             Proceed to Checkout
           </>
         )}
@@ -107,8 +106,7 @@ export default function CheckoutButton() {
         <p className="text-red-400 text-sm text-center">{error}</p>
       )}
 
-      <p className="text-xs text-gray-500 text-center flex items-center justify-center gap-1">
-        <Lock className="w-3 h-3" />
+      <p className="text-xs text-gray-500 text-center">
         Secure checkout powered by Stripe
       </p>
     </div>
