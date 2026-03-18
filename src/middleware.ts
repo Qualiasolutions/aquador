@@ -18,21 +18,6 @@ export async function middleware(request: NextRequest) {
 
   const { pathname } = request.nextUrl;
 
-  // --- Maintenance gate ---
-  const isMaintenancePage = pathname === '/maintenance';
-  const isStaticAsset = pathname.startsWith('/_next') || pathname.startsWith('/api') || pathname.match(/\.(ico|png|jpg|jpeg|svg|webp|css|js|woff2?)$/);
-  const hasAccess = request.cookies.get('aq_access')?.value === '1';
-
-  // If accessing maintenance page with valid cookie, redirect to home
-  if (isMaintenancePage && hasAccess) {
-    return NextResponse.redirect(new URL('/', request.url));
-  }
-
-  // If not authorized and not on maintenance page and not a static asset/API, redirect
-  if (!hasAccess && !isMaintenancePage && !isStaticAsset && !pathname.startsWith('/admin')) {
-    return NextResponse.redirect(new URL('/maintenance', request.url));
-  }
-
   const isAdminRoute = pathname.startsWith('/admin');
   const isAdminLoginRoute = pathname === '/admin/login';
 
@@ -87,7 +72,6 @@ export async function middleware(request: NextRequest) {
   return response;
 }
 
-// Run middleware on all routes (maintenance gate needs to intercept everything)
 export const config = {
-  matcher: ['/((?!_next/static|_next/image|favicon\\.ico|.*\\.(?:png|jpg|jpeg|svg|webp|ico|woff2?|css|js)$).*)'],
+  matcher: ['/api/:path*', '/admin/:path*'],
 };
