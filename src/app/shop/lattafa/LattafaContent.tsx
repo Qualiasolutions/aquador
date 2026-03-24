@@ -71,14 +71,14 @@ export default function LattafaContent({ products }: LattafaContentProps) {
   }, [products]);
 
   return (
-    <div className="pt-20 md:pt-24 pb-16 bg-gold-ambient min-h-screen">
+    <div className="pt-20 md:pt-24 pb-16 md:pb-20 bg-gold-ambient min-h-screen">
       {/* Hero — compact */}
-      <section className="relative py-14 md:py-20 overflow-hidden">
+      <section className="relative py-16 md:py-20 overflow-hidden">
         <AnimatedShaderBackground />
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-dark/70 to-dark" />
         </div>
-        <div className="w-full px-4 sm:px-8 lg:px-16 xl:px-24 text-center relative z-10">
+        <div className="container-wide text-center relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}

@@ -40,7 +40,7 @@ export default function FeaturedProducts({ products }: FeaturedProductsProps) {
 
         {/* Products grid — wider spacing, more breathing room */}
         <AnimatedSection variant="stagger" staggerDelay={0.08}>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-7 lg:gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 lg:gap-8">
             {products.map((product) => (
               <motion.div
                 key={product.id}

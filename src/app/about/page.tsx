@@ -45,7 +45,7 @@ export default function AboutPage() {
       {/* Story Section — editorial asymmetric layout */}
       <section className="section-lg">
         <div className="container-wide">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
             {/* Text — takes 5 cols */}
             <motion.div
               className="lg:col-span-5"
@@ -122,7 +122,7 @@ export default function AboutPage() {
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold/20 to-transparent" />
 
         <div className="container-wide">
-          <AnimatedSection variant="fadeInUp" className="text-center mb-14 md:mb-18">
+          <AnimatedSection variant="fadeInUp" className="text-center mb-14 md:mb-20">
             <p className="eyebrow text-gold/60 mb-4">What Drives Us</p>
             <h2 className="font-playfair text-3xl md:text-4xl text-black mb-5 leading-tight">Our Values</h2>
             <div className="flex items-center justify-center gap-3">

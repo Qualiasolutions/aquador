@@ -48,7 +48,7 @@ export default function CTASection() {
   const contentY = useTransform(scrollYProgress, [0, 1], ['30px', '-30px']);
 
   return (
-    <section ref={sectionRef} className="relative overflow-hidden" style={{ minHeight: '600px' }}>
+    <section ref={sectionRef} className="relative overflow-hidden min-h-[500px] md:min-h-[600px]">
       {/* Background — parallax perfume bottle */}
       <ParallaxSection speed={0.25} className="absolute inset-0">
         <Image
@@ -112,7 +112,7 @@ export default function CTASection() {
 
       {/* Content — generous vertical padding with parallax */}
       <motion.div
-        className="relative z-10 container-wide py-24 md:py-32 lg:py-40"
+        className="relative z-10 container-wide section-lg"
         style={{ y: reducedMotion ? 0 : contentY }}
       >
         <div className="max-w-3xl mx-auto text-center">

@@ -34,8 +34,8 @@ export default function Categories() {
   const [feature, ...rest] = categories;
 
   return (
-    <section ref={sectionRef} className="bg-gold-ambient-subtle overflow-hidden">
-      <div className="py-0">
+    <section ref={sectionRef} className="bg-gold-ambient-subtle overflow-hidden py-1">
+      <div>
         <AnimatedSection variant="stagger" staggerDelay={0.08}>
           {/* Desktop: feature left + 2x2 right grid, capped at 90vh */}
           <div

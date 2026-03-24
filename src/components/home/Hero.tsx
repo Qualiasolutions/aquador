@@ -123,7 +123,7 @@ export default function Hero() {
 
           {/* Tagline — refined hierarchy */}
           <motion.p
-            className="text-[11px] sm:text-xs md:text-sm text-white/50 tracking-[0.28em] uppercase font-light mb-14 md:mb-18"
+            className="text-[11px] sm:text-xs md:text-sm text-white/50 tracking-[0.28em] uppercase font-light mb-14 md:mb-20"
             variants={revealVariants.fadeInSequence}
           >
             Where Luxury Meets Distinction

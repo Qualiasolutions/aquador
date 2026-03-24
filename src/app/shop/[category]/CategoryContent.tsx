@@ -112,7 +112,7 @@ export default function CategoryContent({ category, products }: CategoryContentP
       ) : (
         <>
           {/* Search Bar */}
-          <section className="container-wide py-8">
+          <section className="container-wide py-6 md:py-8">
             <motion.div
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
@@ -147,7 +147,7 @@ export default function CategoryContent({ category, products }: CategoryContentP
           </section>
 
           {/* Products Grid */}
-          <section className="container-wide pb-20">
+          <section className="container-wide pb-16 md:pb-20">
             <SwipeableProductGrid
               categories={allCategories}
               currentCategorySlug={category.slug}
@@ -156,7 +156,7 @@ export default function CategoryContent({ category, products }: CategoryContentP
                 initial="hidden"
                 animate="visible"
                 transition={{ staggerChildren: 0.03, delayChildren: 0.1 }}
-                className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-5"
+                className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6"
               >
                 {filteredProducts.map((product) => (
                   <motion.div

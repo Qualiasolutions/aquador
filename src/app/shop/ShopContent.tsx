@@ -99,7 +99,7 @@ export default function ShopContent({ products, categories }: ShopContentProps) 
       />
 
       {/* Search and Filters */}
-      <section className="container-wide pb-10">
+      <section className="container-wide pb-8 md:pb-10">
         {/* Search Bar */}
         <motion.div
           initial={{ opacity: 0, y: 15 }}
@@ -155,7 +155,7 @@ export default function ShopContent({ products, categories }: ShopContentProps) 
       </section>
 
       {/* Products Grid */}
-      <section className="container-wide pb-20">
+      <section className="container-wide pb-16 md:pb-20">
         {hasActiveFilters ? (
           <AnimatePresence mode="popLayout">
             <motion.div
