@@ -21,6 +21,7 @@ export default function NewManualOrderPage() {
 
   const [customerEmail, setCustomerEmail] = useState('');
   const [customerName, setCustomerName] = useState('');
+  const [customerPhone, setCustomerPhone] = useState('');
   const [notes, setNotes] = useState('');
   const [items, setItems] = useState<OrderItem[]>([{ ...EMPTY_ITEM }]);
 
@@ -64,6 +65,7 @@ export default function NewManualOrderPage() {
         body: JSON.stringify({
           customerEmail: customerEmail.trim(),
           customerName: customerName.trim() || undefined,
+          customerPhone: customerPhone.trim() || undefined,
           items: validItems,
           total,
           notes: notes.trim() || undefined,
@@ -140,6 +142,16 @@ export default function NewManualOrderPage() {
                 className={inputClass}
               />
             </div>
+          </div>
+          <div>
+            <label className={labelClass}>Phone</label>
+            <input
+              type="tel"
+              value={customerPhone}
+              onChange={(e) => setCustomerPhone(e.target.value)}
+              placeholder="+357 99 123456"
+              className={inputClass}
+            />
           </div>
         </section>
 

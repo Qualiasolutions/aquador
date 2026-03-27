@@ -9,6 +9,7 @@ export const maxDuration = 10;
 const manualOrderSchema = z.object({
   customerEmail: z.string().email('Valid email required'),
   customerName: z.string().max(200).optional(),
+  customerPhone: z.string().max(30).optional(),
   items: z.array(z.object({
     name: z.string().min(1),
     quantity: z.number().int().positive(),
@@ -78,6 +79,7 @@ export async function POST(request: NextRequest) {
         order_source: 'manual',
         customer_email: orderData.customerEmail.trim().toLowerCase(),
         customer_name: orderData.customerName?.trim() || null,
+        customer_phone: orderData.customerPhone?.trim() || null,
         items: JSON.parse(JSON.stringify(orderData.items || [])),
         total: Math.round(orderData.total * 100), // Store in cents
         currency: 'eur',
@@ -120,6 +122,7 @@ export async function POST(request: NextRequest) {
         .from('customers')
         .update({
           name: orderData.customerName?.trim() || undefined,
+          ...(orderData.customerPhone ? { phone: orderData.customerPhone.trim() } : {}),
           total_orders: existing.total_orders + 1,
           total_spent: existing.total_spent + Math.round(orderData.total * 100),
           last_order_at: now,
@@ -130,6 +133,7 @@ export async function POST(request: NextRequest) {
       await supabase.from('customers').insert({
         email,
         name: orderData.customerName?.trim() || null,
+        phone: orderData.customerPhone?.trim() || null,
         total_orders: 1,
         total_spent: Math.round(orderData.total * 100),
         first_order_at: now,

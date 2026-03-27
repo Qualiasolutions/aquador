@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { ChevronDown, Palette, Package, MapPin, MessageSquare } from 'lucide-react';
+import { ChevronDown, Palette, Package, MapPin, MessageSquare, Phone } from 'lucide-react';
 import type { Order, OrderStatus } from '@/lib/supabase/types';
 
 const STATUS_COLORS: Record<OrderStatus, string> = {
@@ -128,6 +128,12 @@ export default function OrdersTable({ orders, onStatusChange }: OrdersTableProps
                       <div className="px-4 py-4 flex-1 min-w-0">
                         <p className="text-white text-sm truncate">{order.customer_name ?? 'N/A'}</p>
                         <p className="text-gray-500 text-xs truncate">{order.customer_email}</p>
+                        {order.customer_phone && (
+                          <p className="text-gray-500 text-xs truncate flex items-center gap-1 mt-0.5">
+                            <Phone className="h-3 w-3" />
+                            {order.customer_phone}
+                          </p>
+                        )}
                       </div>
                       <div className="px-4 py-4 flex-shrink-0" style={{ width: '80px' }}>
                         <span className="text-gray-300 text-sm">{itemCount} item{itemCount !== 1 ? 's' : ''}</span>
@@ -235,7 +241,7 @@ export default function OrdersTable({ orders, onStatusChange }: OrdersTableProps
                           </div>
                         )}
 
-                        {/* Shipping Address */}
+                        {/* Shipping Address & Phone */}
                         <div className="bg-gray-900/50 rounded-lg p-4 border border-gray-700/50">
                           <div className="flex items-center gap-2 mb-3">
                             <MapPin className="h-4 w-4 text-gold" />
@@ -253,6 +259,17 @@ export default function OrdersTable({ orders, onStatusChange }: OrdersTableProps
                             </div>
                           ) : (
                             <p className="text-gray-500 text-sm">No shipping address</p>
+                          )}
+                          {order.customer_phone && (
+                            <div className="mt-3 pt-3 border-t border-gray-700/50 flex items-center gap-2">
+                              <Phone className="h-3.5 w-3.5 text-gold" />
+                              <a
+                                href={`tel:${order.customer_phone}`}
+                                className="text-sm text-gray-300 hover:text-gold transition-colors"
+                              >
+                                {order.customer_phone}
+                              </a>
+                            </div>
                           )}
                         </div>
                       </div>

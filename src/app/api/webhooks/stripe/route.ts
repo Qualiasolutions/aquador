@@ -47,6 +47,7 @@ async function persistOrder(
         stripe_session_id: session.id,
         customer_email: customerEmail,
         customer_name: customerName || null,
+        customer_phone: customerPhone,
         items: JSON.parse(JSON.stringify(items)),
         total: session.amount_total || 0,
         currency: session.currency || 'eur',
@@ -378,12 +379,18 @@ export async function POST(request: NextRequest) {
   // Handle the event
   switch (event.type) {
     case 'checkout.session.completed': {
-      const session = event.data.object as Stripe.Checkout.Session;
+      const webhookSession = event.data.object as Stripe.Checkout.Session;
 
       Sentry.addBreadcrumb({
         category: 'order',
         message: 'Checkout completed',
-        data: { sessionId: session.id, amount: session.amount_total },
+        data: { sessionId: webhookSession.id, amount: webhookSession.amount_total },
+      });
+
+      // Retrieve the full session from Stripe to get phone_number_collection data
+      // The webhook payload often omits customer_details.phone
+      const session = await stripe.checkout.sessions.retrieve(webhookSession.id, {
+        expand: ['customer_details'],
       });
 
       // Parse items, shipping, and order tags

@@ -171,6 +171,7 @@ export type Database = {
           currency: string
           customer_email: string
           customer_name: string | null
+          customer_phone: string | null
           id: string
           items: Json
           order_source: string
@@ -186,6 +187,7 @@ export type Database = {
           currency?: string
           customer_email: string
           customer_name?: string | null
+          customer_phone?: string | null
           id?: string
           items?: Json
           order_source?: string
@@ -201,6 +203,7 @@ export type Database = {
           currency?: string
           customer_email?: string
           customer_name?: string | null
+          customer_phone?: string | null
           id?: string
           items?: Json
           order_source?: string
