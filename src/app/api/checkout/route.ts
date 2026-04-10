@@ -5,7 +5,7 @@ import { z } from 'zod';
 import { CURRENCY_CODE, toCents } from '@/lib/currency';
 import { formatApiError } from '@/lib/api-utils';
 import { checkRateLimit } from '@/lib/rate-limit';
-import { getProductTypeLabel, SHIPPING_COUNTRIES } from '@/lib/constants';
+import { getProductTypeLabel, SHIPPING_COUNTRIES, FREE_SHIPPING_THRESHOLD, DELIVERY_FEE } from '@/lib/constants';
 import { getStripe } from '@/lib/stripe';
 import { cartItemSchema, validateCartPrices } from '@/lib/validation/cart';
 
@@ -64,6 +64,10 @@ export async function POST(request: NextRequest) {
       };
     });
 
+    // Calculate subtotal for shipping threshold
+    const subtotal = verifiedItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    const shippingAmount = subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : toCents(DELIVERY_FEE);
+
     // Create checkout session
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
@@ -79,10 +83,10 @@ export async function POST(request: NextRequest) {
           shipping_rate_data: {
             type: 'fixed_amount',
             fixed_amount: {
-              amount: 0,
+              amount: shippingAmount,
               currency: CURRENCY_CODE,
             },
-            display_name: 'Free shipping',
+            display_name: shippingAmount === 0 ? 'Free shipping' : 'Standard delivery',
             delivery_estimate: {
               minimum: {
                 unit: 'business_day',

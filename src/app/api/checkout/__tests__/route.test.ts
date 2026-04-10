@@ -50,6 +50,8 @@ jest.mock('@/lib/currency', () => ({
 jest.mock('@/lib/constants', () => ({
   getProductTypeLabel: (type: string) => type === 'perfume' ? 'Perfume' : 'Product',
   SHIPPING_COUNTRIES: ['CY', 'GR', 'UK'],
+  FREE_SHIPPING_THRESHOLD: 35,
+  DELIVERY_FEE: 3,
 }));
 
 // Store original env
@@ -103,8 +105,12 @@ describe('POST /api/checkout', () => {
     // Default: no rate limit
     mockCheckRateLimit.mockResolvedValue(null);
 
-    // Default: prices are valid
-    mockValidateCartPrices.mockResolvedValue({ valid: true, errors: [] });
+    // Default: prices are valid — correctedItems mirrors input
+    mockValidateCartPrices.mockImplementation(async (items: any[]) => ({
+      valid: true,
+      errors: [],
+      correctedItems: items,
+    }));
 
     // Default: Stripe creates session successfully
     mockGetStripe.mockReturnValue({
@@ -226,7 +232,7 @@ describe('POST /api/checkout', () => {
       );
     });
 
-    it('should include shipping configuration', async () => {
+    it('should charge delivery fee for orders under €35', async () => {
       const mockCreate = jest.fn().mockResolvedValue(mockCheckoutSession);
       mockGetStripe.mockReturnValue({
         checkout: {
@@ -259,7 +265,47 @@ describe('POST /api/checkout', () => {
           shipping_options: expect.arrayContaining([
             expect.objectContaining({
               shipping_rate_data: expect.objectContaining({
+                display_name: 'Standard delivery',
+                fixed_amount: { amount: 300, currency: 'eur' },
+              }),
+            }),
+          ]),
+        })
+      );
+    });
+
+    it('should offer free shipping for orders at or above €35', async () => {
+      const mockCreate = jest.fn().mockResolvedValue(mockCheckoutSession);
+      mockGetStripe.mockReturnValue({
+        checkout: {
+          sessions: {
+            create: mockCreate,
+          },
+        },
+      });
+
+      const validCart = {
+        items: [
+          {
+            productId: 'prod_1',
+            variantId: 'var_1',
+            name: 'Luxury Perfume',
+            price: 49.99,
+            quantity: 1,
+          },
+        ],
+      };
+
+      const request = createMockRequest(validCart);
+      await POST(request);
+
+      expect(mockCreate).toHaveBeenCalledWith(
+        expect.objectContaining({
+          shipping_options: expect.arrayContaining([
+            expect.objectContaining({
+              shipping_rate_data: expect.objectContaining({
                 display_name: 'Free shipping',
+                fixed_amount: { amount: 0, currency: 'eur' },
               }),
             }),
           ]),

@@ -13,6 +13,7 @@ interface OrderData {
   orderNumber: string;
   items: Array<{ name: string; quantity: number; price: number; size: string }>;
   total: number;
+  shipping: number;
   currency: string;
 }
 
@@ -45,6 +46,7 @@ export default function CheckoutSuccessPage() {
           orderNumber: data.orderNumber,
           items: data.items,
           total: data.total / 100, // Convert cents to euros
+          shipping: (data.shipping || 0) / 100,
           currency: data.currency,
         });
         clearCart();
@@ -112,8 +114,8 @@ export default function CheckoutSuccessPage() {
   }
 
   // Success state with order details
-  const subtotal = orderData.total;
-  const shipping = 0; // Free shipping
+  const shipping = orderData.shipping;
+  const subtotal = orderData.total - shipping;
 
   return (
     <div className="min-h-screen bg-gold-ambient pt-32 md:pt-40 lg:pt-44 pb-16">
@@ -184,11 +186,15 @@ export default function CheckoutSuccessPage() {
             </div>
             <div className="flex justify-between text-gray-400">
               <span>Shipping</span>
-              <span className="text-green-500 font-semibold">FREE</span>
+              {shipping === 0 ? (
+                <span className="text-green-500 font-semibold">FREE</span>
+              ) : (
+                <span>{formatPrice(shipping)}</span>
+              )}
             </div>
             <div className="flex justify-between text-xl font-semibold text-black pt-2 border-t border-gold/20">
               <span>Total</span>
-              <span className="text-gold">{formatPrice(subtotal + shipping)}</span>
+              <span className="text-gold">{formatPrice(orderData.total)}</span>
             </div>
           </div>
 

@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { formatApiError } from '@/lib/api-utils';
 import { checkRateLimit } from '@/lib/rate-limit';
 import { getStripe } from '@/lib/stripe';
-import { SHIPPING_COUNTRIES } from '@/lib/constants';
+import { SHIPPING_COUNTRIES, FREE_SHIPPING_THRESHOLD, DELIVERY_FEE } from '@/lib/constants';
 
 export const maxDuration = 10;
 
@@ -40,6 +40,8 @@ export async function POST(request: NextRequest) {
 
     // Calculate price in cents
     const amount = volume === '100ml' ? 4999 : 2999;
+    const priceEur = amount / 100;
+    const shippingAmount = priceEur >= FREE_SHIPPING_THRESHOLD ? 0 : DELIVERY_FEE * 100;
 
     // Create Stripe Checkout Session (same as regular checkout)
     const session = await stripe.checkout.sessions.create({
@@ -68,10 +70,10 @@ export async function POST(request: NextRequest) {
           shipping_rate_data: {
             type: 'fixed_amount',
             fixed_amount: {
-              amount: 0,
+              amount: shippingAmount,
               currency: 'eur',
             },
-            display_name: 'Free shipping',
+            display_name: shippingAmount === 0 ? 'Free shipping' : 'Standard delivery',
             delivery_estimate: {
               minimum: {
                 unit: 'business_day',

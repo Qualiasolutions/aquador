@@ -7,10 +7,13 @@ import { useCart } from './CartProvider';
 import CartItem from './CartItem';
 import CheckoutButton from './CheckoutButton';
 import { formatPrice } from '@/lib/currency';
+import { FREE_SHIPPING_THRESHOLD, DELIVERY_FEE } from '@/lib/constants';
 
 export default function CartDrawer() {
   const { cart, isCartOpen, closeCart, subtotal, clearCart } = useCart();
   const isEmpty = cart.items.length === 0;
+  const isFreeShipping = subtotal >= FREE_SHIPPING_THRESHOLD;
+  const deliveryFee = isFreeShipping ? 0 : DELIVERY_FEE;
 
   return (
     <AnimatePresence>
@@ -84,14 +87,34 @@ export default function CartDrawer() {
                 {/* Subtotal */}
                 <div className="flex items-center justify-between">
                   <span className="text-gray-400">Subtotal</span>
-                  <span className="text-xl font-playfair text-black">
+                  <span className="text-lg font-playfair text-black">
                     {formatPrice(subtotal)}
+                  </span>
+                </div>
+
+                {/* Delivery fee */}
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-400">Delivery</span>
+                  {isFreeShipping ? (
+                    <span className="text-sm font-semibold text-green-600">FREE</span>
+                  ) : (
+                    <span className="text-sm text-black">{formatPrice(deliveryFee)}</span>
+                  )}
+                </div>
+
+                {/* Total */}
+                <div className="flex items-center justify-between pt-2 border-t border-gray-200">
+                  <span className="text-black font-medium">Total</span>
+                  <span className="text-xl font-playfair text-black">
+                    {formatPrice(subtotal + deliveryFee)}
                   </span>
                 </div>
 
                 {/* Shipping Note */}
                 <p className="text-xs text-gray-500 text-center">
-                  Free shipping on all orders. Delivery within 1-2 business days.
+                  {isFreeShipping
+                    ? 'Free shipping included. Delivery within 1-2 business days.'
+                    : `Add ${formatPrice(FREE_SHIPPING_THRESHOLD - subtotal)} more for free shipping.`}
                 </p>
 
                 {/* Checkout Button */}

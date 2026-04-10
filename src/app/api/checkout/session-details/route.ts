@@ -24,6 +24,7 @@ interface SessionDetailsResponse {
   orderNumber: string;
   items: OrderItem[];
   total: number;
+  shipping: number;
   currency: string;
   shippingAddress?: {
     name?: string;
@@ -166,6 +167,7 @@ export async function GET(request: NextRequest) {
       orderNumber: `#${orderNumber}`,
       items,
       total: session.amount_total || 0,
+      shipping: session.total_details?.amount_shipping || 0,
       currency: session.currency || 'eur',
       shippingAddress,
       createdAt: session.created,
