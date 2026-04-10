@@ -17,7 +17,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     const reducedMotion = useReducedMotion();
     const baseStyles = cn(
       'relative inline-flex items-center justify-center',
-      'font-medium tracking-wide uppercase',
+      'font-medium tracking-[0.12em] uppercase rounded-none',
       'transition-all duration-300',
       'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-white'
     );
@@ -26,8 +26,8 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       primary: cn(
         'bg-gold text-black',
         'hover:bg-gold-light',
-        'shadow-[0_4px_20px_rgba(212,175,55,0.2)]',
-        'hover:shadow-[0_6px_35px_rgba(212,175,55,0.4)]'
+        'shadow-[0_2px_16px_rgba(212,175,55,0.15)]',
+        'hover:shadow-[0_4px_24px_rgba(212,175,55,0.3)]'
       ),
       secondary: cn(
         'bg-white text-black',
@@ -36,7 +36,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       ),
       outline: cn(
         'bg-transparent text-gold',
-        'border border-gold/50',
+        'border border-gold/40',
         'hover:bg-gold hover:text-black hover:border-gold'
       ),
       ghost: cn(
@@ -46,9 +46,9 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     };
 
     const sizes = {
-      sm: 'px-5 py-2.5 text-xs min-h-[40px]',
-      md: 'px-7 py-3 text-sm min-h-[44px]',
-      lg: 'px-9 py-4 text-sm min-h-[52px]',
+      sm: 'px-5 py-2.5 text-[11px] min-h-[40px]',
+      md: 'px-7 py-3 text-[12px] min-h-[44px]',
+      lg: 'px-9 py-4 text-[13px] min-h-[52px]',
       icon: 'p-2 min-h-[44px] min-w-[44px]',
     };
 
