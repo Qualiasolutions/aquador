@@ -34,10 +34,10 @@ export default function CartDrawer() {
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-            className="fixed right-0 top-0 h-full w-full max-w-md bg-white border-l border-gray-300 z-50 flex flex-col"
+            className="fixed right-0 top-0 h-full w-full max-w-md bg-[#FAFAF8] border-l border-gold/10 z-50 flex flex-col"
           >
             {/* Header */}
-            <div className="flex items-center justify-between p-6 border-b border-gray-300">
+            <div className="flex items-center justify-between p-6 border-b border-gold/10">
               <div className="flex items-center gap-3">
                 <ShoppingBag className="w-5 h-5 text-gold" />
                 <h2 className="text-lg font-playfair text-black">Your Cart</h2>
@@ -55,7 +55,7 @@ export default function CartDrawer() {
             <div className="flex-1 overflow-y-auto p-6">
               {isEmpty ? (
                 <div className="flex flex-col items-center justify-center h-full text-center">
-                  <ShoppingBag className="w-16 h-16 text-gray-600 mb-4" />
+                  <ShoppingBag className="w-16 h-16 text-gold/30 mb-4" />
                   <h3 className="text-lg font-playfair text-black mb-2">
                     Your cart is empty
                   </h3>
@@ -65,7 +65,7 @@ export default function CartDrawer() {
                   <Link
                     href="/shop"
                     onClick={closeCart}
-                    className="px-6 py-3 bg-gold text-black font-medium rounded-full hover:bg-gold-light transition-colors"
+                    className="px-6 py-3 bg-gold text-black text-[11px] uppercase tracking-[0.12em] font-medium hover:bg-gold-light transition-colors"
                   >
                     Browse Products
                   </Link>
@@ -83,10 +83,10 @@ export default function CartDrawer() {
 
             {/* Footer */}
             {!isEmpty && (
-              <div className="border-t border-gray-300 p-6 space-y-4">
+              <div className="border-t border-gold/10 p-6 space-y-4">
                 {/* Subtotal */}
                 <div className="flex items-center justify-between">
-                  <span className="text-gray-400">Subtotal</span>
+                  <span className="text-gray-500">Subtotal</span>
                   <span className="text-lg font-playfair text-black">
                     {formatPrice(subtotal)}
                   </span>
@@ -94,7 +94,7 @@ export default function CartDrawer() {
 
                 {/* Delivery fee */}
                 <div className="flex items-center justify-between">
-                  <span className="text-gray-400">Delivery</span>
+                  <span className="text-gray-500">Delivery</span>
                   {isFreeShipping ? (
                     <span className="text-sm font-semibold text-green-600">FREE</span>
                   ) : (
@@ -103,7 +103,7 @@ export default function CartDrawer() {
                 </div>
 
                 {/* Total */}
-                <div className="flex items-center justify-between pt-2 border-t border-gray-200">
+                <div className="flex items-center justify-between pt-2 border-t border-gold/10">
                   <span className="text-black font-medium">Total</span>
                   <span className="text-xl font-playfair text-black">
                     {formatPrice(subtotal + deliveryFee)}
@@ -128,7 +128,7 @@ export default function CartDrawer() {
                   >
                     Clear Cart
                   </button>
-                  <span className="text-gray-600">|</span>
+                  <span className="text-gold/20">|</span>
                   <button
                     onClick={closeCart}
                     className="text-sm text-gold hover:text-gold-light transition-colors"
