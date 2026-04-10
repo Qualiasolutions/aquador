@@ -87,7 +87,7 @@ export default function Hero() {
             className="text-[9px] sm:text-[10px] uppercase tracking-[0.35em] text-gold/50 mb-8 font-light"
             variants={revealVariants.fadeInSequence}
           >
-            Cyprus &nbsp;&bull;&nbsp; Since 2024
+            Luxury Fragrances
           </motion.p>
 
           {/* Brand name — cinematic scale */}
