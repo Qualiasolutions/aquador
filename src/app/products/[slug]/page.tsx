@@ -179,12 +179,12 @@ export default async function ProductPage({ params }: ProductPageProps) {
       <main className="min-h-screen bg-gold-ambient pt-24 md:pt-28 lg:pt-32 pb-20">
         <div className="content-container">
           {/* Breadcrumb */}
-          <nav className="mb-6">
+          <nav className="mb-8">
             <Link
               href="/shop"
-              className="inline-flex items-center gap-2 text-sm text-gold/70 tracking-normal hover:text-gold-500 transition-colors duration-200"
+              className="inline-flex items-center gap-2 text-[11px] text-gold/50 uppercase tracking-[0.12em] hover:text-gold transition-colors duration-300"
             >
-              <ArrowLeft className="w-4 h-4" />
+              <ArrowLeft className="w-3.5 h-3.5" />
               Back to Dubai Shop
             </Link>
           </nav>

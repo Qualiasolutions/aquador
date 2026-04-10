@@ -33,10 +33,10 @@ export default function CartItem({ item }: CartItemProps) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, x: -100 }}
-      className="flex gap-4 py-4 border-b border-gray-300"
+      className="flex gap-4 py-5 border-b border-gold/10"
     >
       {/* Product Image */}
-      <div className="relative w-20 h-20 bg-dark-lighter rounded-lg overflow-hidden flex-shrink-0">
+      <div className="relative w-20 h-20 bg-[#f0ede8] overflow-hidden flex-shrink-0">
         <Image
           src={item.image}
           alt={item.name}
@@ -54,7 +54,7 @@ export default function CartItem({ item }: CartItemProps) {
         <p className="text-xs text-gray-400 mt-0.5">
           {getProductTypeLabel(item.productType)} - {item.size}
         </p>
-        <p className="text-sm text-gold font-semibold mt-1">
+        <p className="text-sm text-gold font-playfair mt-1.5">
           {formatPrice(item.price)}
         </p>
 
@@ -62,7 +62,7 @@ export default function CartItem({ item }: CartItemProps) {
         <div className="flex items-center gap-2 mt-2">
           <button
             onClick={handleDecrease}
-            className="w-7 h-7 rounded-full bg-dark-lighter border border-gold/20 flex items-center justify-center text-gray-400 hover:text-gold hover:border-gold transition-colors"
+            className="w-7 h-7 bg-white border border-gold/15 flex items-center justify-center text-gray-400 hover:text-gold hover:border-gold transition-colors"
             aria-label="Decrease quantity"
           >
             <Minus className="w-3 h-3" />
@@ -70,7 +70,7 @@ export default function CartItem({ item }: CartItemProps) {
           <span className="text-sm text-black w-8 text-center">{item.quantity}</span>
           <button
             onClick={handleIncrease}
-            className="w-7 h-7 rounded-full bg-dark-lighter border border-gold/20 flex items-center justify-center text-gray-400 hover:text-gold hover:border-gold transition-colors"
+            className="w-7 h-7 bg-white border border-gold/15 flex items-center justify-center text-gray-400 hover:text-gold hover:border-gold transition-colors"
             aria-label="Increase quantity"
           >
             <Plus className="w-3 h-3" />

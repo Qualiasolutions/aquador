@@ -16,7 +16,7 @@ export default function TermsPage() {
             transition={{ delay: 0.2 }}
             className="max-w-4xl mx-auto"
           >
-            <div className="glass-card p-8 space-y-8">
+            <div className="bg-white border border-gold/10 p-8 md:p-12 space-y-8">
           <p className="text-gray-400">
             Welcome to Aquad&apos;or. By accessing or using our website aquadorcy.com, purchasing our products, or using our services, you agree to be bound by these Terms of Service. Please read these Terms carefully.
           </p>

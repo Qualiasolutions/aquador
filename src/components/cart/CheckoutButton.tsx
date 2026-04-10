@@ -88,7 +88,7 @@ export default function CheckoutButton() {
         disabled={isLoading || isProcessing || cart.items.length === 0}
         whileHover={{ scale: isLoading ? 1 : 1.02 }}
         whileTap={{ scale: isLoading ? 1 : 0.98 }}
-        className="w-full py-4 bg-gold text-black font-semibold rounded-full flex items-center justify-center gap-2 hover:bg-gold-light transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full py-4 bg-gold text-black text-[12px] uppercase tracking-[0.12em] font-medium flex items-center justify-center gap-2 hover:bg-gold-light transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_2px_16px_rgba(212,175,55,0.15)] hover:shadow-[0_4px_24px_rgba(212,175,55,0.3)]"
       >
         {isLoading ? (
           <>

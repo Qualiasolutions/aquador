@@ -119,9 +119,11 @@ export function SectionHeader({
       </h2>
       {align === 'center' && (
         <div className="flex items-center justify-center gap-3 mb-6">
-          <div className="w-8 h-px bg-gold/30" />
+          <div className="w-10 h-px bg-gold/20" />
+          <div className="w-1 h-1 rounded-full bg-gold/40" />
           <div className="w-16 h-px bg-gold" />
-          <div className="w-8 h-px bg-gold/30" />
+          <div className="w-1 h-1 rounded-full bg-gold/40" />
+          <div className="w-10 h-px bg-gold/20" />
         </div>
       )}
       {align === 'left' && (
@@ -157,14 +159,14 @@ export function PageHero({
   eyebrow,
 }: PageHeroProps) {
   return (
-    <section className={cn('relative pt-24 md:pt-32 lg:pt-36 pb-14 md:pb-20 overflow-hidden', className)}>
+    <section className={cn('relative pt-28 md:pt-36 lg:pt-40 pb-16 md:pb-24 overflow-hidden', className)}>
       {backgroundImage && (
         <>
           <div
-            className="absolute inset-0 bg-cover bg-center opacity-25 scale-105"
-            style={{ backgroundImage: `url('${backgroundImage}')` }}
+            className="absolute inset-0 bg-cover bg-center opacity-20 scale-110"
+            style={{ backgroundImage: `url('${backgroundImage}')`, filter: 'saturate(0.6)' }}
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/80" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/70" />
         </>
       )}
       {!backgroundImage && (
@@ -201,9 +203,9 @@ export function PageHero({
           )}
           <h1
             className={cn(
-              'font-playfair mb-7 leading-tight',
+              'font-playfair mb-8 leading-[0.95]',
               'text-4xl sm:text-5xl md:text-6xl lg:text-7xl',
-              titleVariant === 'gold' ? 'text-gradient-gold' : 'text-black'
+              titleVariant === 'gold' ? 'text-gradient-gold' : (backgroundImage ? 'text-white' : 'text-black')
             )}
           >
             {title}
@@ -211,21 +213,23 @@ export function PageHero({
 
           {/* Refined separator */}
           <motion.div
-            className="flex items-center justify-center gap-3 mb-7"
+            className="flex items-center justify-center gap-3 mb-8"
             initial={{ opacity: 0, scaleX: 0.5 }}
             animate={{ opacity: 1, scaleX: 1 }}
             transition={{ delay: 0.3, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           >
-            <div className={cn('w-8 h-px', backgroundImage ? 'bg-gold/30' : 'bg-gold/20')} />
-            <div className={cn('w-16 h-px', backgroundImage ? 'bg-gold/80' : 'bg-gold')} />
-            <div className={cn('w-8 h-px', backgroundImage ? 'bg-gold/30' : 'bg-gold/20')} />
+            <div className={cn('w-10 h-px', backgroundImage ? 'bg-gold/30' : 'bg-gold/20')} />
+            <div className={cn('w-1 h-1 rounded-full', backgroundImage ? 'bg-gold/50' : 'bg-gold/40')} />
+            <div className={cn('w-20 h-px', backgroundImage ? 'bg-gold/60' : 'bg-gold')} />
+            <div className={cn('w-1 h-1 rounded-full', backgroundImage ? 'bg-gold/50' : 'bg-gold/40')} />
+            <div className={cn('w-10 h-px', backgroundImage ? 'bg-gold/30' : 'bg-gold/20')} />
           </motion.div>
 
           {subtitle && (
             <motion.p
               className={cn(
                 'text-base md:text-lg lg:text-xl max-w-2xl mx-auto leading-relaxed',
-                backgroundImage ? 'text-white/70' : 'text-gray-500'
+                backgroundImage ? 'text-white/60' : 'text-gray-500'
               )}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -238,7 +242,7 @@ export function PageHero({
       </div>
 
       {/* Bottom decorative gold line */}
-      <div className="absolute bottom-0 left-[10%] right-[10%] h-px bg-gradient-to-r from-transparent via-gold/20 to-transparent" />
+      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold/15 to-transparent" />
     </section>
   );
 }

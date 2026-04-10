@@ -15,7 +15,7 @@ export default function CheckoutCancelPage() {
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{ type: 'spring', damping: 15, stiffness: 200 }}
-          className="w-24 h-24 bg-gray-500/20 rounded-full flex items-center justify-center mx-auto mb-8"
+          className="w-24 h-24 bg-gray-500/20  flex items-center justify-center mx-auto mb-8"
         >
           <XCircle className="w-12 h-12 text-gray-400" />
         </motion.div>
@@ -43,10 +43,10 @@ export default function CheckoutCancelPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
-            className="bg-dark-light rounded-2xl p-8 border border-gold/20 mb-8"
+            className="bg-white  p-8 border border-gold/20 mb-8"
           >
             <div className="flex items-center justify-center gap-4">
-              <div className="w-12 h-12 bg-gold/20 rounded-full flex items-center justify-center">
+              <div className="w-12 h-12 bg-gold/20  flex items-center justify-center">
                 <ShoppingBag className="w-6 h-6 text-gold" />
               </div>
               <div className="text-left">
@@ -68,7 +68,7 @@ export default function CheckoutCancelPage() {
           {itemCount > 0 && (
             <button
               onClick={openCart}
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-gold text-black font-semibold rounded-full hover:bg-gold-light transition-colors"
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-gold text-black text-[12px] uppercase tracking-[0.12em] font-medium hover:bg-gold-light transition-all duration-300"
             >
               <ShoppingBag className="w-4 h-4" />
               Return to Cart
@@ -76,7 +76,7 @@ export default function CheckoutCancelPage() {
           )}
           <Link
             href="/shop"
-            className="inline-flex items-center justify-center gap-2 px-8 py-4 border border-gold/30 text-gold rounded-full hover:bg-gold/10 transition-colors"
+            className="inline-flex items-center justify-center gap-2 px-8 py-4 border border-gold/40 text-gold text-[12px] uppercase tracking-[0.12em] font-medium hover:bg-gold hover:text-black transition-all duration-300"
           >
             <ArrowLeft className="w-4 h-4" />
             Continue Shopping

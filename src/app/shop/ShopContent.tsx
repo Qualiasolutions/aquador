@@ -184,18 +184,22 @@ export default function ShopContent({ products, categories }: ShopContentProps) 
 
         {filteredProducts.length === 0 && (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="text-center py-20"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center py-24"
           >
-            <p className="text-gray-500 text-sm mb-4">
-              No products found.
-            </p>
+            <div className="w-16 h-16 mx-auto mb-6 border border-gold/20 bg-gold/5 flex items-center justify-center">
+              <svg className="w-6 h-6 text-gold/40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </div>
+            <p className="font-playfair text-lg text-gray-400 mb-2">No fragrances found</p>
+            <p className="text-gray-400 text-sm mb-6">Try adjusting your search or filters</p>
             <button
               onClick={clearFilters}
-              className="text-gold text-sm hover:text-gold/80 transition-colors"
+              className="text-[11px] uppercase tracking-[0.12em] text-gold border border-gold/30 px-6 py-3 hover:bg-gold hover:text-black transition-all duration-300"
             >
-              Clear all filters
+              Clear All Filters
             </button>
           </motion.div>
         )}

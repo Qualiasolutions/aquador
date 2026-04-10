@@ -16,7 +16,7 @@ export default function PrivacyPage() {
             transition={{ delay: 0.2 }}
             className="max-w-4xl mx-auto"
           >
-            <div className="glass-card p-8 space-y-8">
+            <div className="bg-white border border-gold/10 p-8 md:p-12 space-y-8">
           <p className="text-gray-400">
             Aquad&apos;or is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website, use our services, or purchase our products. By using our website, you agree to the collection and use of information in accordance with this policy.
           </p>

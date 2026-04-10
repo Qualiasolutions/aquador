@@ -253,23 +253,23 @@ body {
 
   /* Section Header - consistent styling */
   .section-header {
-    @apply text-center mb-12 md:mb-16;
+    @apply text-center mb-14 md:mb-20;
   }
 
   .section-title {
-    @apply text-3xl md:text-4xl lg:text-5xl font-playfair text-black mb-4 tracking-wide;
+    @apply text-3xl md:text-4xl lg:text-5xl font-playfair text-black mb-5 tracking-wide leading-tight;
   }
 
   .section-title-gold {
-    @apply text-3xl md:text-4xl lg:text-5xl font-playfair text-gradient-gold mb-4 tracking-wide;
+    @apply text-3xl md:text-4xl lg:text-5xl font-playfair text-gradient-gold mb-5 tracking-wide leading-tight;
   }
 
   .section-divider {
-    @apply w-16 h-px bg-gold mx-auto mb-5;
+    @apply w-16 h-px bg-gold mx-auto mb-6;
   }
 
   .section-subtitle {
-    @apply text-gray-500 text-base md:text-lg max-w-xl mx-auto tracking-wide;
+    @apply text-gray-500 text-base md:text-lg max-w-2xl mx-auto leading-relaxed;
   }
 
   /* Section Gap Utility */
@@ -332,7 +332,7 @@ body {
 
   /* Glass Card */
   .glass-card {
-    @apply bg-white/80 backdrop-blur-xl border border-gold/10 rounded-xl;
+    @apply bg-white/80 backdrop-blur-xl border border-gold/10;
   }
 
   .glass-card-hover {
@@ -344,7 +344,7 @@ body {
      ========================================================================== */
 
   .input-base {
-    @apply w-full bg-white border border-gold/20 rounded-lg px-4 py-3 text-black
+    @apply w-full bg-white border border-gold/15 px-4 py-3 text-black text-[15px]
            placeholder-gray-400 transition-all duration-300
            focus:border-gold focus:outline-none focus:ring-1 focus:ring-gold/20;
   }
@@ -531,11 +531,11 @@ body {
 
   /* Premium card styling */
   .premium-card {
-    @apply bg-white overflow-hidden transition-all duration-500;
+    @apply bg-white overflow-hidden transition-all duration-500 border border-black/[0.06];
   }
 
   .premium-card:hover {
-    @apply -translate-y-1;
+    @apply -translate-y-0.5 border-gold/25;
   }
 
   /* Gold underline animation */

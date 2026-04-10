@@ -25,9 +25,11 @@ export default function ShippingPage() {
                 { icon: RotateCcw, label: '14-Day Returns' },
                 { icon: Package, label: 'Secure Packaging' },
               ].map((item, i) => (
-                <div key={i} className="glass-card p-4 text-center">
-                  <item.icon className="w-8 h-8 text-gold mx-auto mb-2" />
-                  <span className="text-sm text-gray-400">{item.label}</span>
+                <div key={i} className="glass-card p-5 md:p-6 text-center group hover:border-gold/25 transition-colors duration-300">
+                  <div className="w-12 h-12 mx-auto mb-3 border border-gold/20 bg-gold/5 flex items-center justify-center group-hover:border-gold/40 transition-colors duration-300">
+                    <item.icon className="w-5 h-5 text-gold" />
+                  </div>
+                  <span className="text-xs text-gray-500 uppercase tracking-[0.1em]">{item.label}</span>
                 </div>
               ))}
             </motion.div>

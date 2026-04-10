@@ -57,13 +57,12 @@ export function AnimatedFilterBar({
         <motion.button
           onClick={() => handleFilterChange(null)}
           className={`
-            px-4 py-2.5 min-h-[44px] rounded-lg
-            text-[10.5px] uppercase tracking-[0.15em] font-medium
+            px-4 py-2.5 min-h-[44px]             text-[10.5px] uppercase tracking-[0.15em] font-medium
             transition-colors
             ${
               activeFilter === null
                 ? 'text-dark'
-                : 'bg-white border border-gold-500/20 text-gray-700 hover:border-gold-500/40 hover:text-black'
+                : 'bg-white border border-gold/20 text-gray-700 hover:border-gold/40 hover:text-black'
             }
           `}
           animate={activeFilter === null ? 'active' : 'inactive'}
@@ -82,13 +81,12 @@ export function AnimatedFilterBar({
               key={filter.id}
               onClick={() => handleFilterChange(filter.id)}
               className={`
-                px-4 py-2.5 min-h-[44px] rounded-lg
-                text-[10.5px] uppercase tracking-[0.15em] font-medium
+                px-4 py-2.5 min-h-[44px]                 text-[10.5px] uppercase tracking-[0.15em] font-medium
                 transition-colors
                 ${
                   isActive
                     ? 'text-dark'
-                    : 'bg-white border border-gold-500/20 text-gray-700 hover:border-gold-500/40 hover:text-black'
+                    : 'bg-white border border-gold/20 text-gray-700 hover:border-gold/40 hover:text-black'
                 }
               `}
               animate={isActive ? 'active' : 'inactive'}
