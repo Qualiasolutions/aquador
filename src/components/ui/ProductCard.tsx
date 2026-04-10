@@ -61,7 +61,7 @@ export function ProductCard({ product, priority = false, variant = 'default' }: 
     >
       <Link
         href={`/products/${product.id}`}
-        className={`group block bg-white border border-gray-800/20 hover:border-gray-800/40 rounded-2xl ${padding} shadow-lg shadow-black/10 hover:shadow-xl hover:shadow-black/15 transition-all duration-300 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white`}
+        className={`group block bg-white border border-black/[0.06] hover:border-gold/30 ${padding} transition-all duration-300 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2`}
         aria-label={`View ${product.name}`}
         onMouseEnter={() => {
           setIsHovered(true);
@@ -87,7 +87,7 @@ export function ProductCard({ product, priority = false, variant = 'default' }: 
         }}
       >
       {/* Product Image */}
-      <div className="relative mb-3 md:mb-4 overflow-hidden rounded-xl aspect-[4/5]">
+      <div className="relative mb-3 md:mb-4 overflow-hidden aspect-[4/5]">
         <motion.div
           variants={reducedMotion ? {} : imageZoomVariants}
           initial="rest"
@@ -123,15 +123,15 @@ export function ProductCard({ product, priority = false, variant = 'default' }: 
 
         {/* Sale Badge */}
         {isOnSale && (
-          <div className="absolute top-3 right-3 bg-red-500/90 backdrop-blur-sm text-white text-[9px] md:text-[10px] uppercase tracking-wider px-2.5 py-1 font-medium rounded-full">
+          <div className="absolute top-3 right-3 bg-black text-gold text-[9px] uppercase tracking-[0.15em] px-2.5 py-1 font-medium">
             Sale
           </div>
         )}
 
         {/* Out of Stock Overlay */}
         {!inStock && (
-          <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px] flex items-center justify-center rounded-xl">
-            <div className="bg-white/90 backdrop-blur-sm border border-gold-500/20 text-gold-500 text-xs uppercase tracking-wider px-4 py-2 font-medium rounded-full">
+          <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px] flex items-center justify-center">
+            <div className="bg-white/90 backdrop-blur-sm border border-gold-500/20 text-gold-500 text-xs uppercase tracking-wider px-4 py-2 font-medium">
               Coming Soon
             </div>
           </div>
@@ -141,18 +141,18 @@ export function ProductCard({ product, priority = false, variant = 'default' }: 
       {/* Product Info */}
       <div className="space-y-2 min-h-[7rem]">
         {/* Brand */}
-        <p className={`${brandSize} tracking-[0.15em] uppercase text-gold-500 font-medium ${!product.brand ? 'invisible' : ''}`}>
+        <p className={`${brandSize} tracking-[0.15em] uppercase text-gold/60 font-medium ${!product.brand ? 'invisible' : ''}`}>
           {product.brand || '\u00A0'}
         </p>
 
         {/* Product Name */}
-        <h3 className={`${nameSize} font-playfair font-medium tracking-tight text-black line-clamp-2 group-hover:text-gold-400 transition-colors`}>
+        <h3 className={`${nameSize} font-playfair font-medium tracking-tight text-black line-clamp-2 group-hover:text-gold transition-colors duration-300`}>
           {product.name}
         </h3>
 
         {/* Price */}
         <div className="flex items-baseline gap-2 pt-1">
-          <span className={`${priceSize} font-playfair font-medium text-gold-600`}>
+          <span className={`${priceSize} font-playfair font-medium text-gold`}>
             {formatPrice(displayPrice)}
           </span>
           {isOnSale && (
@@ -168,6 +168,11 @@ export function ProductCard({ product, priority = false, variant = 'default' }: 
             {product.size}
           </p>
         )}
+      </div>
+
+      {/* Gold underline reveal on hover */}
+      <div className="mt-3 h-px bg-gold/20 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gold -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]" />
       </div>
       </Link>
     </motion.div>
