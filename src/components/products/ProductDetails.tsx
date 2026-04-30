@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { motion } from 'framer-motion';
 import { formatPrice } from '@/lib/currency';
 import ProductVariantSelector, {
   getDefaultVariant,
@@ -38,98 +39,168 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
     : (product.salePrice && product.salePrice < product.price ? product.salePrice : product.price);
 
   return (
-    <div className="flex flex-col gap-6">
-      {/* Brand */}
+    <motion.div 
+      className="flex flex-col gap-7"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+    >
+      {/* Brand with decorative line */}
       {product.brand && (
-        <p className="text-[10px] text-gold/60 uppercase tracking-[0.25em] font-light">
-          {product.brand}
-        </p>
+        <motion.div 
+          className="flex items-center gap-3"
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.1, duration: 0.5 }}
+        >
+          <span className="text-[9px] text-gold/50 uppercase tracking-[0.3em] font-light">
+            {product.brand}
+          </span>
+          <span className="flex-1 h-px bg-gradient-to-r from-gold/20 to-transparent" />
+        </motion.div>
       )}
 
-      {/* Name */}
-      <h1 className="text-[clamp(1.75rem,1.25rem+2.5vw,3rem)] font-playfair font-normal text-black tracking-wide leading-[1.1]">
+      {/* Name - Enhanced */}
+      <motion.h1 
+        className="text-[clamp(2rem,1.5rem+2.5vw,3.25rem)] font-playfair font-normal text-black tracking-wide leading-[1.05]"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.15, duration: 0.6 }}
+      >
         {product.name}
-      </h1>
+      </motion.h1>
 
-      {/* Price */}
-      <div className="flex items-baseline gap-3 transition-all duration-300">
-        <span className="text-[clamp(1.75rem,1.5rem+1.25vw,2.5rem)] font-playfair font-normal text-gold">
+      {/* Price - Enhanced */}
+      <motion.div 
+        className="flex items-baseline gap-4 transition-all duration-300"
+        initial={{ opacity: 0, y: 15 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2, duration: 0.5 }}
+      >
+        <span className="text-[clamp(1.875rem,1.5rem+1.5vw,2.75rem)] font-playfair font-normal text-gold">
           {formatPrice(displayPrice)}
         </span>
         {isAquador ? (
-          <span className="text-sm text-gray-400">{variant.label} · {variant.size}</span>
+          <span className="text-sm text-gray-400 tracking-wide">{variant.label} · {variant.size}</span>
         ) : (
-          <span className="text-sm text-gray-400">
+          <span className="text-sm text-gray-400 tracking-wide">
             {productTypeLabel(product.productType)} · {product.size}
             {product.salePrice && product.salePrice < product.price && (
-              <span className="ml-2 line-through text-gray-300">{formatPrice(product.price)}</span>
+              <span className="ml-3 line-through text-gray-300">{formatPrice(product.price)}</span>
             )}
           </span>
         )}
-      </div>
+      </motion.div>
 
       {/* Variant selector — Aquador products only */}
-      {isAquador && <ProductVariantSelector selected={variant} onChange={setVariant} />}
+      {isAquador && (
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.25, duration: 0.5 }}
+        >
+          <ProductVariantSelector selected={variant} onChange={setVariant} />
+        </motion.div>
+      )}
 
-      {/* Stock + Add to Cart */}
-      <div className="flex items-center gap-3 text-sm">
-        <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs ${
+      {/* Stock indicator - Enhanced */}
+      <motion.div 
+        className="flex items-center gap-3"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.3, duration: 0.4 }}
+      >
+        <span className={`inline-flex items-center gap-2 px-4 py-1.5 text-[10px] uppercase tracking-[0.15em] ${
           product.inStock
-            ? 'bg-emerald-50 text-emerald-600'
-            : 'bg-red-50 text-red-500'
+            ? 'bg-emerald-50/80 text-emerald-600 border border-emerald-100'
+            : 'bg-amber-50/80 text-amber-600 border border-amber-100'
         }`}>
-          <span className={`w-1.5 h-1.5 rounded-full ${product.inStock ? 'bg-emerald-500' : 'bg-red-400'}`} />
+          <span className={`w-1.5 h-1.5 rounded-full ${product.inStock ? 'bg-emerald-500' : 'bg-amber-400'}`} />
           {product.inStock ? 'In Stock' : 'Coming Soon'}
         </span>
-      </div>
+      </motion.div>
 
-      <AddToCartButton product={displayProduct} />
+      {/* Add to Cart - Animated */}
+      <motion.div
+        initial={{ opacity: 0, y: 15 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.35, duration: 0.5 }}
+      >
+        <AddToCartButton product={displayProduct} />
+      </motion.div>
 
-      {/* Compact info row */}
-      <div className="flex flex-wrap gap-4 pt-3 border-t border-gold/10">
-        <div className="flex items-center gap-2 text-xs text-gray-500">
-          <svg className="w-3.5 h-3.5 text-gold/50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
-          </svg>
+      {/* Premium info row - Enhanced */}
+      <motion.div 
+        className="flex flex-wrap gap-5 pt-5 border-t border-gold/10"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.4, duration: 0.5 }}
+      >
+        <div className="flex items-center gap-2.5 text-[11px] text-gray-500 tracking-wide">
+          <div className="w-8 h-8 rounded-full bg-gold/5 flex items-center justify-center">
+            <svg className="w-3.5 h-3.5 text-gold/60" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+            </svg>
+          </div>
           Free shipping over €35
         </div>
-        <div className="flex items-center gap-2 text-xs text-gray-500">
-          <svg className="w-3.5 h-3.5 text-gold/50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-          </svg>
+        <div className="flex items-center gap-2.5 text-[11px] text-gray-500 tracking-wide">
+          <div className="w-8 h-8 rounded-full bg-gold/5 flex items-center justify-center">
+            <svg className="w-3.5 h-3.5 text-gold/60" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+            </svg>
+          </div>
           Secure checkout
         </div>
-        <div className="flex items-center gap-2 text-xs text-gray-500">
-          <svg className="w-3.5 h-3.5 text-gold/50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
+        <div className="flex items-center gap-2.5 text-[11px] text-gray-500 tracking-wide">
+          <div className="w-8 h-8 rounded-full bg-gold/5 flex items-center justify-center">
+            <svg className="w-3.5 h-3.5 text-gold/60" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
           1-2 day delivery
         </div>
-      </div>
+      </motion.div>
 
-      {/* Description — below the fold */}
-      <div className="pt-6 border-t border-gold/10">
-        <h3 className="text-[10px] text-gold/50 uppercase tracking-[0.2em] mb-4">
-          About this fragrance
-        </h3>
+      {/* Description — below the fold - Enhanced */}
+      <motion.div 
+        className="pt-8 border-t border-gold/10"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.45, duration: 0.5 }}
+      >
+        <div className="flex items-center gap-3 mb-5">
+          <h3 className="text-[9px] text-gold/50 uppercase tracking-[0.25em]">
+            About this fragrance
+          </h3>
+          <span className="flex-1 h-px bg-gradient-to-r from-gold/15 to-transparent" />
+        </div>
         <RichDescription description={product.description} />
-      </div>
+      </motion.div>
 
-      {/* Tags */}
+      {/* Tags - Enhanced */}
       {product.tags && product.tags.length > 0 && (
-        <div className="pt-4 border-t border-gold/10">
-          <div className="flex flex-wrap gap-2">
-            {product.tags.map((tag) => (
-              <span
+        <motion.div 
+          className="pt-6 border-t border-gold/10"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5, duration: 0.5 }}
+        >
+          <div className="flex flex-wrap gap-2.5">
+            {product.tags.map((tag, index) => (
+              <motion.span
                 key={tag}
-                className="px-3 py-1.5 text-[10px] uppercase tracking-[0.1em] text-gold/70 bg-gold/5 border border-gold/15"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.55 + index * 0.05, duration: 0.3 }}
+                className="px-4 py-2 text-[9px] uppercase tracking-[0.15em] text-gold/60 bg-gold/[0.03] border border-gold/10 hover:border-gold/25 hover:text-gold/80 transition-all duration-300"
               >
                 {tag}
-              </span>
+              </motion.span>
             ))}
           </div>
-        </div>
+        </motion.div>
       )}
-    </div>
+    </motion.div>
   );
 }

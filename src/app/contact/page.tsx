@@ -90,7 +90,7 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAFAF8]">
+    <div className="min-h-screen bg-gold-ambient-subtle">
       <PageHero
         title="Contact Us"
         subtitle="We'd love to hear from you. Get in touch with our team for consultations, orders, or any inquiries."
@@ -108,9 +108,18 @@ export default function ContactPage() {
               viewport={{ once: true, margin: '-50px' }}
               variants={fadeInLeft}
             >
-              <div className="bg-white border border-gold/10 p-8 md:p-10 lg:p-12">
-                <p className="eyebrow text-gold/60 mb-3">Send a Message</p>
-                <h2 className="font-playfair text-2xl md:text-3xl text-black mb-8">How Can We Help?</h2>
+              <div className="relative bg-white border border-gold/10 p-8 md:p-10 lg:p-12 overflow-hidden">
+                {/* Decorative corner accent */}
+                <div className="absolute top-0 right-0 w-32 h-32 pointer-events-none">
+                  <div className="absolute top-6 right-0 w-16 h-px bg-gradient-to-l from-gold/30 to-transparent" />
+                  <div className="absolute top-0 right-6 w-px h-16 bg-gradient-to-b from-gold/30 to-transparent" />
+                </div>
+                
+                <div className="flex items-center gap-3 mb-3">
+                  <p className="eyebrow text-gold/50">Send a Message</p>
+                  <span className="flex-1 h-px bg-gradient-to-r from-gold/15 to-transparent" />
+                </div>
+                <h2 className="font-playfair text-2xl md:text-3xl text-black mb-10">How Can We Help?</h2>
 
                 {isSubmitted ? (
                   <motion.div
@@ -226,17 +235,20 @@ export default function ContactPage() {
 
             {/* Contact Info — takes 5 cols */}
             <motion.div
-              className="lg:col-span-5 space-y-10"
+              className="lg:col-span-5 space-y-12"
               initial="initial"
               whileInView="animate"
               viewport={{ once: true, margin: '-50px' }}
               variants={fadeInRight}
             >
               <div>
-                <p className="eyebrow text-gold/60 mb-3">Details</p>
-                <h2 className="font-playfair text-2xl md:text-3xl text-black mb-7">Get in Touch</h2>
+                <div className="flex items-center gap-3 mb-3">
+                  <p className="eyebrow text-gold/50">Details</p>
+                  <span className="flex-1 h-px bg-gradient-to-r from-gold/15 to-transparent" />
+                </div>
+                <h2 className="font-playfair text-2xl md:text-3xl text-black mb-8">Get in Touch</h2>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4">
                   {contactInfo.map((item, index) => (
                     <motion.div
                       key={item.title}
@@ -245,15 +257,18 @@ export default function ContactPage() {
                       viewport={{ once: true, margin: '-30px' }}
                       variants={fadeInUp}
                       transition={{ delay: index * 0.08 }}
-                      className="flex items-start gap-4 p-5 bg-white border border-gold/10 hover:border-gold/25 transition-colors duration-300 group"
+                      className="group relative flex items-start gap-5 p-5 bg-white border border-gold/8 hover:border-gold/20 transition-all duration-500 overflow-hidden"
                     >
-                      <div className="w-9 h-9 flex-shrink-0 bg-gold/8 border border-gold/20 flex items-center justify-center group-hover:border-gold/40 transition-colors duration-300">
+                      {/* Subtle hover glow */}
+                      <div className="absolute inset-0 bg-gradient-to-r from-gold/[0.02] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                      
+                      <div className="relative w-10 h-10 flex-shrink-0 bg-gold/5 border border-gold/15 flex items-center justify-center group-hover:border-gold/30 transition-all duration-500">
                         {item.icon}
                       </div>
-                      <div>
-                        <h3 className="text-black font-medium text-sm mb-1">{item.title}</h3>
+                      <div className="relative">
+                        <h3 className="text-black font-medium text-sm mb-1.5 tracking-wide">{item.title}</h3>
                         {item.details.map((detail, i) => (
-                          <p key={i} className="text-gray-500 text-xs leading-relaxed">
+                          <p key={i} className="text-gray-500 text-[13px] leading-relaxed">
                             {detail}
                           </p>
                         ))}

@@ -194,68 +194,112 @@ export default function Navbar() {
         />
       </motion.header>
 
-      {/* Mobile full-screen overlay */}
+      {/* Mobile full-screen overlay - Premium Edition */}
       <AnimatePresence>
         {isMobileOpen && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
             className="fixed inset-0 z-40 xl:hidden"
           >
-            <div className="absolute inset-0 bg-[#FAFAF8]/[0.99]">
-              <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_40%_at_50%_0%,rgba(212,175,55,0.025)_0%,transparent_60%)]" />
+            {/* Sophisticated layered background */}
+            <div className="absolute inset-0 bg-[#FAFAF8]">
+              {/* Gold ambient glow - top */}
+              <motion.div 
+                className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px]"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                style={{
+                  background: 'radial-gradient(ellipse at center, rgba(212,175,55,0.06) 0%, transparent 70%)',
+                  filter: 'blur(60px)',
+                }}
+              />
+              {/* Subtle grid pattern overlay */}
+              <div 
+                className="absolute inset-0 opacity-[0.02]"
+                style={{
+                  backgroundImage: `linear-gradient(rgba(212,175,55,0.5) 1px, transparent 1px),
+                                    linear-gradient(90deg, rgba(212,175,55,0.5) 1px, transparent 1px)`,
+                  backgroundSize: '60px 60px',
+                }}
+              />
             </div>
 
-            <div className="relative h-full flex flex-col pt-[80px] pb-8 px-8 sm:px-12 overflow-y-auto">
+            <div className="relative h-full flex flex-col pt-[90px] pb-10 px-8 sm:px-12 overflow-y-auto">
+              {/* Search with refined styling */}
               <motion.div
-                initial={{ opacity: 0, y: 8 }}
+                initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.06, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                className="mb-10"
+                transition={{ delay: 0.08, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                className="mb-12"
               >
                 <SearchBar variant="shop" placeholder="Search fragrances..." />
               </motion.div>
 
+              {/* Editorial Navigation */}
               <nav className="flex-1">
                 <ul className="space-y-0">
                   {navLinks.map((link, i) => (
                     <motion.li
                       key={link.label}
-                      initial={{ opacity: 0, x: -16 }}
+                      initial={{ opacity: 0, x: -24 }}
                       animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.1 + i * 0.04, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                      transition={{ delay: 0.12 + i * 0.05, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                     >
                       <Link
                         href={link.href}
                         onClick={() => setIsMobileOpen(false)}
-                        className={`flex items-center gap-4 py-3.5 border-b border-black/[0.04] transition-colors duration-300 ${
-                          checkActive(link.href) ? 'text-gold' : 'text-black/60 active:text-gold'
+                        className={`group relative flex items-center gap-5 py-4 transition-all duration-500 ${
+                          checkActive(link.href) ? 'text-gold' : 'text-black/50 active:text-gold'
                         }`}
                       >
-                        {checkActive(link.href) ? (
-                          <span className="w-6 h-px bg-gold flex-shrink-0" />
-                        ) : (
-                          <span className="w-6 h-px flex-shrink-0" />
-                        )}
-                        <span className="font-playfair text-[21px] sm:text-2xl tracking-wide">
+                        {/* Animated indicator line */}
+                        <motion.span 
+                          className={`h-[1.5px] flex-shrink-0 transition-all duration-500 ${
+                            checkActive(link.href) 
+                              ? 'w-8 bg-gradient-to-r from-gold to-gold/50' 
+                              : 'w-4 bg-black/10 group-active:w-8 group-active:bg-gold/50'
+                          }`}
+                        />
+                        {/* Link text with hover effect */}
+                        <span className="font-playfair text-[22px] sm:text-[26px] tracking-[0.04em] transition-all duration-300 group-active:translate-x-1">
                           {link.label}
                         </span>
+                        {/* Subtle number index */}
+                        <span className="ml-auto text-[9px] text-black/15 tracking-widest font-light">
+                          0{i + 1}
+                        </span>
                       </Link>
+                      {/* Divider line */}
+                      {i < navLinks.length - 1 && (
+                        <motion.div 
+                          className="h-px bg-gradient-to-r from-black/[0.04] via-black/[0.06] to-transparent"
+                          initial={{ scaleX: 0 }}
+                          animate={{ scaleX: 1 }}
+                          transition={{ delay: 0.2 + i * 0.05, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                          style={{ transformOrigin: 'left' }}
+                        />
+                      )}
                     </motion.li>
                   ))}
                 </ul>
               </nav>
 
-              <motion.p
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.55, duration: 0.4 }}
-                className="mt-auto pt-7 text-[8px] uppercase tracking-[0.35em] text-gray-400 font-light"
+              {/* Footer tagline with refined animation */}
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6, duration: 0.5 }}
+                className="mt-auto pt-10 flex items-center gap-3"
               >
-                Where Luxury Meets Distinction
-              </motion.p>
+                <span className="w-8 h-px bg-gradient-to-r from-gold/40 to-transparent" />
+                <p className="text-[8px] uppercase tracking-[0.4em] text-black/30 font-light">
+                  Where Luxury Meets Distinction
+                </p>
+              </motion.div>
             </div>
           </motion.div>
         )}
@@ -265,21 +309,66 @@ export default function Navbar() {
 }
 
 function NavLink({ label, href, active, lightText }: { label: string; href: string; active: boolean; lightText: boolean }) {
+  const linkRef = useRef<HTMLAnchorElement>(null);
+  const [hoverPosition, setHoverPosition] = useState({ x: 0, y: 0 });
+  const [isHovering, setIsHovering] = useState(false);
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!linkRef.current) return;
+    const rect = linkRef.current.getBoundingClientRect();
+    const x = (e.clientX - rect.left - rect.width / 2) * 0.15;
+    const y = (e.clientY - rect.top - rect.height / 2) * 0.15;
+    setHoverPosition({ x, y });
+  };
+
+  const handleMouseLeave = () => {
+    setHoverPosition({ x: 0, y: 0 });
+    setIsHovering(false);
+  };
+
   return (
-    <Link href={href} className="relative h-full flex items-center justify-center px-4 xl:px-5 group">
-      <span className={`text-[10.5px] xl:text-[11px] uppercase tracking-[0.16em] font-light transition-colors duration-300 whitespace-nowrap leading-none ${
-        active ? 'text-gold' : lightText ? 'text-white/75 group-hover:text-white' : 'text-black/65 group-hover:text-black'
-      }`}>
+    <Link 
+      ref={linkRef}
+      href={href} 
+      className="relative h-full flex items-center justify-center px-4 xl:px-5 group"
+      onMouseEnter={() => setIsHovering(true)}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+    >
+      <motion.span 
+        className={`text-[10.5px] xl:text-[11px] uppercase tracking-[0.16em] font-light transition-colors duration-300 whitespace-nowrap leading-none ${
+          active ? 'text-gold' : lightText ? 'text-white/75 group-hover:text-white' : 'text-black/65 group-hover:text-black'
+        }`}
+        animate={{ 
+          x: hoverPosition.x, 
+          y: hoverPosition.y,
+        }}
+        transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+      >
         {label}
-      </span>
+      </motion.span>
       {active ? (
         <motion.span
           layoutId="navActive"
-          className="absolute bottom-0 left-4 right-4 xl:left-5 xl:right-5 h-px bg-gold"
+          className="absolute bottom-0 left-4 right-4 xl:left-5 xl:right-5 h-[1.5px] bg-gradient-to-r from-gold/60 via-gold to-gold/60"
           transition={{ type: 'spring', stiffness: 350, damping: 28 }}
         />
       ) : (
-        <span className="absolute bottom-0 left-4 right-4 xl:left-5 xl:right-5 h-px bg-gold/40 scale-x-0 group-hover:scale-x-100 transition-transform duration-400 origin-left" />
+        <>
+          <span className="absolute bottom-0 left-4 right-4 xl:left-5 xl:right-5 h-[1.5px] bg-gold/50 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] origin-left" />
+          {/* Subtle gold glow on hover */}
+          <motion.span 
+            className="absolute inset-0 rounded-sm pointer-events-none"
+            initial={{ opacity: 0 }}
+            animate={{ 
+              opacity: isHovering ? 1 : 0,
+              background: lightText 
+                ? 'radial-gradient(ellipse at center, rgba(212,175,55,0.06) 0%, transparent 70%)'
+                : 'radial-gradient(ellipse at center, rgba(212,175,55,0.04) 0%, transparent 70%)'
+            }}
+            transition={{ duration: 0.3 }}
+          />
+        </>
       )}
     </Link>
   );
