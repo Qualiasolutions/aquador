@@ -67,27 +67,35 @@
    ========================================================================== */
 
 :root {
-  /* Colors - Light Luxury Theme */
+  /* Colors - Premium Luxury Theme */
   --background: #FAFAF8;
   --foreground: #0a0a0a;
 
   /* Gold Palette - OKLCH for perceptual uniformity */
   --gold: oklch(75% 0.12 85);
   --gold-light: oklch(85% 0.11 90);
+  --gold-lighter: oklch(90% 0.08 88);
   --gold-dark: oklch(65% 0.13 80);
+  --gold-deep: oklch(55% 0.14 78);
+  
+  /* Champagne & Rose Gold - Luxury accents */
+  --champagne: oklch(92% 0.04 85);
+  --rose-gold: oklch(78% 0.08 45);
 
   /* Atmospheric Backgrounds - Warm cream tones */
   --bg-black: #FAFAF8;
   --bg-dark: oklch(97% 0.003 85);
   --bg-darker: oklch(95% 0.004 85);
+  --bg-cream: oklch(98% 0.008 90);
+  --bg-warm: oklch(96% 0.012 85);
 
-  /* Neutral Gray Scale - No color cast */
-  --gray-50: oklch(98% 0 0);
-  --gray-100: oklch(95% 0 0);
-  --gray-200: oklch(85% 0 0);
-  --gray-300: oklch(70% 0 0);
-  --gray-400: oklch(55% 0 0);
-  --gray-500: oklch(40% 0 0);
+  /* Neutral Gray Scale - Warm tinted for luxury */
+  --gray-50: oklch(98% 0.002 85);
+  --gray-100: oklch(95% 0.003 85);
+  --gray-200: oklch(88% 0.004 85);
+  --gray-300: oklch(72% 0.005 85);
+  --gray-400: oklch(55% 0.006 85);
+  --gray-500: oklch(40% 0.007 85);
 
   /* Spacing Scale (consistent across all components) */
   --space-2xs: 0.25rem;  /* 4px - tight icon gaps */
@@ -155,6 +163,19 @@
   --radius-lg: 1rem;
   --radius-xl: 1.5rem;
   --radius-full: 9999px;
+  
+  /* Premium Shadows - Layered for depth */
+  --shadow-subtle: 0 1px 2px rgba(0,0,0,0.03), 0 2px 4px rgba(0,0,0,0.02);
+  --shadow-soft: 0 2px 8px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.03);
+  --shadow-medium: 0 4px 12px rgba(0,0,0,0.05), 0 8px 24px rgba(0,0,0,0.04);
+  --shadow-elevated: 0 8px 24px rgba(0,0,0,0.06), 0 16px 48px rgba(0,0,0,0.05);
+  --shadow-dramatic: 0 16px 48px rgba(0,0,0,0.08), 0 32px 96px rgba(0,0,0,0.06);
+  
+  /* Gold-tinted shadows for luxury elements */
+  --shadow-gold-subtle: 0 2px 8px rgba(212,175,55,0.08);
+  --shadow-gold-soft: 0 4px 16px rgba(212,175,55,0.12);
+  --shadow-gold-glow: 0 0 24px rgba(212,175,55,0.15), 0 0 48px rgba(212,175,55,0.08);
+  --shadow-gold-intense: 0 0 32px rgba(212,175,55,0.25), 0 0 64px rgba(212,175,55,0.15);
 }
 
 * {
